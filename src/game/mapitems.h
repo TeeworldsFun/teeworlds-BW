@@ -156,7 +156,8 @@ enum
 	TILE_ENTITIES_OFF_1 = 190,
 	TILE_ENTITIES_OFF_2,
 
-	// Passive : Googles Tiles
+
+	TILE_UNLOCK_PASSIVE,
 	TILE_PASSIVE_IN = 160,
 	TILE_PASSIVE_OUT,
 	// Googles Tiles
