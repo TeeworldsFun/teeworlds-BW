@@ -3,6 +3,6 @@
 #ifndef GAME_MODE_H
 #define GAME_MODE_H
 
-#define GAME_NAME "Blocker"
-#define TEST_NAME "Blocker"
+#define GAME_NAME "BW"
+#define TEST_NAME "BW"
 #endif

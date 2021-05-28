@@ -1991,6 +1991,26 @@ void CCharacter::HandleTiles(int Index)
 		}
 	}
 
+	//Level Tile : 
+
+
+	if (m_TileIndex == TILE_LEVEL_1 || m_TileFIndex == TILE_LEVEL_1)
+	{
+		if (!m_pPlayer->m_Level.m_LeveL >= 1)
+		{
+			GameServer()->SendChatTarget(GetPlayer()->GetCID(), "You must be level 1 to enter this arena!");
+			Die(GetPlayer()->GetCID(), WEAPON_WORLD);
+		}
+	}
+	if (m_TileIndex == TILE_LEVEL_50 || m_TileFIndex == TILE_LEVEL_50)
+	{
+		if (!m_pPlayer->m_Level.m_LeveL >= 50)
+		{
+			GameServer()->SendChatTarget(GetPlayer()->GetCID(), "You need to be level 50 minimum!");
+			Die(GetPlayer()->GetCID(), WEAPON_WORLD);
+		}
+	}
+
 	// Vip
 	if ((m_TileIndex == TILE_VIP || m_TileFIndex == TILE_VIP) && 
 		(!m_pPlayer->m_AccData.m_Vip && !Server()->IsAdmin(m_pPlayer->GetCID())))
