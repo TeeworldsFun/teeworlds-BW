@@ -176,7 +176,7 @@ enum
 
 	//LeveL Tiles : 
 
-	TILE_LEVEL_1 = 21,
+	TILE_IS_LOGGED = 21,
 	TILE_LEVEL_50 = 22,
 	TILE_LEVEL_100 = 23,
 	TILE_LEVEL_200 = 24,

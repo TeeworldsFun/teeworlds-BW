@@ -73,6 +73,7 @@ public:
 	void HandleNinja();
 	void HandleJetpack();
 	void HandleHookJetpack();
+	void WasLogged();
 
 	void OnPredictedInput(CNetObj_PlayerInput *pNewInput);
 	void OnDirectInput(CNetObj_PlayerInput *pNewInput);
@@ -273,6 +274,8 @@ public:
 	bool WasInSteam;
 	bool WasInXXL;
 	bool WasInCircles;
+	bool WasInLevelTile;
+	bool m_WasLogged;
 
 	enum
 	{

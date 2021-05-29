@@ -1695,7 +1695,8 @@ void CCharacter::HandleTiles(int Index)
 		WasInSteam = false;
 	else if(((m_TileIndex != TILE_RAINBOW) && (m_TileFIndex != TILE_RAINBOW)) && WasInRainbow)
 		WasInRainbow = false;
-
+	else if(((m_TileIndex != TILE_IS_LOGGED) && (m_TileFIndex != TILE_IS_LOGGED)) && WasInLevelTile)
+		WasInLevelTile = false;
 	if (Index < 0)
 	{
 		m_LastRefillJumps = false;
@@ -1994,19 +1995,102 @@ void CCharacter::HandleTiles(int Index)
 	//Level Tile : 
 
 
-	if (m_TileIndex == TILE_LEVEL_1 || m_TileFIndex == TILE_LEVEL_1)
+	if (((m_TileIndex == TILE_IS_LOGGED || m_TileFIndex == TILE_IS_LOGGED)) && !WasInLevelTile)
 	{
-		if (!m_pPlayer->m_Level.m_LeveL >= 1)
+		if	(!m_pPlayer->m_AccData.m_UserID)
 		{
-			GameServer()->SendChatTarget(GetPlayer()->GetCID(), "You must be level 1 to enter this arena!");
-			Die(GetPlayer()->GetCID(), WEAPON_WORLD);
+			GameServer()->SendChatTarget(GetPlayer()->GetCID(), "~You need to create an account (/register name pass pass)~");
+			Die(m_pPlayer->GetCID(), WEAPON_WORLD);
 		}
+		WasInLevelTile = true;
 	}
+
+
 	if (m_TileIndex == TILE_LEVEL_50 || m_TileFIndex == TILE_LEVEL_50)
 	{
 		if (!m_pPlayer->m_Level.m_LeveL >= 50)
 		{
-			GameServer()->SendChatTarget(GetPlayer()->GetCID(), "You need to be level 50 minimum!");
+			GameServer()->SendChatTarget(GetPlayer()->GetCID(), "You must be level 50 to enter this arena!");
+			Die(GetPlayer()->GetCID(), WEAPON_WORLD);
+		}
+	}
+	if (m_TileIndex == TILE_LEVEL_100 || m_TileFIndex == TILE_LEVEL_100)
+	{
+		if (!m_pPlayer->m_Level.m_LeveL >= 100)
+		{
+			GameServer()->SendChatTarget(GetPlayer()->GetCID(), "You must be level 100 to enter this arena!");
+			Die(GetPlayer()->GetCID(), WEAPON_WORLD);
+		}
+	}
+	if (m_TileIndex == TILE_LEVEL_200 || m_TileFIndex == TILE_LEVEL_200)
+	{
+		if (!m_pPlayer->m_Level.m_LeveL >= 200)
+		{
+			GameServer()->SendChatTarget(GetPlayer()->GetCID(), "You must be level 200 to enter this arena!");
+			Die(GetPlayer()->GetCID(), WEAPON_WORLD);
+		}
+	}
+	if (m_TileIndex == TILE_LEVEL_300 || m_TileFIndex == TILE_LEVEL_300)
+	{
+		if (!m_pPlayer->m_Level.m_LeveL >= 300)
+		{
+			GameServer()->SendChatTarget(GetPlayer()->GetCID(), "You must be level 300 to enter this arena!");
+			Die(GetPlayer()->GetCID(), WEAPON_WORLD);
+		}
+	}
+	if (m_TileIndex == TILE_LEVEL_400 || m_TileFIndex == TILE_LEVEL_400)
+	{
+		if (!m_pPlayer->m_Level.m_LeveL >= 400)
+		{
+			GameServer()->SendChatTarget(GetPlayer()->GetCID(), "You must be level 400 to enter this arena!");
+			Die(GetPlayer()->GetCID(), WEAPON_WORLD);
+		}
+	}
+	if (m_TileIndex == TILE_LEVEL_500 || m_TileFIndex == TILE_LEVEL_500)
+	{
+		if (!m_pPlayer->m_Level.m_LeveL >= 500)
+		{
+			GameServer()->SendChatTarget(GetPlayer()->GetCID(), "You must be level 500 to enter this arena!");
+			Die(GetPlayer()->GetCID(), WEAPON_WORLD);
+		}
+	}
+	if (m_TileIndex == TILE_LEVEL_600 || m_TileFIndex == TILE_LEVEL_600)
+	{
+		if (!m_pPlayer->m_Level.m_LeveL >= 600)
+		{
+			GameServer()->SendChatTarget(GetPlayer()->GetCID(), "You must be level 600 to enter this arena!");
+			Die(GetPlayer()->GetCID(), WEAPON_WORLD);
+		}
+	}
+	if (m_TileIndex == TILE_LEVEL_700 || m_TileFIndex == TILE_LEVEL_700)
+	{
+		if (!m_pPlayer->m_Level.m_LeveL >= 700)
+		{
+			GameServer()->SendChatTarget(GetPlayer()->GetCID(), "You must be level 700 to enter this arena!");
+			Die(GetPlayer()->GetCID(), WEAPON_WORLD);
+		}
+	}
+	if (m_TileIndex == TILE_LEVEL_800 || m_TileFIndex == TILE_LEVEL_800)
+	{
+		if (!m_pPlayer->m_Level.m_LeveL >= 800)
+		{
+			GameServer()->SendChatTarget(GetPlayer()->GetCID(), "You must be level 800 to enter this arena!");
+			Die(GetPlayer()->GetCID(), WEAPON_WORLD);
+		}
+	}
+	if (m_TileIndex == TILE_LEVEL_900 || m_TileFIndex == TILE_LEVEL_900)
+	{
+		if (!m_pPlayer->m_Level.m_LeveL >= 900)
+		{
+			GameServer()->SendChatTarget(GetPlayer()->GetCID(), "You must be level 900 to enter this arena!");
+			Die(GetPlayer()->GetCID(), WEAPON_WORLD);
+		}
+	}
+	if (m_TileIndex == TILE_LEVEL_999 || m_TileFIndex == TILE_LEVEL_999)
+	{
+		if (!m_pPlayer->m_Level.m_LeveL >= 999)
+		{
+			GameServer()->SendChatTarget(GetPlayer()->GetCID(), "You must be level 999 to enter this arena!");
 			Die(GetPlayer()->GetCID(), WEAPON_WORLD);
 		}
 	}
@@ -2019,18 +2103,7 @@ void CCharacter::HandleTiles(int Index)
 		GameServer()->SendChatTarget(m_pPlayer->GetCID(), "You are not a vip!");
 		return;
 	}
-	
-	// solo part
-	if ((m_TileIndex == TILE_SOLO_START || m_TileFIndex == TILE_SOLO_START) && !Teams()->m_Core.GetSolo(m_pPlayer->GetCID()))
-	{
-		GameServer()->SendChatTarget(GetPlayer()->GetCID(), "You are now in a solo part");
-		HandleSolo(true);
-	}
-	else if ((m_TileIndex == TILE_SOLO_END || m_TileFIndex == TILE_SOLO_END) && Teams()->m_Core.GetSolo(m_pPlayer->GetCID()))
-	{
-		GameServer()->SendChatTarget(GetPlayer()->GetCID(), "You are now out of the solo part");
-		HandleSolo(false);
-	}
+
 
 	// refill jumps
 	if ((m_TileIndex == TILE_REFILL_JUMPS || m_TileFIndex == TILE_REFILL_JUMPS) && !m_LastRefillJumps)
@@ -2990,15 +3063,16 @@ void CCharacter::HandleLevelSystem()
 	// Handle level update
 	if (IsAlive() && m_pPlayer->m_AccData.m_UserID) // is Logged in
 	{
-		if (m_pPlayer->m_Level.m_Exp >= (m_pPlayer->m_Level.m_LeveL * 2))
+		if (m_pPlayer->m_Level.m_Exp >= (m_pPlayer->m_Level.m_LeveL * 1.1))
 		{
-			int savedExp = m_pPlayer->m_Level.m_Exp - m_pPlayer->m_Level.m_LeveL * 2;
+			int savedExp = m_pPlayer->m_Level.m_Exp - m_pPlayer->m_Level.m_LeveL * 1.1;
 			m_pPlayer->m_Level.m_LeveL++;
 			m_pPlayer->m_Level.m_Exp = 0 + savedExp;
 
 			char aBuf[246];
-			str_format(aBuf, sizeof(aBuf), "[LevelUp+]: You are now level %d!", m_pPlayer->m_Level.m_LeveL);
+			str_format(aBuf, sizeof(aBuf), "You are now level %d!", m_pPlayer->m_Level.m_LeveL);
 			GameServer()->SendChatTarget(m_Core.m_Id, aBuf);
+			GameServer()->CreateSound(m_Pos, SOUND_CTF_RETURN, Teams()->TeamMask(Team(), -1, m_pPlayer->GetCID()));
 		}
 	}
 
@@ -3009,41 +3083,6 @@ void CCharacter::HandleLevelSystem()
 		/*
 		str_format(aLevel, 16, "LvL ➔ %d ", m_pPlayer->m_Level.m_LeveL);
 		*/
-		if (m_pPlayer->m_Level.m_LeveL <= 10)
-		{
-			char aLevel[16];
-			str_format(aLevel, 16, "New..");
-		}
-		if (m_pPlayer->m_Level.m_LeveL > 10)
-		{
-			char aLevel[16];
-			str_format(aLevel, 16, "Noob..");
-		}
-		if (m_pPlayer->m_Level.m_LeveL >= 30)
-		{
-			char aLevel[16];
-			str_format(aLevel, 16, "Blocker..");
-		}
-		if (m_pPlayer->m_Level.m_LeveL >= 100)
-		{
-			char aLevel[16];
-			str_format(aLevel, 16, "BabyFan..");
-		}
-		if (m_pPlayer->m_Level.m_LeveL >= 150)
-		{
-			char aLevel[16];
-			str_format(aLevel, 16, "❤ ❤ ❤");
-		}
-		if (m_pPlayer->m_Level.m_LeveL >= 200)
-		{
-			char aLevel[16];
-			str_format(aLevel, 16, "✪ ✪ ✪");
-		}
-		if (m_pPlayer->m_Level.m_LeveL >= 300)
-		{
-			char aLevel[16];
-			str_format(aLevel, 16, "!-GOD-!");
-		}
 		if (str_comp(aLevel, pClan) != 0) // No spam
 		{
 			Server()->SetClientClan(GetPlayer()->GetCID(), aLevel);
@@ -3073,9 +3112,8 @@ void CCharacter::HandleBlocking(bool die)
 			char aAddrStrEnemy[NETADDR_MAXSTRSIZE] = { 0 };
 			Server()->GetClientAddr(m_Core.m_Id, aAddrStrSelf, sizeof(aAddrStrSelf));
 			Server()->GetClientAddr(pECore->m_Core.m_Id, aAddrStrEnemy, sizeof(aAddrStrEnemy));
-			if (str_comp_nocase(aAddrStrSelf, aAddrStrEnemy) == 0) // receive exp if you block you dummy
+			if (str_comp_nocase(aAddrStrSelf, aAddrStrEnemy) == 0)
 			{
-				
 				pECore->m_pPlayer->m_Level.m_Exp += g_Config.m_ClBlockExp * GameServer()->m_EventExp;
 			}
 			if (m_FirstFreezeTick != 0 && Server()->Tick() > m_LastBlockedTick + Server()->TickSpeed() * g_Config.m_SvAntiFarmDuration)
