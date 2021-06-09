@@ -189,6 +189,13 @@ enum
 	TILE_LEVEL_900 = 31,
 	TILE_LEVEL_999 = 32,
 
+	//arrows
+
+	TILE_RIGHT = 11,
+	TILE_UP = 12,
+	TILE_LEFT = 13,
+	TILE_DOWN = 14,
+
 	//End of higher tiles
 	//Layers
 	LAYER_GAME=0,

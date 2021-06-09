@@ -1999,7 +1999,7 @@ void CCharacter::HandleTiles(int Index)
 	{
 		if	(!m_pPlayer->m_AccData.m_UserID)
 		{
-			GameServer()->SendChatTarget(GetPlayer()->GetCID(), "~You need to create an account (/register name pass pass)~");
+			GameServer()->SendChatTarget(GetPlayer()->GetCID(), "~Please register first. (/register <user> <pass>)~");
 			Die(m_pPlayer->GetCID(), WEAPON_WORLD);
 		}
 		WasInLevelTile = true;
@@ -2104,6 +2104,18 @@ void CCharacter::HandleTiles(int Index)
 		return;
 	}
 
+	if (m_TileIndex == TILE_RIGHT || m_TileFIndex == TILE_RIGHT)
+	{
+		if ((int)GameServer()->Collision()->GetPos(MapIndexT).x < (int)m_Core.m_Pos.x)
+		{
+			if ((int)GameServer()->Collision()->GetPos(MapIndexR).x >= 1)
+			{
+				m_Core.m_Pos = m_PrevPos;
+			}
+			m_Core.m_Vel.x = 0;
+		}
+	}
+
 
 	// refill jumps
 	if ((m_TileIndex == TILE_REFILL_JUMPS || m_TileFIndex == TILE_REFILL_JUMPS) && !m_LastRefillJumps)
@@ -2116,6 +2128,8 @@ void CCharacter::HandleTiles(int Index)
 	{
 		m_LastRefillJumps = false;
 	}
+
+
 
 	// stopper
 	if (((m_TileIndex == TILE_STOP && m_TileFlags == ROTATION_270) || (m_TileIndexL == TILE_STOP && m_TileFlagsL == ROTATION_270) || (m_TileIndexL == TILE_STOPS && (m_TileFlagsL == ROTATION_90 || m_TileFlagsL == ROTATION_270)) || (m_TileIndexL == TILE_STOPA) || (m_TileFIndex == TILE_STOP && m_TileFFlags == ROTATION_270) || (m_TileFIndexL == TILE_STOP && m_TileFFlagsL == ROTATION_270) || (m_TileFIndexL == TILE_STOPS && (m_TileFFlagsL == ROTATION_90 || m_TileFFlagsL == ROTATION_270)) || (m_TileFIndexL == TILE_STOPA) || (m_TileSIndex == TILE_STOP && m_TileSFlags == ROTATION_270) || (m_TileSIndexL == TILE_STOP && m_TileSFlagsL == ROTATION_270) || (m_TileSIndexL == TILE_STOPS && (m_TileSFlagsL == ROTATION_90 || m_TileSFlagsL == ROTATION_270)) || (m_TileSIndexL == TILE_STOPA)) && m_Core.m_Vel.x > 0)
@@ -3114,15 +3128,18 @@ void CCharacter::HandleBlocking(bool die)
 			Server()->GetClientAddr(pECore->m_Core.m_Id, aAddrStrEnemy, sizeof(aAddrStrEnemy));
 			if (str_comp_nocase(aAddrStrSelf, aAddrStrEnemy) == 0)
 			{
-				pECore->m_pPlayer->m_Level.m_Exp += g_Config.m_ClBlockExp * GameServer()->m_EventExp;
+				pECore->m_pPlayer->m_Level.m_Exp += g_Config.m_ClBlockExp * GameServer()->m_EventExp / 2;
+				m_pPlayer->m_AccData.m_Blockpoints += 1;
 			}
 			if (m_FirstFreezeTick != 0 && Server()->Tick() > m_LastBlockedTick + Server()->TickSpeed() * g_Config.m_SvAntiFarmDuration)
 			{
-				pECore->m_pPlayer->m_Level.m_Exp += g_Config.m_ClBlockExp * GameServer()->m_EventExp;
+				pECore->m_pPlayer->m_Level.m_Exp += g_Config.m_ClBlockExp * GameServer()->m_EventExp / 2;
+				m_pPlayer->m_AccData.m_Blockpoints += 1;
 			}
 			else
 			{
-				pECore->m_pPlayer->m_Level.m_Exp += g_Config.m_ClBlockExp * GameServer()->m_EventExp;
+				pECore->m_pPlayer->m_Level.m_Exp += g_Config.m_ClBlockExp * GameServer()->m_EventExp /2;
+				m_pPlayer->m_AccData.m_Blockpoints += 1;
 			}
 
 		}
@@ -3145,7 +3162,7 @@ void CCharacter::HandleBlocking(bool die)
 							// ---------------------
 							if (m_pPlayer->m_Afk) // cannot get points of blocking an afk player
 							{
-								GameServer()->SendChatTarget(pECore->m_Core.m_Id, "This Player is AFK.");
+								pECore->m_pPlayer->m_Level.m_Exp += g_Config.m_ClBlockExp * GameServer()->m_EventExp / 2;
 								return;
 							}
 							char aAddrStrSelf[NETADDR_MAXSTRSIZE] = { 0 };
@@ -3154,15 +3171,18 @@ void CCharacter::HandleBlocking(bool die)
 							Server()->GetClientAddr(pECore->m_Core.m_Id, aAddrStrEnemy, sizeof(aAddrStrEnemy));
 							if (str_comp_nocase(aAddrStrSelf, aAddrStrEnemy) == 0) 
 							{
-								pECore->m_pPlayer->m_Level.m_Exp += g_Config.m_ClBlockExp * GameServer()->m_EventExp;
+								pECore->m_pPlayer->m_Level.m_Exp += g_Config.m_ClBlockExp * GameServer()->m_EventExp / 2;
+								m_pPlayer->m_AccData.m_Blockpoints += 1;
 							}
 							if (m_LastBlockedTick != -1 && Server()->Tick() > m_LastBlockedTick + Server()->TickSpeed() * g_Config.m_SvAntiFarmDuration)
 							{
-								pECore->m_pPlayer->m_Level.m_Exp += g_Config.m_ClBlockExp * GameServer()->m_EventExp;
+								pECore->m_pPlayer->m_Level.m_Exp += g_Config.m_ClBlockExp * GameServer()->m_EventExp / 2;
+								m_pPlayer->m_AccData.m_Blockpoints += 1;
 							}
 							else
 							{
-								pECore->m_pPlayer->m_Level.m_Exp += g_Config.m_ClBlockExp * GameServer()->m_EventExp;
+								pECore->m_pPlayer->m_Level.m_Exp += g_Config.m_ClBlockExp * GameServer()->m_EventExp / 2;
+								m_pPlayer->m_AccData.m_Blockpoints += 1;
 							}
 						}
 					}

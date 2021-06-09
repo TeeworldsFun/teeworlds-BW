@@ -153,6 +153,7 @@ void CAccountDatabase::LoginResult(bool Failed, void *pResultData, void *pData)
 
 		dbg_msg("account", "Account login sucessful ('%s')", aUsername);
 		pGameServer->SendChatTarget(ClientID, "Login successful");
+		pPlayer->m_AccData.m_Blockpoints + 1;
 
 		if (pOwner)
 		{

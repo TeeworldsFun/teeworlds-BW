@@ -1216,13 +1216,6 @@ void CGameContext::OnClientEnter(int ClientID)
 		SendVoteSet(ClientID);
 
 	m_apPlayers[ClientID]->m_Authed = ((CServer*)Server())->m_aClients[ClientID].m_Authed;
-
-	//Log His IP when connect
-	char aClientAddr[NETADDR_MAXSTRSIZE];
-	Server()->GetClientAddr(ClientID, aClientAddr, sizeof(aClientAddr));
-	char aLogIP[256];
-	str_format(aLogIP, sizeof(aLogIP), "Name: %s, IP: \"%s\"", Server()->ClientName(ClientID), aClientAddr);
-	log_file(aLogIP, "IpLogs.log", g_Config.m_SvSecurityPath);
 }
 
 void CGameContext::OnClientConnected(int ClientID)

@@ -106,7 +106,7 @@ void CAccountFile::Login(const char *pUsername, const char *pPassword)
 	Accfile = fopen(aBuf, "r");
 
 	// Always change the numbers when adding please. Makes it easy 
-	fscanf(Accfile, "%s\n%s\n%s\n%d\n%d\n%d\n%d\n%d\n%s\n%d\n%d", // 11
+	fscanf(Accfile, "%s\n%s\n%s\n%d\n%d\n%d\n%d\n%d\n%s\n%d\n%d\n%d", // 11
 		m_pPlayer->m_AccData.m_aUsername, // Done 1
 		m_pPlayer->m_AccData.m_aPassword, // Done 2
 		m_pPlayer->m_AccData.m_aRconPassword, // 3
@@ -117,7 +117,8 @@ void CAccountFile::Login(const char *pUsername, const char *pPassword)
 		&m_pPlayer->m_Level.m_Exp, // 8
 		m_pPlayer->m_AccData.m_aIp, // 9
 		&m_pPlayer->m_AccData.m_Weaponkits, // 10
-		&m_pPlayer->m_AccData.m_Slot // 11
+		&m_pPlayer->m_AccData.m_Slot, // 11
+		&m_pPlayer->m_AccData.m_Blockpoints // 12
 	); // Done
 
 	fclose(Accfile);
@@ -191,7 +192,7 @@ void CAccountFile::Register(const char *pUsername, const char *pPassword)
 	}
 
 	// Always change the numbers when adding please. Makes it easy 
-	str_format(aBuf, sizeof(aBuf), "%s\n%s\n%s\n%d\n%d\n%d\n%d\n%d\n%s\n%d\n%d", // 11
+	str_format(aBuf, sizeof(aBuf), "%s\n%s\n%s\n%d\n%d\n%d\n%d\n%d\n%s\n%d\n%d\n%n", // 12
 		pUsername, // 1
 		pPassword, // 2
 		"0", // 3
@@ -202,7 +203,8 @@ void CAccountFile::Register(const char *pUsername, const char *pPassword)
 		m_pPlayer->m_Level.m_Exp, // 8
 		m_pPlayer->m_AccData.m_aIp, // 9
 		m_pPlayer->m_AccData.m_Weaponkits, // 10
-		m_pPlayer->m_AccData.m_Slot // 11
+		m_pPlayer->m_AccData.m_Slot, // 11
+		m_pPlayer->m_AccData.m_Blockpoints // 12
 	);
 
 	io_write(Accfile, aBuf, (unsigned int)str_length(aBuf));
@@ -282,7 +284,7 @@ void CAccountFile::Apply()
 	}
 
 	// Always change the numbers when adding please. Makes it easy 
-	str_format(aBuf, sizeof(aBuf), "%s\n%s\n%s\n%d\n%d\n%d\n%d\n%d\n%s\n%d\n%d", // 11
+	str_format(aBuf, sizeof(aBuf), "%s\n%s\n%s\n%d\n%d\n%d\n%d\n%d\n%s\n%d\n%d\n%d", // 11
 		m_pPlayer->m_AccData.m_aUsername, // 1
 		m_pPlayer->m_AccData.m_aPassword, // 2
 		m_pPlayer->m_AccData.m_aRconPassword, // 3
@@ -293,7 +295,8 @@ void CAccountFile::Apply()
 		m_pPlayer->m_Level.m_Exp, // 8
 		m_pPlayer->m_AccData.m_aIp, // 9
 		m_pPlayer->m_AccData.m_Weaponkits, // 10
-		m_pPlayer->m_AccData.m_Slot); // 11
+		m_pPlayer->m_AccData.m_Slot, // 11
+		m_pPlayer->m_AccData.m_Blockpoints); // 11
 
 	io_write(Accfile, aBuf, (unsigned int)str_length(aBuf));
 	io_close(Accfile);
@@ -308,6 +311,7 @@ void CAccountFile::Reset()
 	m_pPlayer->m_AccData.m_UserID = 0;
 	m_pPlayer->m_AccData.m_Vip = 0;
 	m_pPlayer->m_QuestData.m_Pages = 0;
+	m_pPlayer->m_AccData.m_Blockpoints = 0;
 }
 
 void CAccountFile::Delete()
