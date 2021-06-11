@@ -257,7 +257,7 @@ void CGameContext::ChatCommands(const char *pMsg, int ClientID)
     {
         int Blockpoints = pPlayer->m_AccData.m_Blockpoints;
         char Message[104];
-        str_format(Message, 104, "You have %d Block points", Blockpoints);
+        str_format(Message, 104, "You currently have %d blockpoints", Blockpoints);
         SendChatTarget(ClientID, Message);
     }
     else if (str_comp_nocase_num(pMsg + 1, "beginquest", 10) == 0)

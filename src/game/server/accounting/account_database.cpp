@@ -153,8 +153,6 @@ void CAccountDatabase::LoginResult(bool Failed, void *pResultData, void *pData)
 
 		dbg_msg("account", "Account login sucessful ('%s')", aUsername);
 		pGameServer->SendChatTarget(ClientID, "Login successful");
-		pPlayer->m_AccData.m_Blockpoints + 1;
-
 		if (pOwner)
 		{
 			pPlayer->m_AccData.m_Slot++;
@@ -286,9 +284,9 @@ void CAccountDatabase::ExistsResultRegister(bool Failed, void *pResultData, void
 #endif
 
 		char aQuery[QUERY_MAX_LEN];
-		str_format(aQuery, sizeof(aQuery), "INSERT INTO accounts VALUES('%s', '%s', %i, %i, %i, %i, '%s', %i, %i)",
+		str_format(aQuery, sizeof(aQuery), "INSERT INTO accounts VALUES('%s', '%s', %i, %i, %i, %i, '%s', %i, %i, %i)",
 			pResult->m_aUsername, pResult->m_aPassword, pPlayer->m_AccData.m_Vip, pPlayer->m_QuestData.m_Pages, pPlayer->m_Level.m_LeveL,
-			pPlayer->m_Level.m_Exp, pPlayer->m_AccData.m_aIp, pPlayer->m_AccData.m_Weaponkits, pPlayer->m_AccData.m_Slot);
+			pPlayer->m_Level.m_Exp, pPlayer->m_AccData.m_aIp, pPlayer->m_AccData.m_Weaponkits, pPlayer->m_AccData.m_Slot, pPlayer->m_AccData.m_Blockpoints);
 
 		((CAccountDatabase *)pPlayer->m_pAccount)->CreateNewQuery(aQuery, RegisterResult, pResult, false, true, THREADING);
 	}
@@ -379,6 +377,7 @@ void CAccountDatabase::Reset()
 	m_pPlayer->m_QuestData.m_Pages = 0;
 	m_pPlayer->m_Level.m_LeveL = 1;
 	m_pPlayer->m_Level.m_Exp = 0;
+	m_pPlayer->m_AccData.m_Blockpoints = 0;
 }
 
 void CAccountDatabase::Delete()
