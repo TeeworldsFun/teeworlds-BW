@@ -2104,15 +2104,64 @@ void CCharacter::HandleTiles(int Index)
 		return;
 	}
 
-	if (m_TileIndex == TILE_RIGHT || m_TileFIndex == TILE_RIGHT)
+	if ((m_TileIndex == TILE_UP || m_TileFIndex == TILE_UP) && m_Core.m_Vel.y > 0)
 	{
-		if ((int)GameServer()->Collision()->GetPos(MapIndexT).x < (int)m_Core.m_Pos.x)
+		if (GameServer()->Collision()->GetPos(MapIndexT).y == 0)
 		{
-			if ((int)GameServer()->Collision()->GetPos(MapIndexR).x >= 1)
-			{
+			Die(m_pPlayer->GetCID(), WEAPON_WORLD);
+		}
+		else if (!GameServer()->Collision()->GetPos(MapIndexT).y == 0)
+		{
+			if ((int)GameServer()->Collision()->GetPos(MapIndexT).y)
+			if ((int)GameServer()->Collision()->GetPos(MapIndexT).y < (int)m_Core.m_Pos.y)
 				m_Core.m_Pos = m_PrevPos;
-			}
-			m_Core.m_Vel.x = 0;
+		m_Core.m_Vel.y = 0;
+		m_Core.m_Jumped = 0;
+		m_Core.m_JumpedTotal = 0;
+		}
+	}
+	if ((m_TileIndex == TILE_DOWN || m_TileFIndex == TILE_DOWN) && m_Core.m_Vel.y < 0)
+	{
+		if (GameServer()->Collision()->GetPos(MapIndexT).y == 0)
+		{
+			Die(m_pPlayer->GetCID(), WEAPON_WORLD);
+		}
+		else if (!GameServer()->Collision()->GetPos(MapIndexT).y == 0)
+		{
+			if ((int)GameServer()->Collision()->GetPos(MapIndexT).y)
+			if ((int)GameServer()->Collision()->GetPos(MapIndexT).y < (int)m_Core.m_Pos.y)
+				m_Core.m_Pos = m_PrevPos;
+		m_Core.m_Vel.y = 0;
+		m_Core.m_Jumped = 0;
+		m_Core.m_JumpedTotal = 0;
+		}
+	}
+	if ((m_TileIndex == TILE_RIGHT || m_TileFIndex == TILE_RIGHT) && m_Core.m_Vel.x > 0)
+	{
+		if (GameServer()->Collision()->GetPos(MapIndexT).x == 0)
+		{
+			Die(m_pPlayer->GetCID(), WEAPON_WORLD);
+		}
+		else if (!GameServer()->Collision()->GetPos(MapIndexT).x == 0)
+		{
+			if ((int)GameServer()->Collision()->GetPos(MapIndexR).x)
+			if ((int)GameServer()->Collision()->GetPos(MapIndexR).x >(int)m_Core.m_Pos.x)
+				m_Core.m_Pos = m_PrevPos;
+		m_Core.m_Vel.x = 0;
+		}
+	}
+	if ((m_TileIndex == TILE_LEFT || m_TileFIndex == TILE_LEFT) && m_Core.m_Vel.x < 0)
+	{
+		if (GameServer()->Collision()->GetPos(MapIndexT).x == 0)
+		{
+			Die(m_pPlayer->GetCID(), WEAPON_WORLD);
+		}
+		else if (!GameServer()->Collision()->GetPos(MapIndexT).x == 0)
+		{
+			if ((int)GameServer()->Collision()->GetPos(MapIndexR).x)
+			if ((int)GameServer()->Collision()->GetPos(MapIndexR).x >(int)m_Core.m_Pos.x)
+				m_Core.m_Pos = m_PrevPos;
+		m_Core.m_Vel.x = 0;
 		}
 	}
 

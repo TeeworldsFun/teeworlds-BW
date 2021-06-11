@@ -191,9 +191,9 @@ enum
 
 	//arrows
 
-	TILE_RIGHT = 11,
+	TILE_RIGHT = 13,
 	TILE_UP = 12,
-	TILE_LEFT = 13,
+	TILE_LEFT = 11,
 	TILE_DOWN = 14,
 
 	//End of higher tiles
