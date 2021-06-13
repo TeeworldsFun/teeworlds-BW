@@ -284,9 +284,9 @@ void CAccountDatabase::ExistsResultRegister(bool Failed, void *pResultData, void
 #endif
 
 		char aQuery[QUERY_MAX_LEN];
-		str_format(aQuery, sizeof(aQuery), "INSERT INTO accounts VALUES('%s', '%s', %i, %i, %i, %i, '%s', %i, %i, %i)",
+		str_format(aQuery, sizeof(aQuery), "INSERT INTO accounts VALUES('%s', '%s', %i, %i, %i, %i, '%s', %i, %i)",
 			pResult->m_aUsername, pResult->m_aPassword, pPlayer->m_AccData.m_Vip, pPlayer->m_QuestData.m_Pages, pPlayer->m_Level.m_LeveL,
-			pPlayer->m_Level.m_Exp, pPlayer->m_AccData.m_aIp, pPlayer->m_AccData.m_Weaponkits, pPlayer->m_AccData.m_Slot, pPlayer->m_AccData.m_Blockpoints);
+			pPlayer->m_Level.m_Exp, pPlayer->m_AccData.m_aIp, pPlayer->m_AccData.m_Weaponkits, pPlayer->m_AccData.m_Slot);
 
 		((CAccountDatabase *)pPlayer->m_pAccount)->CreateNewQuery(aQuery, RegisterResult, pResult, false, true, THREADING);
 	}

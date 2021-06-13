@@ -1802,13 +1802,18 @@ void CCharacter::HandleTiles(int Index)
 		Freeze();
 	else if (((m_TileIndex == TILE_UNFREEZE) || (m_TileFIndex == TILE_UNFREEZE)) && !m_DeepFreeze)
 		UnFreeze();
-
+	//block tile
+	if (((m_TileIndex == TILE_BOOST_FREEZE) || (m_TileFIndex == TILE_BOOST_FREEZE)) && !m_DeepFreeze)
+	{
+		Freeze();
+	}
 	// deep freeze
 	if (((m_TileIndex == TILE_DFREEZE) || (m_TileFIndex == TILE_DFREEZE)) && !m_Super && !m_DeepFreeze)
 		m_DeepFreeze = true;
 	else if (((m_TileIndex == TILE_DUNFREEZE) || (m_TileFIndex == TILE_DUNFREEZE)) && !m_Super && m_DeepFreeze)
+	{	
 		m_DeepFreeze = false;
-
+	}
 	// endless hook
 	if (((m_TileIndex == TILE_EHOOK_START) || (m_TileFIndex == TILE_EHOOK_START)) && !m_EndlessHook)
 	{
@@ -3133,7 +3138,7 @@ void CCharacter::HandleLevelSystem()
 			m_pPlayer->m_Level.m_Exp = 0 + savedExp;
 
 			char aBuf[246];
-			str_format(aBuf, sizeof(aBuf), "You are now level %d!", m_pPlayer->m_Level.m_LeveL);
+			str_format(aBuf, sizeof(aBuf), "[+LevelUp]-You are now level %d!", m_pPlayer->m_Level.m_LeveL);
 			GameServer()->SendChatTarget(m_Core.m_Id, aBuf);
 			GameServer()->CreateSound(m_Pos, SOUND_CTF_RETURN, Teams()->TeamMask(Team(), -1, m_pPlayer->GetCID()));
 		}
@@ -3141,15 +3146,6 @@ void CCharacter::HandleLevelSystem()
 
 	if (IsAlive() && m_pPlayer->m_AccData.m_UserID)
 	{
-		const char* pClan = Server()->ClientClan(GetPlayer()->GetCID());
-		char aLevel[16];
-		/*
-		str_format(aLevel, 16, "LvL ➔ %d ", m_pPlayer->m_Level.m_LeveL);
-		*/
-		if (str_comp(aLevel, pClan) != 0) // No spam
-		{
-			Server()->SetClientClan(GetPlayer()->GetCID(), aLevel);
-		}
 	}
 }
 

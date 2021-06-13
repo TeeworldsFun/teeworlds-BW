@@ -147,7 +147,7 @@ void CGameContext::ChatCommands(const char *pMsg, int ClientID)
         char aNewPassword[512];
         if (sscanf(pMsg, "/password %s", aNewPassword) != 1)
         {
-            SendChatTarget(ClientID, "Please use '/password <password>'");
+            SendChatTarget(ClientID, "Please use '/register <username> <password>'");
             return;
         }
         pPlayer->m_pAccount->NewPassword(aNewPassword);
@@ -195,12 +195,6 @@ void CGameContext::ChatCommands(const char *pMsg, int ClientID)
             char aBuf[256];
             str_format(aBuf, sizeof(aBuf), "You have to wait %d seconds until you can write down more players in your deathnote", (pPlayer->m_LastDeathnote + g_Config.m_SvDeathNoteCoolDown * Server()->TickSpeed() - Server()->Tick()) / Server()->TickSpeed());
             SendChatTarget(ClientID, aBuf);
-            return;
-        }
-
-        if (m_KOHActive || m_LMB.State() == m_LMB.STATE_RUNNING || m_LMB.State() == m_LMB.STATE_REGISTRATION)
-        {
-            SendChatTarget(ClientID, "You cannot use deathnotes right now");
             return;
         }
 
@@ -255,10 +249,19 @@ void CGameContext::ChatCommands(const char *pMsg, int ClientID)
     }
     else if (str_comp_nocase_num(pMsg + 1, "bp", 5) == 0)
     {
-        int Blockpoints = pPlayer->m_AccData.m_Blockpoints;
-        char Message[104];
-        str_format(Message, 104, "You currently have %d blockpoints", Blockpoints);
-        SendChatTarget(ClientID, Message);
+        if (pPlayer->m_AccData.m_UserID && pPlayer->m_AccData.m_Blockpoints > -1)
+        {
+            int Blockpoints = pPlayer->m_AccData.m_Blockpoints;
+            char Message[104];
+            str_format(Message, 104, "You currently have %d blockpoints", Blockpoints);
+            SendChatTarget(ClientID, Message);
+        }
+        else if (!pPlayer->m_AccData.m_UserID)
+        {
+            char Message[104];
+            str_format(Message, 104, "Please register to get blockpoints and experience");
+            SendChatTarget(ClientID, Message);
+        }
     }
     else if (str_comp_nocase_num(pMsg + 1, "beginquest", 10) == 0)
     {
@@ -364,30 +367,89 @@ void CGameContext::ChatCommands(const char *pMsg, int ClientID)
             SendChatTarget(ClientID, "You dont have any weaponkit!");
         }
     }
-    else if (str_comp_nocase(pMsg + 1, "weapons") == 0 && (pPlayer->m_AccData.m_Vip || (pPlayer->m_AccData.m_UserID && pPlayer->m_AccData.m_Weaponkits > 0) || IsAdmin))
+    else if (str_comp_nocase(pMsg + 1, "giveweaponkit") == 0 && IsAdmin)
     {
-    if (!pChar || !pChar->IsAlive())
-        return; // Tested and found a crashbug -- heres the fix 
-
-    if (m_LMB.State() == m_LMB.STATE_RUNNING)
-    {
-        SendChatTarget(ClientID, "You cannot use weapons while in LMB");
+        pPlayer->m_AccData.m_Weaponkits +50;
+        SendChatTarget(ClientID, "50 weaponkit has been injected");
         return;
     }
-    if (pPlayer->m_AccData.m_Weaponkits > 0)
+    else if (str_comp_nocase(pMsg + 1, "weapons") == 0)
     {
-        pPlayer->m_AccData.m_Weaponkits--;
-        char aRemaining[64];
-        str_format(aRemaining, sizeof(aRemaining), "Remaining kits: %d", pPlayer->m_AccData.m_Weaponkits);
-        SendChatTarget(ClientID, aRemaining);
-        pChar->GiveAllWeapons();
+        bool haveWeapons = false;
+
+        if (!pChar || !pChar->IsAlive())
+        {
+        return; // Tested and found a crashbug -- heres the fix 
+        }
+        if (m_LMB.State() == m_LMB.STATE_RUNNING)
+        {
+            SendChatTarget(ClientID, "You cannot use weapons while in LMB");
+            return;
+        }
+        if (pPlayer->m_AccData.m_Weaponkits < 1 && pPlayer->m_AccData.m_UserID)
+        {
+            SendChatTarget(ClientID, "You dont have any weaponkit!");
+        }
+        if (!pPlayer->m_AccData.m_UserID)
+        {
+            SendChatTarget(ClientID, "Login to use a weaponkit");
+        }
+
+        if (pPlayer->m_AccData.m_UserID && !pPlayer->m_AccData.m_Vip)
+        {
+            if (pPlayer->m_AccData.m_Weaponkits > 0)
+            {
+                pPlayer->m_AccData.m_Weaponkits--;
+                char aRemaining[64];
+                str_format(aRemaining, sizeof(aRemaining), "Remaining kits: %d", pPlayer->m_AccData.m_Weaponkits);
+                SendChatTarget(ClientID, aRemaining);
+                pChar->GiveAllWeapons();
+            }
+        }
+        if (pPlayer->m_AccData.m_Vip && pPlayer->m_AccData.m_UserID)
+        {
+            pChar->GiveAllWeapons();
+            SendChatTarget(ClientID, "You received all weapons!");
+        }
     }
-    if (pPlayer->m_AccData.m_Vip == true)
+    else if (str_comp_nocase(pMsg + 1, "weapons") == 0)
     {
-        pPlayer->m_AccData.m_Weaponkits++;
-        pChar->GiveAllWeapons();
-    }
-    SendChatTarget(ClientID, "You received all weapons!");
+        bool haveWeapons = false;
+
+        if (!pChar || !pChar->IsAlive())
+        {
+        return; // Tested and found a crashbug -- heres the fix 
+        }
+        if (m_LMB.State() == m_LMB.STATE_RUNNING)
+        {
+            SendChatTarget(ClientID, "You cannot use weapons while in LMB");
+            return;
+        }
+        if (pPlayer->m_AccData.m_Weaponkits < 1 && pPlayer->m_AccData.m_UserID)
+        {
+            SendChatTarget(ClientID, "You dont have any weaponkit!");
+        }
+        if (!pPlayer->m_AccData.m_UserID)
+        {
+            SendChatTarget(ClientID, "Login to use a weaponkit");
+        }
+
+        if (pPlayer->m_AccData.m_UserID && !pPlayer->m_AccData.m_Vip)
+        {
+            if (pPlayer->m_AccData.m_Weaponkits > 0)
+            {
+                pPlayer->m_AccData.m_Weaponkits--;
+                char aRemaining[64];
+                str_format(aRemaining, sizeof(aRemaining), "Remaining kits: %d", pPlayer->m_AccData.m_Weaponkits);
+                SendChatTarget(ClientID, aRemaining);
+                pChar->GiveAllWeapons();
+            }
+        }
+        if (pPlayer->m_AccData.m_Vip && pPlayer->m_AccData.m_UserID)
+        {
+            pChar->GiveAllWeapons();
+            SendChatTarget(ClientID, "You received all weapons!");
+        }
     }
     else if (str_comp_nocase_num(pMsg + 1, "getclientid ", 12) == 0 && (pPlayer->m_AccData.m_Vip || IsAdmin))
     {

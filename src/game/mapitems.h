@@ -190,11 +190,13 @@ enum
 	TILE_LEVEL_999 = 32,
 
 	//arrows
-
 	TILE_RIGHT = 13,
 	TILE_UP = 12,
 	TILE_LEFT = 11,
 	TILE_DOWN = 14,
+
+	// freeze with speedup
+	TILE_BOOST_FREEZE = 63,
 
 	//End of higher tiles
 	//Layers
