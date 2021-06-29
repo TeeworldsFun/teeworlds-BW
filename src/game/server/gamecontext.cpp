@@ -2924,11 +2924,6 @@ void CGameContext::OnInit(/*class IKernel *pKernel*/)
 				g_Config.m_SvEndlessDrag = 1;
 				dbg_msg("game layer", "found no unlimited hook time tile");
 			}
-			else if (Index == TILE_NOHIT)
-			{
-				g_Config.m_SvHit = 0;
-				dbg_msg("game layer", "found no weapons hitting others tile");
-			}
 			else if (Index == TILE_NPH)
 			{
 				m_Tuning.Set("player_hooking", 0);
@@ -2968,11 +2963,6 @@ void CGameContext::OnInit(/*class IKernel *pKernel*/)
 				{
 					g_Config.m_SvEndlessDrag = 1;
 					dbg_msg("front layer", "found no unlimited hook time tile");
-				}
-				else if (Index == TILE_NOHIT)
-				{
-					g_Config.m_SvHit = 0;
-					dbg_msg("front layer", "found no weapons hitting others tile");
 				}
 				else if (Index == TILE_NPH)
 				{

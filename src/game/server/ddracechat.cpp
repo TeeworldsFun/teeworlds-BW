@@ -47,17 +47,11 @@ void CGameContext::ConInfo(IConsole::IResult *pResult, void *pUserData)
 {
 	CGameContext *pSelf = (CGameContext *)pUserData;
 	pSelf->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "info",
-		"DDraceNetwork Mod. Version: " GAME_VERSION);
-#if defined( GIT_SHORTREV_HASH )
+		"BW-Beta made by Nouaa");
 	pSelf->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "info",
-		"Git revision hash: " GIT_SHORTREV_HASH);
-#endif
+		"Hosted and owned by Nouaa");
 	pSelf->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "info",
-		"Official site: DDNet.tw");
-	pSelf->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "info",
-		"For more info: /cmdlist");
-	pSelf->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "info",
-		"Or visit DDNet.tw");
+		"my discord : Nouaa#0707");
 }
 
 void CGameContext::ConHelp(IConsole::IResult *pResult, void *pUserData)

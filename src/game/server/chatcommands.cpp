@@ -259,7 +259,7 @@ void CGameContext::ChatCommands(const char *pMsg, int ClientID)
         else if (!pPlayer->m_AccData.m_UserID)
         {
             char Message[104];
-            str_format(Message, 104, "Please register to get blockpoints and experience");
+            str_format(Message, 104, "You need to be logged in");
             SendChatTarget(ClientID, Message);
         }
     }

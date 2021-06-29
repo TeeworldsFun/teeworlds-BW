@@ -269,6 +269,8 @@ public:
 	int RainbowHookedID;
 	// Prevention spam for tiles
 	bool WasInRainbow;
+	bool WasInUnlockPassive;
+	bool WasInPassiveRace;
 	bool WasInHH;
 	bool WasInBloody;
 	bool WasInSteam;

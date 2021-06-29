@@ -1697,6 +1697,10 @@ void CCharacter::HandleTiles(int Index)
 		WasInRainbow = false;
 	else if(((m_TileIndex != TILE_IS_LOGGED) && (m_TileFIndex != TILE_IS_LOGGED)) && WasInLevelTile)
 		WasInLevelTile = false;
+	else if((m_TileIndex != TILE_UNLOCK_PASSIVE) && WasInUnlockPassive)
+		WasInUnlockPassive = false;
+	else if((m_TileIndex != TILE_PASSIVE_RACE) && WasInPassiveRace)
+		WasInPassiveRace = false;
 	if (Index < 0)
 	{
 		m_LastRefillJumps = false;
@@ -1803,7 +1807,7 @@ void CCharacter::HandleTiles(int Index)
 	else if (((m_TileIndex == TILE_UNFREEZE) || (m_TileFIndex == TILE_UNFREEZE)) && !m_DeepFreeze)
 		UnFreeze();
 	//block tile
-	if (((m_TileIndex == TILE_BOOST_FREEZE) || (m_TileFIndex == TILE_BOOST_FREEZE)) && !m_DeepFreeze)
+	if (((m_TileFIndex == TILE_BOOST_FREEZE)) && !m_DeepFreeze)
 	{
 		Freeze();
 	}
@@ -1827,11 +1831,6 @@ void CCharacter::HandleTiles(int Index)
 	}
 
 	// hit others
-	if (((m_TileIndex == TILE_HIT_END) || (m_TileFIndex == TILE_HIT_END)) && m_Hit != (DISABLE_HIT_GRENADE | DISABLE_HIT_HAMMER | DISABLE_HIT_RIFLE | DISABLE_HIT_SHOTGUN))
-	{
-		GameServer()->SendChatTarget(GetPlayer()->GetCID(), "You can't hit others");
-		HandleHit(false);
-	}
 	else if (((m_TileIndex == TILE_HIT_START) || (m_TileFIndex == TILE_HIT_START)) && m_Hit != HIT_ALL)
 	{
 		GameServer()->SendChatTarget(GetPlayer()->GetCID(), "You can hit others");
@@ -1972,7 +1971,6 @@ void CCharacter::HandleTiles(int Index)
 				if(!m_pPlayer->m_Passive)
 					return;
 
-				GameServer()->SendChatTarget(GetPlayer()->GetCID(), "Passive mode enabled!");
 				m_ThreeSecondRule = false;
 				m_PassiveMode = true;
 				new CPassiveIndicator(&GameServer()->m_World, m_Pos, m_pPlayer->GetCID());
@@ -1985,6 +1983,22 @@ void CCharacter::HandleTiles(int Index)
 				m_TilePauser = true;
 			}
 		}
+	}
+
+	if ((m_TileIndex == TILE_UNLOCK_PASSIVE) && !WasInUnlockPassive)
+	{
+		m_pPlayer->Temporary.m_PassiveMode = true;
+		m_pPlayer->Temporary.m_PassiveTimeLength = 10800;
+		m_pPlayer->m_Passive ^= 1;
+		GameServer()->SendChatTarget(GetPlayer()->GetCID(), "Passive-Mode has been activated for two hours");
+		WasInUnlockPassive = true;
+	}
+	if ((m_TileIndex == TILE_PASSIVE_RACE) && !WasInPassiveRace)
+	{
+		m_pPlayer->Temporary.m_PassiveMode = true;
+		m_pPlayer->Temporary.m_PassiveTimeLength = 99999;
+		m_pPlayer->m_Passive ^= 1;
+		WasInUnlockPassive = true;
 	}
 
 	// admin
@@ -2105,7 +2119,7 @@ void CCharacter::HandleTiles(int Index)
 		(!m_pPlayer->m_AccData.m_Vip && !Server()->IsAdmin(m_pPlayer->GetCID())))
 	{
 		Die(m_pPlayer->GetCID(), WEAPON_WORLD);
-		GameServer()->SendChatTarget(m_pPlayer->GetCID(), "You are not a vip!");
+		GameServer()->SendChatTarget(m_pPlayer->GetCID(), "Only VIP can access!");
 		return;
 	}
 
@@ -2262,42 +2276,20 @@ void CCharacter::HandleTiles(int Index)
 		m_NeededFaketuning &= ~FAKETUNE_NOHAMMER;
 		GameServer()->SendTuningParams(m_pPlayer->GetCID(), m_TuneZone); // update tunings
 	}
-	else if (GameServer()->Collision()->IsSwitch(MapIndex) == TILE_HIT_END && !(m_Hit&DISABLE_HIT_HAMMER) && GameServer()->Collision()->GetSwitchDelay(MapIndex) == WEAPON_HAMMER)
-	{
-		GameServer()->SendChatTarget(GetPlayer()->GetCID(), "You can't hammer hit others");
-		m_Hit |= DISABLE_HIT_HAMMER;
-		m_NeededFaketuning |= FAKETUNE_NOHAMMER;
-		GameServer()->SendTuningParams(m_pPlayer->GetCID(), m_TuneZone); // update tunings
-	}
 	else if (GameServer()->Collision()->IsSwitch(MapIndex) == TILE_HIT_START && m_Hit&DISABLE_HIT_SHOTGUN && GameServer()->Collision()->GetSwitchDelay(MapIndex) == WEAPON_SHOTGUN)
 	{
 		GameServer()->SendChatTarget(GetPlayer()->GetCID(), "You can shoot others with shotgun");
 		m_Hit &= ~DISABLE_HIT_SHOTGUN;
-	}
-	else if (GameServer()->Collision()->IsSwitch(MapIndex) == TILE_HIT_END && !(m_Hit&DISABLE_HIT_SHOTGUN) && GameServer()->Collision()->GetSwitchDelay(MapIndex) == WEAPON_SHOTGUN)
-	{
-		GameServer()->SendChatTarget(GetPlayer()->GetCID(), "You can't shoot others with shotgun");
-		m_Hit |= DISABLE_HIT_SHOTGUN;
 	}
 	else if (GameServer()->Collision()->IsSwitch(MapIndex) == TILE_HIT_START && m_Hit&DISABLE_HIT_GRENADE && GameServer()->Collision()->GetSwitchDelay(MapIndex) == WEAPON_GRENADE)
 	{
 		GameServer()->SendChatTarget(GetPlayer()->GetCID(), "You can shoot others with grenade");
 		m_Hit &= ~DISABLE_HIT_GRENADE;
 	}
-	else if (GameServer()->Collision()->IsSwitch(MapIndex) == TILE_HIT_END && !(m_Hit&DISABLE_HIT_GRENADE) && GameServer()->Collision()->GetSwitchDelay(MapIndex) == WEAPON_GRENADE)
-	{
-		GameServer()->SendChatTarget(GetPlayer()->GetCID(), "You can't shoot others with grenade");
-		m_Hit |= DISABLE_HIT_GRENADE;
-	}
 	else if (GameServer()->Collision()->IsSwitch(MapIndex) == TILE_HIT_START && m_Hit&DISABLE_HIT_RIFLE && GameServer()->Collision()->GetSwitchDelay(MapIndex) == WEAPON_RIFLE)
 	{
 		GameServer()->SendChatTarget(GetPlayer()->GetCID(), "You can shoot others with rifle");
 		m_Hit &= ~DISABLE_HIT_RIFLE;
-	}
-	else if (GameServer()->Collision()->IsSwitch(MapIndex) == TILE_HIT_END && !(m_Hit&DISABLE_HIT_RIFLE) && GameServer()->Collision()->GetSwitchDelay(MapIndex) == WEAPON_RIFLE)
-	{
-		GameServer()->SendChatTarget(GetPlayer()->GetCID(), "You can't shoot others with rifle");
-		m_Hit |= DISABLE_HIT_RIFLE;
 	}
 	else if (GameServer()->Collision()->IsSwitch(MapIndex) == TILE_JUMP)
 	{
@@ -3138,9 +3130,9 @@ void CCharacter::HandleLevelSystem()
 			m_pPlayer->m_Level.m_Exp = 0 + savedExp;
 
 			char aBuf[246];
-			str_format(aBuf, sizeof(aBuf), "[+LevelUp]-You are now level %d!", m_pPlayer->m_Level.m_LeveL);
+			str_format(aBuf, sizeof(aBuf), "[LevelUp+]: You are now level %d!", m_pPlayer->m_Level.m_LeveL);
 			GameServer()->SendChatTarget(m_Core.m_Id, aBuf);
-			GameServer()->CreateSound(m_Pos, SOUND_CTF_RETURN, Teams()->TeamMask(Team(), -1, m_pPlayer->GetCID()));
+			GameServer()->CreateSound(m_Pos, SOUND_CTF_CAPTURE, Teams()->TeamMask(Team(), -1, m_pPlayer->GetCID()));
 		}
 	}
 

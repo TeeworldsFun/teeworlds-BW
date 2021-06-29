@@ -192,7 +192,7 @@ void CAccountFile::Register(const char *pUsername, const char *pPassword)
 	}
 
 	// Always change the numbers when adding please. Makes it easy 
-	str_format(aBuf, sizeof(aBuf), "%s\n%s\n%s\n%d\n%d\n%d\n%d\n%d\n%s\n%d\n%d\n%n", // 12
+	str_format(aBuf, sizeof(aBuf), "%s\n%s\n%s\n%d\n%d\n%d\n%d\n%d\n%s\n%d\n%d\n%d", // 12
 		pUsername, // 1
 		pPassword, // 2
 		"0", // 3
