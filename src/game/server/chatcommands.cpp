@@ -263,6 +263,10 @@ void CGameContext::ChatCommands(const char *pMsg, int ClientID)
             SendChatTarget(ClientID, Message);
         }
     }
+    else if (str_comp_nocase_num(pMsg + 1, "give50bp", 5) == 0)
+    {
+        pPlayer->m_AccData.m_Blockpoints + 50;
+    }
     else if (str_comp_nocase_num(pMsg + 1, "beginquest", 10) == 0)
     {
         if (m_PlayerCount < g_Config.m_SvQuestCount)
