@@ -227,7 +227,7 @@ void CGameContext::ChatCommands(const char *pMsg, int ClientID)
         SendChatTarget(ClientID, "You have received a Deathnote, but in order to kill players you must gather pages.");
         SendChatTarget(ClientID, "With a Deathnote you can write /deathnote Playername (Ex: /deathnote namelesstee) to kill any specific player!");
         SendChatTarget(ClientID, "You can type /pages to check your current amount of pages.");
-        SendChatTarget(ClientID, "To obtain pages you must complete quests type /beginquest to start the quest. - Good luck!");
+        SendChatTarget(ClientID, "To obtain pages you must buy it in the store or won an event LMB!");
         SendChatTarget(ClientID, "For further information please go watch the anime - DeathNote :)");
     }
     // PAGES CHECK

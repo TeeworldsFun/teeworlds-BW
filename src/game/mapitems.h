@@ -176,7 +176,7 @@ enum
 
 	//LeveL Tiles : 
 
-	TILE_IS_LOGGED = 21,
+	TILE_IS_LOGGED = 105,
 	TILE_LEVEL_50 = 22,
 	TILE_LEVEL_100 = 23,
 	TILE_LEVEL_200 = 24,
@@ -195,8 +195,11 @@ enum
 	TILE_LEFT = 11,
 	TILE_DOWN = 14,
 
-	// freeze with speedup
 	TILE_BOOST_FREEZE = 63,
+
+	TILE_SHOP_MESSAGE = 111,
+
+	// ingame store
 
 	//End of higher tiles
 	//Layers

@@ -2184,6 +2184,10 @@ void CCharacter::HandleTiles(int Index)
 		}
 	}
 
+	if (m_TileIndex == TILE_SHOP_MESSAGE || m_TileFIndex == TILE_SHOP_MESSAGE)
+	{
+		GameServer()->SendChatTarget(m_pPlayer->GetCID(), "Welcome to the store!");
+	}
 
 	// refill jumps
 	if ((m_TileIndex == TILE_REFILL_JUMPS || m_TileFIndex == TILE_REFILL_JUMPS) && !m_LastRefillJumps)
@@ -3123,9 +3127,9 @@ void CCharacter::HandleLevelSystem()
 	// Handle level update
 	if (IsAlive() && m_pPlayer->m_AccData.m_UserID) // is Logged in
 	{
-		if (m_pPlayer->m_Level.m_Exp >= (m_pPlayer->m_Level.m_LeveL * 2 / 1.8))
+		if (m_pPlayer->m_Level.m_Exp >= (m_pPlayer->m_Level.m_LeveL * 2))
 		{
-			int savedExp = m_pPlayer->m_Level.m_Exp - m_pPlayer->m_Level.m_LeveL * 1.1;
+			int savedExp = m_pPlayer->m_Level.m_Exp - m_pPlayer->m_Level.m_LeveL;
 			m_pPlayer->m_Level.m_LeveL++;
 			m_pPlayer->m_Level.m_Exp = 0 + savedExp;
 
@@ -3158,7 +3162,7 @@ void CCharacter::HandleBlocking(bool die)
 			char aAddrStrEnemy[NETADDR_MAXSTRSIZE] = { 0 };
 			Server()->GetClientAddr(m_Core.m_Id, aAddrStrSelf, sizeof(aAddrStrSelf));
 			Server()->GetClientAddr(pECore->m_Core.m_Id, aAddrStrEnemy, sizeof(aAddrStrEnemy));
-			pECore->m_pPlayer->m_Level.m_Exp += g_Config.m_ClBlockExp * GameServer()->m_EventExp /2;
+			pECore->m_pPlayer->m_Level.m_Exp += g_Config.m_ClBlockExp /2;
 			pECore->m_pPlayer->m_AccData.m_Blockpoints ++;
 
 		}
@@ -3178,17 +3182,11 @@ void CCharacter::HandleBlocking(bool die)
 						int MagicShit = m_FirstFreezeTick + Server()->TickSpeed() * g_Config.m_SvBlockTime;
 						if ((Server()->Tick() - 1) == MagicShit)
 						{
-							
-							if (m_pPlayer->m_Afk)
-							{
-								pECore->m_pPlayer->m_Level.m_Exp += g_Config.m_ClBlockExp * GameServer()->m_EventExp / 2;
-								return;
-							}
 							char aAddrStrSelf[NETADDR_MAXSTRSIZE] = { 0 };
 							char aAddrStrEnemy[NETADDR_MAXSTRSIZE] = { 0 };
 							Server()->GetClientAddr(m_Core.m_Id, aAddrStrSelf, sizeof(aAddrStrSelf));
 							Server()->GetClientAddr(pECore->m_Core.m_Id, aAddrStrEnemy, sizeof(aAddrStrEnemy));
-							pECore->m_pPlayer->m_Level.m_Exp += g_Config.m_ClBlockExp * GameServer()->m_EventExp / 2;
+							pECore->m_pPlayer->m_Level.m_Exp += g_Config.m_ClBlockExp / 2;
 							pECore->m_pPlayer->m_AccData.m_Blockpoints ++;
 						}
 					}
