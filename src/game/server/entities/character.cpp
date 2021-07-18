@@ -967,6 +967,11 @@ void CCharacter::TickDefered()
 		m_ReckoningCore.Move();
 		m_ReckoningCore.Quantize();
 	}
+	// apply drag velocity when the player is not firing ninja
+	// and set it back to 0 for the next tick
+	if(m_Core.m_ActiveWeapon != WEAPON_NINJA || m_Ninja.m_CurrentMoveTime < 0)
+		m_Core.AddDragVelocity();
+	m_Core.ResetDragVelocity();
 
 	//lastsentcore
 	vec2 StartPos = m_Core.m_Pos;
@@ -1701,6 +1706,10 @@ void CCharacter::HandleTiles(int Index)
 		WasInUnlockPassive = false;
 	else if((m_TileIndex != TILE_PASSIVE_RACE) && WasInPassiveRace)
 		WasInPassiveRace = false;
+	else if(((m_TileFIndex != TILE_SHOP)) && WasInShop)
+		WasInShop = false;
+	else if(((m_TileFIndex != TILE_NOSHOP)) && WasNotInShop)
+		WasNotInShop = false;
 	if (Index < 0)
 	{
 		m_LastRefillJumps = false;
@@ -1806,11 +1815,6 @@ void CCharacter::HandleTiles(int Index)
 		Freeze();
 	else if (((m_TileIndex == TILE_UNFREEZE) || (m_TileFIndex == TILE_UNFREEZE)) && !m_DeepFreeze)
 		UnFreeze();
-	//block tile
-	if (((m_TileFIndex == TILE_BOOST_FREEZE)) && !m_DeepFreeze)
-	{
-		Freeze();
-	}
 	// deep freeze
 	if (((m_TileIndex == TILE_DFREEZE) || (m_TileFIndex == TILE_DFREEZE)) && !m_Super && !m_DeepFreeze)
 		m_DeepFreeze = true;
@@ -2184,10 +2188,6 @@ void CCharacter::HandleTiles(int Index)
 		}
 	}
 
-	if (m_TileIndex == TILE_SHOP_MESSAGE || m_TileFIndex == TILE_SHOP_MESSAGE)
-	{
-		GameServer()->SendChatTarget(m_pPlayer->GetCID(), "Welcome to the store!");
-	}
 
 	// refill jumps
 	if ((m_TileIndex == TILE_REFILL_JUMPS || m_TileFIndex == TILE_REFILL_JUMPS) && !m_LastRefillJumps)
@@ -2502,6 +2502,17 @@ void CCharacter::HandleTiles(int Index)
 		m_pPlayer->m_Rainbow ^= 1;
 		GameServer()->SendChatTarget(GetPlayer()->GetCID(), m_pPlayer->m_Rainbow ? "Rainbow activated" : "Rainbow deactivated");
 		WasInRainbow = true;
+	}
+
+	if ((m_TileFIndex == TILE_SHOP) && !WasInShop && m_Core.m_Vel.x < 0)
+	{
+		GameServer()->SendChatTarget(GetPlayer()->GetCID(),"start");
+		WasInShop = true;
+	}
+	if ((m_TileFIndex == TILE_NOSHOP) && !WasNotInShop && m_Core.m_Vel.x > 0)
+	{
+		GameServer()->SendChatTarget(GetPlayer()->GetCID(),"end");
+		WasNotInShop = true;
 	}
 
 	static int64 s_TempChangeTime = time_get();
@@ -3164,7 +3175,6 @@ void CCharacter::HandleBlocking(bool die)
 			Server()->GetClientAddr(pECore->m_Core.m_Id, aAddrStrEnemy, sizeof(aAddrStrEnemy));
 			pECore->m_pPlayer->m_Level.m_Exp += g_Config.m_ClBlockExp /2;
 			pECore->m_pPlayer->m_AccData.m_Blockpoints ++;
-
 		}
 	}
 	else
@@ -3186,7 +3196,7 @@ void CCharacter::HandleBlocking(bool die)
 							char aAddrStrEnemy[NETADDR_MAXSTRSIZE] = { 0 };
 							Server()->GetClientAddr(m_Core.m_Id, aAddrStrSelf, sizeof(aAddrStrSelf));
 							Server()->GetClientAddr(pECore->m_Core.m_Id, aAddrStrEnemy, sizeof(aAddrStrEnemy));
-							pECore->m_pPlayer->m_Level.m_Exp += g_Config.m_ClBlockExp / 2;
+							pECore->m_pPlayer->m_Level.m_Exp += g_Config.m_ClBlockExp /2;
 							pECore->m_pPlayer->m_AccData.m_Blockpoints ++;
 						}
 					}

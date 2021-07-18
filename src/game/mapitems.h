@@ -195,9 +195,8 @@ enum
 	TILE_LEFT = 11,
 	TILE_DOWN = 14,
 
-	TILE_BOOST_FREEZE = 63,
-
-	TILE_SHOP_MESSAGE = 111,
+	TILE_SHOP = 63,
+	TILE_NOSHOP = 79,
 
 	// ingame store
 
