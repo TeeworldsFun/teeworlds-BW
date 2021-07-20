@@ -247,7 +247,7 @@ void CGameContext::ChatCommands(const char *pMsg, int ClientID)
         str_format(Message, 104, "You have %d pages in your Deathnote!", Pages);
         SendChatTarget(ClientID, Message);
     }
-    else if (str_comp_nocase_num(pMsg + 1, "bp", 5) == 0)
+    else if (str_comp_nocase_num(pMsg + 1, "bp", 2) == 0)
     {
         if (pPlayer->m_AccData.m_UserID && pPlayer->m_AccData.m_Blockpoints > -1)
         {
@@ -262,10 +262,6 @@ void CGameContext::ChatCommands(const char *pMsg, int ClientID)
             str_format(Message, 104, "You need to be logged in");
             SendChatTarget(ClientID, Message);
         }
-    }
-    else if (str_comp_nocase_num(pMsg + 1, "give50bp", 5) == 0)
-    {
-        pPlayer->m_AccData.m_Blockpoints + 50;
     }
     else if (str_comp_nocase_num(pMsg + 1, "beginquest", 10) == 0)
     {
@@ -352,7 +348,6 @@ void CGameContext::ChatCommands(const char *pMsg, int ClientID)
     else if (str_comp_nocase(pMsg + 1, "passive") == 0) 
     {   
         pPlayer->m_Passive ^= true;
-
         if(pPlayer->m_AccData.m_Vip || IsAdmin || pPlayer->Temporary.m_PassiveMode)
             SendChatTarget(ClientID, pPlayer->m_Passive ? "Passive mode activated" : "Passive mode desactivated");
         else
@@ -373,13 +368,12 @@ void CGameContext::ChatCommands(const char *pMsg, int ClientID)
     }
     else if (str_comp_nocase(pMsg + 1, "giveweaponkit") == 0 && IsAdmin)
     {
-        pPlayer->m_AccData.m_Weaponkits +50;
-        SendChatTarget(ClientID, "50 weaponkit has been injected");
+        pPlayer->m_AccData.m_Weaponkits += 500;
+        SendChatTarget(ClientID, "500 weaponkit has been injected");
         return;
     }
     else if (str_comp_nocase(pMsg + 1, "weapons") == 0)
     {
-        bool haveWeapons = false;
 
         if (!pChar || !pChar->IsAlive())
         {
@@ -389,10 +383,6 @@ void CGameContext::ChatCommands(const char *pMsg, int ClientID)
         {
             SendChatTarget(ClientID, "You cannot use weapons while in LMB");
             return;
-        }
-        if (pPlayer->m_AccData.m_Weaponkits < 1 && pPlayer->m_AccData.m_UserID)
-        {
-            SendChatTarget(ClientID, "You dont have any weaponkit!");
         }
         if (!pPlayer->m_AccData.m_UserID)
         {
@@ -409,44 +399,9 @@ void CGameContext::ChatCommands(const char *pMsg, int ClientID)
                 SendChatTarget(ClientID, aRemaining);
                 pChar->GiveAllWeapons();
             }
-        }
-        if (pPlayer->m_AccData.m_Vip && pPlayer->m_AccData.m_UserID)
-        {
-            pChar->GiveAllWeapons();
-            SendChatTarget(ClientID, "You received all weapons!");
-        }
-    }
-    else if (str_comp_nocase(pMsg + 1, "weapons") == 0)
-    {
-        bool haveWeapons = false;
-
-        if (!pChar || !pChar->IsAlive())
-        {
-        return; // Tested and found a crashbug -- heres the fix 
-        }
-        if (m_LMB.State() == m_LMB.STATE_RUNNING)
-        {
-            SendChatTarget(ClientID, "You cannot use weapons while in LMB");
-            return;
-        }
-        if (pPlayer->m_AccData.m_Weaponkits < 1 && pPlayer->m_AccData.m_UserID)
-        {
-            SendChatTarget(ClientID, "You dont have any weaponkit!");
-        }
-        if (!pPlayer->m_AccData.m_UserID)
-        {
-            SendChatTarget(ClientID, "Login to use a weaponkit");
-        }
-
-        if (pPlayer->m_AccData.m_UserID && !pPlayer->m_AccData.m_Vip)
-        {
-            if (pPlayer->m_AccData.m_Weaponkits > 0)
+            else if (pPlayer->m_AccData.m_Weaponkits < 1 && pPlayer->m_AccData.m_UserID)
             {
-                pPlayer->m_AccData.m_Weaponkits--;
-                char aRemaining[64];
-                str_format(aRemaining, sizeof(aRemaining), "Remaining kits: %d", pPlayer->m_AccData.m_Weaponkits);
-                SendChatTarget(ClientID, aRemaining);
-                pChar->GiveAllWeapons();
+                SendChatTarget(ClientID, "You dont have any weaponkit!");
             }
         }
         if (pPlayer->m_AccData.m_Vip && pPlayer->m_AccData.m_UserID)
