@@ -7,7 +7,6 @@ objs
 src/game/generated
 
 /DDNet*
-/Google-Mod*
 /confusables*
 /crapnet*
 /config_store*
@@ -61,6 +60,7 @@ buildlog.txt
 
 *.acc
 autoexec_server.cfg
+autoexec.cfg
 detected_players.txt
 IpLogs.txt
 SlishteePagesLogs.txt
