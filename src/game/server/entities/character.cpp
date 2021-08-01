@@ -2155,8 +2155,6 @@ void CCharacter::HandleTiles(int Index)
 			if ((int)GameServer()->Collision()->GetPos(MapIndexT).y < (int)m_Core.m_Pos.y)
 				m_Core.m_Pos = m_PrevPos;
 		m_Core.m_Vel.y = 0;
-		m_Core.m_Jumped = 0;
-		m_Core.m_JumpedTotal = 0;
 		}
 	}
 	if ((m_TileIndex == TILE_RIGHT || m_TileFIndex == TILE_RIGHT) && m_Core.m_Vel.x > 0)
