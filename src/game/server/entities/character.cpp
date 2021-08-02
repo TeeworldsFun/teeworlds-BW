@@ -1706,10 +1706,6 @@ void CCharacter::HandleTiles(int Index)
 		WasInUnlockPassive = false;
 	else if((m_TileIndex != TILE_PASSIVE_RACE) && WasInPassiveRace)
 		WasInPassiveRace = false;
-	else if(((m_TileFIndex != TILE_SHOP)) && WasInShop)
-		WasInShop = false;
-	else if(((m_TileFIndex != TILE_NOSHOP)) && WasNotInShop)
-		WasNotInShop = false;
 	if (Index < 0)
 	{
 		m_LastRefillJumps = false;
@@ -1993,7 +1989,7 @@ void CCharacter::HandleTiles(int Index)
 		if (!m_pPlayer->m_Passive)
 		{
 			m_pPlayer->Temporary.m_PassiveMode = true;
-			m_pPlayer->Temporary.m_PassiveTimeLength = 18000; // 5 hours instead of 3 hours for afk :D
+			m_pPlayer->Temporary.m_PassiveTimeLength = 18000; // 5 hours instead of 3 hours for afk :d
 			m_pPlayer->m_Passive ^= 1;
 			WasInUnlockPassive = true;
 		}
@@ -2130,7 +2126,7 @@ void CCharacter::HandleTiles(int Index)
 		return;
 	}
 
-	if ((m_TileIndex == TILE_UP || m_TileFIndex == TILE_UP) && m_Core.m_Vel.y > 0)
+	if ((m_TileIndex == TILE_UP) && m_Core.m_Vel.y > 0)
 	{
 		if (GameServer()->Collision()->GetPos(MapIndexT).y == 0)
 		{
@@ -2146,7 +2142,7 @@ void CCharacter::HandleTiles(int Index)
 		m_Core.m_JumpedTotal = 0;
 		}
 	}
-	if ((m_TileIndex == TILE_DOWN || m_TileFIndex == TILE_DOWN) && m_Core.m_Vel.y < 0)
+	if ((m_TileIndex == TILE_DOWN) && m_Core.m_Vel.y < 0)
 	{
 		if (GameServer()->Collision()->GetPos(MapIndexT).y == 0)
 		{
@@ -2160,7 +2156,7 @@ void CCharacter::HandleTiles(int Index)
 		m_Core.m_Vel.y = 0;
 		}
 	}
-	if ((m_TileIndex == TILE_RIGHT || m_TileFIndex == TILE_RIGHT) && m_Core.m_Vel.x > 0)
+	if ((m_TileIndex == TILE_RIGHT) && m_Core.m_Vel.x > 0)
 	{
 		if (GameServer()->Collision()->GetPos(MapIndexT).x == 0)
 		{
@@ -2174,7 +2170,7 @@ void CCharacter::HandleTiles(int Index)
 		m_Core.m_Vel.x = 0;
 		}
 	}
-	if ((m_TileIndex == TILE_LEFT || m_TileFIndex == TILE_LEFT) && m_Core.m_Vel.x < 0)
+	if ((m_TileIndex == TILE_LEFT) && m_Core.m_Vel.x < 0)
 	{
 		if (GameServer()->Collision()->GetPos(MapIndexT).x == 0)
 		{
@@ -2505,17 +2501,6 @@ void CCharacter::HandleTiles(int Index)
 		WasInRainbow = true;
 	}
 
-	if ((m_TileFIndex == TILE_SHOP) && !WasInShop && m_Core.m_Vel.x < 0)
-	{
-		GameServer()->SendChatTarget(GetPlayer()->GetCID(),"start");
-		WasInShop = true;
-	}
-	if ((m_TileFIndex == TILE_NOSHOP) && !WasNotInShop && m_Core.m_Vel.x > 0)
-	{
-		GameServer()->SendChatTarget(GetPlayer()->GetCID(),"end");
-		WasNotInShop = true;
-	}
-
 	static int64 s_TempChangeTime = time_get();
 	if(s_TempChangeTime < time_get())
 	{
@@ -2535,7 +2520,7 @@ void CCharacter::HandleTiles(int Index)
 	}
 
 	// heavyhammer
-	if (((m_TileIndex == TILE_HEAVYHAMMER) || (m_TileFIndex == TILE_HEAVYHAMMER)) && !WasInHH)
+	if(((m_TileIndex == TILE_HEAVYHAMMER) || (m_TileFIndex == TILE_HEAVYHAMMER)) && !WasInHH)
 	{
 		if (!m_HammerStrenght)
 			m_HammerStrenght = 3;
@@ -3149,10 +3134,6 @@ void CCharacter::HandleLevelSystem()
 			GameServer()->SendChatTarget(m_Core.m_Id, aBuf);
 			GameServer()->CreateSound(m_Pos, SOUND_CTF_CAPTURE, Teams()->TeamMask(Team(), -1, m_pPlayer->GetCID()));
 		}
-	}
-
-	if (IsAlive() && m_pPlayer->m_AccData.m_UserID)
-	{
 	}
 }
 
