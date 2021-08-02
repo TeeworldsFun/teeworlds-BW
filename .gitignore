@@ -54,7 +54,6 @@ buildlog.txt
 *.opensdf
 *.pyc
 *.dll
-*.map
 *.VC.opendb
 *.VC*db
 
