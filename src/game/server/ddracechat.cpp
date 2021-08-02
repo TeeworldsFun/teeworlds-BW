@@ -24,23 +24,18 @@ inline int ms_rand(int *seed)
 void CGameContext::ConCredits(IConsole::IResult *pResult, void *pUserData)
 {
 	CGameContext *pSelf = (CGameContext *)pUserData;
-
 	pSelf->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "credit",
-		"DDNet is run by the DDNet staff (DDNet.tw/staff)");
+		"Based on Google Mod and edited by Nouaa.");
 	pSelf->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "credit",
-		"Great maps and many ideas from the great community");
+		"Google-Mod developers : ");
 	pSelf->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "credit",
-		"Help and code by eeeee, HMH, east, CookieMichal, Learath2,");
+		"eeeee, HMH, east, CookieMichal, Learath2, Savander,");
 	pSelf->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "credit",
-		"Savander, laxa, Tobii, BeaR, Wohoo, nuborn, timakro, Shiki,");
+		"laxa, Tobii, BeaR, Wohoo, nuborn, timakro, Shiki,");
 	pSelf->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "credit",
-		"trml, Soreu, hi_leute_gll, Lady Saavik, Chairn, heinrich5991,");
+		"Soreu, hi_leute_gll, Lady Saavik, heinrich5991,");
 	pSelf->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "credit",
-		"swick, oy & others.");
-	pSelf->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "credit",
-		"Based on DDRace by the DDRace developers,");
-	pSelf->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "credit",
-		"which is a mod of Teeworlds by the Teeworlds developers.");
+		" trml, Chairn, swick, oy & others.");
 }
 
 void CGameContext::ConInfo(IConsole::IResult *pResult, void *pUserData)
