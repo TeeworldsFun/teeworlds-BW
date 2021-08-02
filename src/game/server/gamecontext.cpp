@@ -744,7 +744,6 @@ void CGameContext::HandleFlagHunt()
 	{
 		SendChatTarget(pPlayerWinner->GetCID(), "+2 pages!");
 		SendChatTarget(pPlayerWinner->GetCID(), "(+3) WeaponKits (use /weapons)!");
-		SendChatTarget(pPlayerWinner->GetCID(), "Passive-Mode has been activated for two hours (use /passive)");
 
 		pPlayerWinner->m_QuestData.m_Pages += 2;
 		pPlayerWinner->m_AccData.m_Weaponkits += 3;
