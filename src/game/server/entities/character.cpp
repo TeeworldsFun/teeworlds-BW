@@ -1983,19 +1983,22 @@ void CCharacter::HandleTiles(int Index)
 			{
 				m_LastPassiveOut = Server()->Tick();
 				m_ThreeSecondRule = true;
-				GameServer()->SendChatTarget(GetPlayer()->GetCID(), "Passive mode disabling in three seconds!");
 				m_TilePauser = true;
 			}
 		}
 	}
 
-	if ((m_TileIndex == TILE_UNLOCK_PASSIVE) && !WasInUnlockPassive)
+	if ((m_TileIndex == TILE_UNLOCK_PASSIVE || m_TileFIndex == TILE_UNLOCK_PASSIVE) && !WasInUnlockPassive)
 	{
-		m_pPlayer->Temporary.m_PassiveMode = true;
-		m_pPlayer->Temporary.m_PassiveTimeLength = 10800;
-		m_pPlayer->m_Passive ^= 1;
-		GameServer()->SendChatTarget(GetPlayer()->GetCID(), "Passive-Mode has been activated for two hours");
-		WasInUnlockPassive = true;
+		if (!m_pPlayer->m_Passive)
+		{
+			m_pPlayer->Temporary.m_PassiveMode = true;
+			m_pPlayer->Temporary.m_PassiveTimeLength = 18000; // 5 hours instead of 3 hours for afk :D
+			m_pPlayer->m_Passive ^= 1;
+			WasInUnlockPassive = true;
+		}
+		else
+			return;
 	}
 	if ((m_TileIndex == TILE_PASSIVE_RACE) && !WasInPassiveRace)
 	{
@@ -2932,7 +2935,6 @@ void CCharacter::HandleThreeSecondRule() // Since passive mode is meant for anti
 
 	if (IsAlive() && m_ThreeSecondRule)
 	{
-		GameServer()->SendChatTarget(GetPlayer()->GetCID(), "Passive mode disabled!");
 		m_PassiveMode = false;
 		m_ThreeSecondRule = false;
 	}
@@ -3264,7 +3266,6 @@ void CCharacter::HandleGameModes()
 		bool TimeIsUp = m_pPlayer->Temporary.m_PassiveModeTime + m_pPlayer->Temporary.m_PassiveTimeLength * Server()->TickSpeed() <= Server()->Tick();
 		if (TimeIsUp)
 		{
-			GameServer()->SendChatTarget(m_Core.m_Id, "Your time is up! Now disabling passive mode");
 			m_pPlayer->Temporary.m_PassiveTimeLength = 0;
 			m_pPlayer->Temporary.m_PassiveMode = false;
 		}
