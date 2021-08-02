@@ -345,14 +345,6 @@ void CGameContext::ChatCommands(const char *pMsg, int ClientID)
         pPlayer->m_HeartGuns ^= true;
         SendChatTarget(ClientID, pPlayer->m_HeartGuns ? "Heart guns activated" : "Heart guns desactivated");
     }
-    else if (str_comp_nocase(pMsg + 1, "passive") == 0) 
-    {   
-        pPlayer->m_Passive ^= true;
-        if(pPlayer->m_AccData.m_Vip || IsAdmin || pPlayer->Temporary.m_PassiveMode)
-            SendChatTarget(ClientID, pPlayer->m_Passive ? "Passive mode activated" : "Passive mode desactivated");
-        else
-            SendChatTarget(ClientID, pPlayer->m_Passive ? "Passive mode activated! But you do not have access yet to passive.(Win it with events!)" : "Passive mode desactivated");
-    }
     else if (str_comp_nocase(pMsg + 1, "nbkit") == 0 && (pPlayer->m_AccData.m_Vip || (pPlayer->m_AccData.m_UserID && pPlayer->m_AccData.m_Weaponkits > -1) || IsAdmin))
     {
         if (pPlayer->m_AccData.m_Weaponkits > 0)
