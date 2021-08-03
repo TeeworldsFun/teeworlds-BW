@@ -1995,7 +1995,7 @@ void CCharacter::HandleTiles(int Index)
 		}
 		else if (!m_pPlayer->m_AccData.m_UserID)
 		{
-			GameServer()->SendChatTarget(GetPlayer()->GetCID(), "Login/Register an account to recieve your antiWB shield :D");
+			GameServer()->SendChatTarget(GetPlayer()->GetCID(), "Login/Register an account to receive your antiWB shield :D");
 			WasInUnlockPassive = true;
 			return;
 		}
