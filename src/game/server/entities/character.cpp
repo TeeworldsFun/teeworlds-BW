@@ -1984,14 +1984,20 @@ void CCharacter::HandleTiles(int Index)
 		}
 	}
 
-	if ((m_TileIndex == TILE_UNLOCK_PASSIVE || m_TileFIndex == TILE_UNLOCK_PASSIVE) && !WasInUnlockPassive)
+	if ((m_TileIndex == TILE_UNLOCK_PASSIVE || m_TileFIndex == TILE_UNLOCK_PASSIVE) && !WasInUnlockPassive) 
 	{
-		if (!m_pPlayer->m_Passive)
+		if (!m_pPlayer->m_Passive && m_pPlayer->m_AccData.m_UserID) // if player logged in -> have automatically passive at the start
 		{
 			m_pPlayer->Temporary.m_PassiveMode = true;
 			m_pPlayer->Temporary.m_PassiveTimeLength = 18000; // 5 hours instead of 3 hours for afk :d
 			m_pPlayer->m_Passive ^= 1;
 			WasInUnlockPassive = true;
+		}
+		else if (!m_pPlayer->m_AccData.m_UserID)
+		{
+			GameServer()->SendChatTarget(GetPlayer()->GetCID(), "Login/Register an account to recieve your antiWB shield :D");
+			WasInUnlockPassive = true;
+			return;
 		}
 		else
 			return;
