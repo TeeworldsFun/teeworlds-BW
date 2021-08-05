@@ -1,4 +1,3 @@
-
 #include <engine/server.h>
 
 #include "player.h"
