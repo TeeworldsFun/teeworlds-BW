@@ -28,7 +28,7 @@ void CLMB::OpenRegistration()
 	m_Participants.clear();
 
 	m_pGameServer->SendChatTarget(-1, "'Last man Blocking' [LMB] registration has opened.");
-	m_pGameServer->SendChatTarget(-1, "Use /lmb to participate.");
+	m_pGameServer->SendChatTarget(-1, "Use /sub to participate.");
 
 	dbg_msg("LMB", "Start of an LMB round!");
 
@@ -47,7 +47,7 @@ void CLMB::Tick()
 			char aBuf[256];
 			str_format(aBuf, sizeof(aBuf), "LMB will start in %d minutes.", (m_StartTick - m_pGameServer->Server()->Tick()) / 3000);
 			m_pGameServer->SendChatTarget(-1, aBuf);
-			m_pGameServer->SendChatTarget(-1, "Please use /lmb if you want to participate now");
+			m_pGameServer->SendChatTarget(-1, "Please use /sub if you want to participate now");
 
 			if (Diff == 3000)
 				m_pGameServer->m_pController->DoWarmup(60);
@@ -85,7 +85,7 @@ void CLMB::Tick()
 		if (m_pGameServer->Server()->Tick() % SERVER_TICK_SPEED == 0)
 		{
 			char aBuf[256];
-			str_format(aBuf, sizeof(aBuf), "Player: [%d/%d] Use /lmb to participate.", ParticipantNum(), g_Config.m_SvLMBMaxPlayer, g_Config.m_SvLMBMinPlayer);
+			str_format(aBuf, sizeof(aBuf), "Player: [%d/%d] Use /sub to participate.", ParticipantNum(), g_Config.m_SvLMBMaxPlayer, g_Config.m_SvLMBMinPlayer);
 			m_pGameServer->SendBroadcast(aBuf, -1);
 		}
 	}
