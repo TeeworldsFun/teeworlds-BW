@@ -2021,8 +2021,6 @@ void CCharacter::HandleTiles(int Index)
 	}
 
 	//Level Tile : 
-
-
 	if (((m_TileIndex == TILE_IS_LOGGED || m_TileFIndex == TILE_IS_LOGGED)) && !WasInLevelTile)
 	{
 		if	(!m_pPlayer->m_AccData.m_UserID)
