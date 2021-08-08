@@ -1704,8 +1704,6 @@ void CCharacter::HandleTiles(int Index)
 		WasInLevelTile = false;
 	else if((m_TileIndex != TILE_UNLOCK_PASSIVE) && WasInUnlockPassive)
 		WasInUnlockPassive = false;
-	else if((m_TileIndex != TILE_PASSIVE_RACE) && WasInPassiveRace)
-		WasInPassiveRace = false;
 	if (Index < 0)
 	{
 		m_LastRefillJumps = false;
@@ -1980,8 +1978,10 @@ void CCharacter::HandleTiles(int Index)
 				m_LastPassiveOut = Server()->Tick();
 				m_ThreeSecondRule = true;
 				m_TilePauser = true;
+				
 			}
 		}
+		HandleHook(true);
 	}
 
 	if ((m_TileIndex == TILE_UNLOCK_PASSIVE || m_TileFIndex == TILE_UNLOCK_PASSIVE) && !WasInUnlockPassive) 
@@ -1992,6 +1992,7 @@ void CCharacter::HandleTiles(int Index)
 			m_pPlayer->Temporary.m_PassiveTimeLength = 18000; // 5 hours instead of 3 hours for afk :d
 			m_pPlayer->m_Passive ^= 1;
 			WasInUnlockPassive = true;
+			return;
 		}
 		else if (!m_pPlayer->m_AccData.m_UserID)
 		{
@@ -2001,13 +2002,6 @@ void CCharacter::HandleTiles(int Index)
 		}
 		else
 			return;
-	}
-	if ((m_TileIndex == TILE_PASSIVE_RACE) && !WasInPassiveRace)
-	{
-		m_pPlayer->Temporary.m_PassiveMode = true;
-		m_pPlayer->Temporary.m_PassiveTimeLength = 99999;
-		m_pPlayer->m_Passive ^= 1;
-		WasInUnlockPassive = true;
 	}
 
 	// admin
@@ -2938,28 +2932,18 @@ void CCharacter::HandlePassiveMode()
 	if (m_PassiveMode)
 	{
 		m_Core.m_Collision = false;
-		m_NeededFaketuning |= FAKETUNE_NOCOLL;
-		GameServer()->SendTuningParams(m_pPlayer->GetCID(), m_TuneZone); // update tunings
 		m_Core.m_PassiveMode = true;
-
+		m_NeededFaketuning |= FAKETUNE_NOCOLL;
 		CCharacter *pMain = GetPlayer()->GetCharacter();
 
-		if (pMain && pMain->AimHitCharacter())
-		{
-			pMain->Core()->m_RevokeHook = true;
-		}
-		else if (pMain->Core()->m_RevokeHook)
-			pMain->Core()->m_RevokeHook = false;
+		HandleHook(false);
 	}
 	else if (m_Core.m_PassiveMode)
 	{
 		m_Core.m_Collision = true;
-		m_NeededFaketuning &= ~FAKETUNE_NOCOLL;
-		GameServer()->SendTuningParams(m_pPlayer->GetCID(), m_TuneZone); // update tunings
 		m_Core.m_PassiveMode = false;
+		m_NeededFaketuning |= FAKETUNE_NOCOLL;
 	}
-	else if (m_Core.m_RevokeHook)
-		m_Core.m_RevokeHook = false;
 }
 
 void CCharacter::HandleBots()
