@@ -310,10 +310,7 @@ void CGameContext::ChatCommands(const char *pMsg, int ClientID)
     else if (str_comp_nocase_num(pMsg + 1, "vipinfo", 7) == 0 || str_comp_nocase_num(pMsg + 1, "vip info", 8) == 0)
     {
         SendChatTarget(ClientID, "===== VIP FEATURES =====");
-        SendChatTarget(ClientID, "- VIP-Room (epic circle, rainbow, weapons, bloody)");
-        SendChatTarget(ClientID, "- PassiveMode (Anti-wayblock) by using /passive");
-        SendChatTarget(ClientID, "- Able to use /weapons at any time (Non-Active-Tournaments)");
-        SendChatTarget(ClientID, "- Able to use /rainbow (Epiletic)");
+        SendChatTarget(ClientID, "- Able to use /rainbow (Epiletic & normal)");
         SendChatTarget(ClientID, "- Able to use /circle");
         SendChatTarget(ClientID, "- Able to use /armor");
         SendChatTarget(ClientID, "- Able to use /lovely");
@@ -344,66 +341,6 @@ void CGameContext::ChatCommands(const char *pMsg, int ClientID)
     {   
         pPlayer->m_HeartGuns ^= true;
         SendChatTarget(ClientID, pPlayer->m_HeartGuns ? "Heart guns activated" : "Heart guns desactivated");
-    }
-    else if (str_comp_nocase(pMsg + 1, "nbkit") == 0 && (pPlayer->m_AccData.m_Vip || (pPlayer->m_AccData.m_UserID && pPlayer->m_AccData.m_Weaponkits > -1) || IsAdmin))
-    {
-        if (pPlayer->m_AccData.m_Weaponkits > 0)
-        {
-            char aRemaining[64];
-            str_format(aRemaining, sizeof(aRemaining), "You have %d" " weapon kit(s)", pPlayer->m_AccData.m_Weaponkits);
-            SendChatTarget(ClientID, aRemaining);
-        }
-        if (pPlayer->m_AccData.m_Weaponkits == 0)
-        {
-            SendChatTarget(ClientID, "You dont have any weaponkit!");
-        }
-    }
-    else if (str_comp_nocase(pMsg + 1, "giveweaponkit") == 0 && IsAdmin)
-    {
-        pPlayer->m_AccData.m_Weaponkits += 500;
-        SendChatTarget(ClientID, "500 weaponkit has been injected");
-        return;
-    }
-    
-    else if (str_comp_nocase(pMsg + 1, "weapons") == 0)
-    {
-        /*
-        if (!pChar || !pChar->IsAlive())
-        {
-        return; // Tested and found a crashbug -- heres the fix 
-        }
-        if (m_LMB.State() == m_LMB.STATE_RUNNING)
-        {
-            SendChatTarget(ClientID, "You cannot use weapons while in LMB");
-            return;
-        }
-        else if (!pPlayer->m_AccData.m_UserID)
-        {
-            SendChatTarget(ClientID, "Login to use a weaponkit");
-            return;
-        }
-        else if (pPlayer->m_AccData.m_UserID && pPlayer->m_AccData.m_Vip || IsAdmin)
-        {
-            char aMessage[64];
-            str_format(aMessage, sizeof(aMessage), "Succesfully used a weaponkit!");
-            SendChatTarget(ClientID, aMessage);
-            pChar->GiveAllWeapons();
-            return;
-        }
-        else if (pPlayer->m_AccData.m_UserID && !pPlayer->m_AccData.m_Vip || !IsAdmin && pPlayer->m_AccData.m_Weaponkits > 0)
-        {
-            pPlayer->m_AccData.m_Weaponkits--;
-            char aRemaining[64];
-            str_format(aRemaining, sizeof(aRemaining), "Succesfully used a weaponkit! remaining : %d ", pPlayer->m_AccData.m_Weaponkits);
-            SendChatTarget(ClientID, aRemaining);
-            pChar->GiveAllWeapons();
-            return;
-        }
-        else
-            SendChatTarget(ClientID, "You dont have any weapon-kits!");
-            return;
-            */
-        SendChatTarget(ClientID, "weapons sux, we're not in bombay.");
     }
     else if (str_comp_nocase_num(pMsg + 1, "getclientid ", 12) == 0 && (pPlayer->m_AccData.m_Vip || IsAdmin))
     {
