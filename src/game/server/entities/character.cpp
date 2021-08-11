@@ -397,7 +397,9 @@ void CCharacter::EmoteCheck(int Index)
 void CCharacter::FireWeapon()
 {
 	if (m_PassiveMode)
+	{
 		return;
+	}
 	if (m_ReloadTimer != 0 && !m_XXL)
 		return;
 
@@ -1972,13 +1974,13 @@ void CCharacter::HandleTiles(int Index)
 				m_ThreeSecondRule = false;
 				m_PassiveMode = true;
 				new CPassiveIndicator(&GameServer()->m_World, m_Pos, m_pPlayer->GetCID());
+				return;
 			}
 			else if ((m_TileIndex == TILE_PASSIVE_OUT || m_TileFIndex == TILE_PASSIVE_OUT) && m_PassiveMode && !m_TilePauser)
 			{
 				m_LastPassiveOut = Server()->Tick();
 				m_ThreeSecondRule = true;
 				m_TilePauser = true;
-				
 			}
 		}
 		HandleHook(true);
@@ -2934,8 +2936,6 @@ void CCharacter::HandlePassiveMode()
 		m_Core.m_Collision = false;
 		m_Core.m_PassiveMode = true;
 		m_NeededFaketuning |= FAKETUNE_NOCOLL;
-		CCharacter *pMain = GetPlayer()->GetCharacter();
-
 		HandleHook(false);
 	}
 	else if (m_Core.m_PassiveMode)
