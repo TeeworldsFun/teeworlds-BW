@@ -2934,15 +2934,17 @@ void CCharacter::HandlePassiveMode()
 	if (m_PassiveMode)
 	{
 		m_Core.m_Collision = false;
-		m_Core.m_PassiveMode = true;
 		m_NeededFaketuning |= FAKETUNE_NOCOLL;
+		GameServer()->SendTuningParams(m_pPlayer->GetCID(), m_TuneZone); // update tunings
+		m_Core.m_PassiveMode = true;
 		HandleHook(false);
 	}
 	else if (m_Core.m_PassiveMode)
 	{
 		m_Core.m_Collision = true;
+		m_NeededFaketuning &= ~FAKETUNE_NOCOLL;
+		GameServer()->SendTuningParams(m_pPlayer->GetCID(), m_TuneZone); // update tunings
 		m_Core.m_PassiveMode = false;
-		m_NeededFaketuning |= FAKETUNE_NOCOLL;
 	}
 }
 
