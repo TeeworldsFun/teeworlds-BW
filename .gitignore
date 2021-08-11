@@ -6,6 +6,7 @@ datasrc/*.pyc
 objs
 src/game/generated
 
+
 /DDNet*
 /confusables*
 /crapnet*
@@ -56,6 +57,7 @@ buildlog.txt
 *.dll
 *.VC.opendb
 *.VC*db
+*.cfg
 
 *.acc
 autoexec_server.cfg
@@ -68,3 +70,4 @@ Kicklist.txt
 Banlist.txt
 autoexec_server.cfg
 autoexec_server.cfg
+autoexec.cfg
