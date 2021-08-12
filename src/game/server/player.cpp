@@ -372,7 +372,7 @@ void CPlayer::Snap(int SnappingClient)
 
 	if (m_StolenSkin && SnappingClient != m_ClientID && g_Config.m_SvSkinStealAction == 1)
 	{
-		StrToInts(&pClientInfo->m_Skin0, 6, "pinky");
+		StrToInts(&pClientInfo->m_Skin0, 6, "default");
 		pClientInfo->m_UseCustomColor = 0;
 		pClientInfo->m_ColorBody = m_TeeInfos.m_ColorBody;
 		pClientInfo->m_ColorFeet = m_TeeInfos.m_ColorFeet;
