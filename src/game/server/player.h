@@ -146,21 +146,6 @@ public:
 		int m_Max;
 	} m_Latency;
 
-	struct CKoh
-	{
-		int m_ZoneXp;
-		int m_ZonePoints;
-
-		int m_InZones;
-
-		void Reset()
-		{
-			m_ZoneXp = 0;
-			m_ZonePoints = 0;
-			m_InZones = 0;
-		}
-	} m_Koh;
-
 	// Some things for rewards, user can get temporary access to X for X amount of time
 	struct
 	{

@@ -780,45 +780,6 @@ void CGameContext::OnTick()
 		if (GetPlayerChar(i) && GetPlayerChar(i)->IsAlive())
 			m_PlayerCount++;
 	}
-
-	if (m_KOHActive)
-	{
-		for (unsigned z = 0; z < m_KOH.size(); z++)
-		{
-			CKOH *pKOH = &(m_KOH[z]);
-
-			// count number of people in the zone
-			int PrevNumContestants = pKOH->m_NumContestants;
-			pKOH->m_NumContestants = 0;
-			for (int i = 0; i < MAX_CLIENTS; i++)
-			{
-				CCharacter *pChr = GetPlayerChar(i);
-				if (!pChr || !GetPlayerChar(i)->IsAlive())
-					continue;
-
-				m_apPlayers[i]->m_Koh.m_InZones = 0;
-				if (distance(pChr->Core()->m_Pos, pKOH->m_Center * 32) < g_Config.m_SvKOHCircleRadius)
-				{
-					m_apPlayers[i]->m_Koh.m_InZones |= (1 << z); // save in which zones a player is
-					pKOH->m_NumContestants++;
-				}
-			}
-
-			// notify people of changes
-			int Delta = pKOH->m_NumContestants - PrevNumContestants;
-			if (Delta && pKOH->m_NumContestants != PrevNumContestants)
-			{
-				char aBuf[128];
-				str_format(aBuf, sizeof(aBuf), "King of the Hill - ZONE %i\n%i Contestants (%s%i)", z,
-					pKOH->m_NumContestants,
-					Delta > 0 ? "+" : "",
-					Delta
-					);
-				SendBroadcast(aBuf, -1);
-			}
-		}
-	}
-
 	if(m_EventSecs > 0)
 		m_EventSecs --;
 
@@ -2522,14 +2483,6 @@ void CGameContext::ConOpenLMB(IConsole::IResult *pResult, void *pUserData)
 	pSelf->m_LMB.OpenRegistration();
 }
 
-void CGameContext::ConOpenKOH(IConsole::IResult *pResult, void *pUserData)
-{
-	CGameContext *pSelf = (CGameContext *)pUserData;
-	pSelf->m_KOHActive ^= 1; // Toggle
-	for (unsigned i = 0; i < pSelf->m_KOH.size(); i++)
-		pSelf->m_KOH[i].m_NumContestants = 0;
-}
-
 void CGameContext::ConStartFlagHunt(IConsole::IResult *pResult, void *pUserData)
 {
 	CGameContext *pSelf = (CGameContext *)pUserData;
@@ -2625,7 +2578,6 @@ void CGameContext::OnConsoleInit()
 	Console()->Register("vote", "r['yes'|'no']", CFGFLAG_SERVER, ConVote, this, "Force a vote to yes/no");
 	Console()->Register("countdown", "iir", CFGFLAG_SERVER, ConCountdown, this, "Starts a countdown for a server restart");
 	Console()->Register("open_lmb", "", CFGFLAG_SERVER, ConOpenLMB, this, "Opens registration for LMB");
-	Console()->Register("open_koh", "", CFGFLAG_SERVER, ConOpenKOH, this, "Opens KOH");
 	Console()->Register("start_flaghunt", "i[id]", CFGFLAG_SERVER, ConStartFlagHunt, this, "Starts the flag hunt event");
 	Console()->Chain("sv_motd", ConchainSpecialMotdupdate, this);
 
@@ -2754,8 +2706,6 @@ void CGameContext::OnInit(/*class IKernel *pKernel*/)
 	CMapItemLayerTilemap *pTileMap = m_Layers.GameLayer();
 	CTile *pTiles = (CTile *)Kernel()->RequestInterface<IMap>()->GetData(pTileMap->m_Data);
 
-	m_KOHActive = false;
-
 	/*
 	num_spawn_points[0] = 0;
 	num_spawn_points[1] = 0;
@@ -2794,14 +2744,6 @@ void CGameContext::OnInit(/*class IKernel *pKernel*/)
 			{
 				m_Tuning.Set("player_hooking", 0);
 				dbg_msg("game layer", "found no player hooking tile");
-			}
-			else if (Index == TILE_KOH)
-			{
-				CKOH KOH;
-				KOH.m_Center = vec2(x, y);
-				//m_KOHTileCenters.push_back(vec2(x,y)); // TODO: KOH REI
-				dbg_msg("game layer", "got KOH tile at (%d|%d)", x, y);
-				m_KOH.push_back(KOH);
 			}
 
 

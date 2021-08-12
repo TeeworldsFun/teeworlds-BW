@@ -98,7 +98,6 @@ class CGameContext : public IGameServer
 	static void ConVote(IConsole::IResult *pResult, void *pUserData);
 	static void ConCountdown(IConsole::IResult *pResult, void *pUserData);
 	static void ConOpenLMB(IConsole::IResult *pResult, void *pUserData);
-	static void ConOpenKOH(IConsole::IResult *pResult, void *pUserData);
 	static void ConRegisterLMB(IConsole::IResult *pResult, void *pUserData);
 	static void ConStartFlagHunt(IConsole::IResult *pResult, void *pUserData);
 	static void ConchainSpecialMotdupdate(IConsole::IResult *pResult, void *pUserData, IConsole::FCommandCallback pfnCallback, void *pCallbackUserData);
@@ -153,7 +152,6 @@ public:
 	int m_VoteEnforce;
 	char m_ZoneEnterMsg[NUM_TUNINGZONES][256]; // 0 is used for switching from or to area without tunings
 	char m_ZoneLeaveMsg[NUM_TUNINGZONES][256];
-	//std::vector<vec2> m_KOHTileCenters;
 
 	int m_EventSecs;
 	int m_EventExp;
@@ -278,15 +276,7 @@ public:
 	int64 m_LastMapVote;
 	
 	CLMB m_LMB;
-	bool m_KOHActive;
 	int m_PlayerCount;
-
-	struct CKOH // probably doesn't belong here, but whatever
-	{
-		int m_NumContestants;
-		vec2 m_Center;
-	};
-	std::vector<CKOH> m_KOH;
 
 	// FileHandling (c++)
 	void RemoveLine(char *sourcefile, int line);

@@ -80,7 +80,7 @@ bool CCharacter::Spawn(CPlayer *pPlayer, vec2 Pos)
 	m_LastRefillJumps = false;
 	m_LastPenalty = false;
 	m_LastBonus = false;
-	m_AnimIDNum = 9; //maximum number of "animation balls" m_KOH
+	m_AnimIDNum = 9;
 	m_apAnimIDs = new int[m_AnimIDNum];//create id-array
 	m_pPlayer = pPlayer;
 	m_Pos = Pos;
@@ -1443,36 +1443,7 @@ void CCharacter::Snap(int SnappingClient)
 		}
 	}
 
-	if (GameServer()->m_KOHActive)
-	{
-		//calculate visible balls
-		for (unsigned z = 0; z < GameServer()->m_KOH.size(); z++)
-		{
-			float Panso = 1.0f;
-			Panso *= m_AnimIDNum;
-
-			int MaxBalls = round_to_int(Panso);
-			for (int i = 0; i < MaxBalls; i++)
-			{
-				CNetObj_Projectile *pFirstParticle = static_cast<CNetObj_Projectile *>(Server()->SnapNewItem(NETOBJTYPE_PROJECTILE, m_apAnimIDs[i], sizeof(CNetObj_Projectile)));
-				if (pFirstParticle && m_apAnimIDs[i] != -1)
-				{
-					float rad = g_Config.m_SvKOHCircleRadius;
-					float TurnFac = 0.025f;
-
-					float PosX = GameServer()->m_KOH[z].m_Center.x * 32 + cosf(2 * pi * (i / (float)m_AnimIDNum) + Server()->Tick()*TurnFac) * rad;
-					float PosY = GameServer()->m_KOH[z].m_Center.y * 32 + sinf(2 * pi * (i / (float)m_AnimIDNum) + Server()->Tick()*TurnFac) * rad;
-
-					pFirstParticle->m_X = round_to_int(PosX);
-					pFirstParticle->m_Y = round_to_int(PosY);
-					pFirstParticle->m_VelX = 4;
-					pFirstParticle->m_VelY = 4;
-					pFirstParticle->m_StartTick = Server()->Tick() - 4;
-					pFirstParticle->m_Type = g_Config.m_SvKOHCircleType;
-				}
-			}
-		}
-	}
+	
 }
 
 int CCharacter::NetworkClipped(int SnappingClient)
@@ -1914,51 +1885,6 @@ void CCharacter::HandleTiles(int Index)
 		for (int i = 0; i < MAX_CLIENTS; i++)
 			if (Teams()->m_Core.Team(i) == Team())
 				GameServer()->SendChatTarget(i, "Your team was unlocked by an unlock team tile");
-	}
-
-	// King of the hill !
-	if (GameServer()->m_KOHActive && Team() == 0)
-	{
-		for (unsigned z = 0; z < GameServer()->m_KOH.size(); z++)
-		{
-			CGameContext::CKOH *pKOH = &(GameServer()->m_KOH[z]);
-
-			// only handle zones that we are in
-			if (!(GetPlayer()->m_Koh.m_InZones & (1 << z)))
-				continue;
-
-			// Check if we are alone in the zone
-			if (pKOH->m_NumContestants == 1)
-			{
-				char aGaining[256];
-				m_pPlayer->m_Koh.m_ZoneXp++;
-				str_format(aGaining, sizeof(aGaining), "King of the hill -- ZONE %i\n%s in control - %d/%d points [%i%%]", z,
-					Server()->ClientName(m_Core.m_Id),
-					m_pPlayer->m_Koh.m_ZonePoints, g_Config.m_SvKOHRequiredPoints,
-					round_to_int(((float)m_pPlayer->m_Koh.m_ZoneXp / (float)g_Config.m_SvKOHCaptureXpLimit)*100.0f));
-				GameServer()->SendBroadcast(aGaining, -1);
-			}
-			if (m_pPlayer->m_Koh.m_ZoneXp >= g_Config.m_SvKOHCaptureXpLimit)
-			{
-				m_pPlayer->m_Koh.m_ZonePoints++;
-				m_pPlayer->m_Koh.m_ZoneXp = 0;
-			}
-			if (m_pPlayer->m_Koh.m_ZonePoints >= g_Config.m_SvKOHRequiredPoints)
-			{
-				char aWinner[256];
-				if (!m_pPlayer->m_AccData.m_UserID)
-					str_format(aWinner, sizeof(aWinner), "%s has won and dominated the hill %i! (login to get rewards!)", Server()->ClientName(m_Core.m_Id), z);
-				else
-				{
-					str_format(aWinner, sizeof(aWinner), "%s has won and dominated the hill %i! Reward: 3 Pages", Server()->ClientName(m_Core.m_Id), z);
-					m_pPlayer->m_QuestData.m_Pages += 3;
-				}
-				GameServer()->SendBroadcast(aWinner, -1);
-				GameServer()->SendChatTarget(-1, aWinner);
-				GameServer()->m_KOHActive = false;
-			}
-		}
-
 	}
 	
 	// passive
@@ -2556,7 +2482,7 @@ void CCharacter::HandleTiles(int Index)
 	}
 
 	// epic circles
-	if (((m_TileIndex == TILE_EPICCIRCLES || m_TileFIndex == TILE_EPICCIRCLES)) && !WasInCircles && !GameServer()->m_KOHActive)
+	if (((m_TileIndex == TILE_EPICCIRCLES || m_TileFIndex == TILE_EPICCIRCLES)) && !WasInCircles)
 	{
 		m_pPlayer->m_EpicCircle ^= 1;
 		 
@@ -3145,6 +3071,7 @@ void CCharacter::HandleBlocking(bool die)
 			Server()->GetClientAddr(m_Core.m_Id, aAddrStrSelf, sizeof(aAddrStrSelf));
 			Server()->GetClientAddr(pECore->m_Core.m_Id, aAddrStrEnemy, sizeof(aAddrStrEnemy));
 			pECore->m_pPlayer->m_Level.m_Exp += g_Config.m_ClBlockExp /2;
+			GameServer()->CreateSound(m_Pos, SOUND_PICKUP_HEALTH, Teams()->TeamMask(Team(), -1, m_pPlayer->GetCID()));
 			pECore->m_pPlayer->m_AccData.m_Blockpoints ++;
 		}
 	}
@@ -3168,6 +3095,7 @@ void CCharacter::HandleBlocking(bool die)
 							Server()->GetClientAddr(m_Core.m_Id, aAddrStrSelf, sizeof(aAddrStrSelf));
 							Server()->GetClientAddr(pECore->m_Core.m_Id, aAddrStrEnemy, sizeof(aAddrStrEnemy));
 							pECore->m_pPlayer->m_Level.m_Exp += g_Config.m_ClBlockExp /2;
+						GameServer()->CreateSound(m_Pos, SOUND_PICKUP_HEALTH, Teams()->TeamMask(Team(), -1, m_pPlayer->GetCID()));
 							pECore->m_pPlayer->m_AccData.m_Blockpoints ++;
 						}
 					}
@@ -3240,11 +3168,6 @@ void CCharacter::HandleGameModes()
 			m_pPlayer->Temporary.m_PassiveTimeLength = 0;
 			m_pPlayer->Temporary.m_PassiveMode = false;
 		}
-	}
-
-	if (IsAlive() && !GameServer()->m_KOHActive)
-	{
-		m_pPlayer->m_Koh.Reset();
 	}
 }
 

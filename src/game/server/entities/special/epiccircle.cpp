@@ -42,13 +42,6 @@ void CEpicCircle::Tick()
     	Reset();
     	return;
     }
-	
-	if (GameServer()->m_KOHActive)	
-	{
-		GameServer()->SendChatTarget(m_Owner, "For the greater good, we disabled your epic circles :)");
-		GameServer()->m_apPlayers[m_Owner]->m_EpicCircle = false;
-		Reset();
-	}
 
 	m_Pos = GameServer()->GetPlayerChar(m_Owner)->m_Pos;
 
