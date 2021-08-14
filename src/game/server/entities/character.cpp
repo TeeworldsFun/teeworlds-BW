@@ -1911,6 +1911,10 @@ void CCharacter::HandleTiles(int Index)
 		}
 		HandleHook(true);
 	}
+	if ((m_TileFIndex == TILE_PASSIVE_IN) && !m_PassiveMode)
+	{
+		m_PassiveMode = true;
+	}
 
 	if ((m_TileIndex == TILE_UNLOCK_PASSIVE || m_TileFIndex == TILE_UNLOCK_PASSIVE) && !WasInUnlockPassive) 
 	{
