@@ -185,7 +185,7 @@ void CGameContext::ChatCommands(const char *pMsg, int ClientID)
             }
         }
     }
-    else if (str_comp_nocase_num(pMsg + 1, "Deathnote ", 10) == 0)
+    else if (str_comp_nocase_num(pMsg + 1, "..Deathnote ", 10) == 0)
     {
         if (!pChar || !pChar->IsAlive())
             return;
@@ -219,7 +219,7 @@ void CGameContext::ChatCommands(const char *pMsg, int ClientID)
 			DeathnoteUpdate(false, NULL, pResultData);
 
     }
-    else if (str_comp_nocase_num(pMsg + 1, "Deathnoteinfo", 13) == 0)
+    else if (str_comp_nocase_num(pMsg + 1, "..Deathnoteinfo", 13) == 0)
     {
         if (!m_apPlayers[ClientID]) // again character check useless, you can even check it by simply put player check
             return;
