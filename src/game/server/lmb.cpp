@@ -197,7 +197,6 @@ void CLMB::TeleportParticipants()
 		}
 	}
 }
-
 void CLMB::DatabaseUpdate(bool Failed, void *pResultData, void *pData)
 {
 	CDatabaseUpdateData *pUpdateData = (CDatabaseUpdateData *) pData;
@@ -207,16 +206,8 @@ void CLMB::DatabaseUpdate(bool Failed, void *pResultData, void *pData)
 
 	if (Winner->m_AccData.m_UserID)
 	{
-
-		pGamecontext->SendChatTarget(ID, "+2 pages!");
-		pGamecontext->SendChatTarget(ID, "(+5) WeaponKits (use /weapons)!");
-		pGamecontext->SendChatTarget(ID, "You have access to passivemode for 2Hours! (use /passive)");
-
-		Winner->m_QuestData.m_Pages += 2;
-		Winner->m_AccData.m_Weaponkits += 5;
-		Winner->Temporary.m_PassiveMode = true;
-		Winner->Temporary.m_PassiveModeTime = pGamecontext->Server()->Tick();
-		Winner->Temporary.m_PassiveTimeLength = 10800;
+		Winner->m_Level.m_LeveL += 5;
+		pGamecontext->SendChatTarget(ID, "+5 Level!");
 
 		CAccountDatabase *pAccDb = dynamic_cast<CAccountDatabase *>(Winner->m_pAccount);
 		if(pAccDb)
