@@ -377,7 +377,6 @@ void CAccountDatabase::Reset()
 	m_pPlayer->m_QuestData.m_Pages = 0;
 	m_pPlayer->m_Level.m_LeveL = 1;
 	m_pPlayer->m_Level.m_Exp = 0;
-	m_pPlayer->m_AccData.m_Blockpoints = 0;
 }
 
 void CAccountDatabase::Delete()

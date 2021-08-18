@@ -219,7 +219,8 @@ void CGameContext::ChatCommands(const char *pMsg, int ClientID)
 			DeathnoteUpdate(false, NULL, pResultData);
 
     }
-    else if (str_comp_nocase_num(pMsg + 1, "..Deathnoteinfo", 13) == 0)
+    /*
+    else if (str_comp_nocase_num(pMsg + 1, "Deathnoteinfo", 13) == 0)
     {
         if (!m_apPlayers[ClientID]) // again character check useless, you can even check it by simply put player check
             return;
@@ -246,22 +247,6 @@ void CGameContext::ChatCommands(const char *pMsg, int ClientID)
         char Message[104];
         str_format(Message, 104, "You have %d pages in your Deathnote!", Pages);
         SendChatTarget(ClientID, Message);
-    }
-    else if (str_comp_nocase_num(pMsg + 1, "bp", 2) == 0)
-    {
-        if (pPlayer->m_AccData.m_UserID && pPlayer->m_AccData.m_Blockpoints > -1)
-        {
-            int Blockpoints = pPlayer->m_AccData.m_Blockpoints;
-            char Message[104];
-            str_format(Message, 104, "You currently have %d blockpoints", Blockpoints);
-            SendChatTarget(ClientID, Message);
-        }
-        else if (!pPlayer->m_AccData.m_UserID)
-        {
-            char Message[104];
-            str_format(Message, 104, "You need to be logged in");
-            SendChatTarget(ClientID, Message);
-        }
     }
     else if (str_comp_nocase_num(pMsg + 1, "beginquest", 10) == 0)
     {
@@ -320,6 +305,7 @@ void CGameContext::ChatCommands(const char *pMsg, int ClientID)
         SendChatTarget(ClientID, "- Able to use /getclientid");
         SendChatTarget(ClientID, "====================");
     }
+    */
     else if (str_comp_nocase_num(pMsg + 1, "armor", 7) == 0 && (pPlayer->m_AccData.m_Vip || IsAdmin)) 
     {
         /*if (!pChar || !pChar->IsAlive())

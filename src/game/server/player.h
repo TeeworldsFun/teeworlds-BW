@@ -308,7 +308,6 @@ public:
 		char m_aUsername[32];
 		char m_aPassword[32];
 		char m_aRconPassword[32];
-		int m_Blockpoints;
 		char m_aIp[NETADDR_MAXSTRSIZE];
 		int m_Slot;
 		int m_Weaponkits;

@@ -1,0 +1,13 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\src",
+    "\\src\\game",
+    "\\src\\game\\server",
+    "\\src\\game\\server\\accounting",
+    "\\src\\game\\server\\entities",
+    "\\src\\game\\server\\entities\\special"
+  ],
+  "SelectedNode": "\\src\\game\\server\\accounting\\account_file.cpp",
+  "PreviewInSolutionExplorer": false
+}

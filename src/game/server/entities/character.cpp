@@ -9,6 +9,7 @@
 #include <game/server/entities/special/armor.h>
 #include <game/mapitems.h>
 #include <game/server/accounting/account.h>
+#include <game/server/entities/special/feya.hpp>
 
 #include "character.h"
 #include "laser.h"
@@ -3074,8 +3075,7 @@ void CCharacter::HandleBlocking(bool die)
 			Server()->GetClientAddr(m_Core.m_Id, aAddrStrSelf, sizeof(aAddrStrSelf));
 			Server()->GetClientAddr(pECore->m_Core.m_Id, aAddrStrEnemy, sizeof(aAddrStrEnemy));
 			pECore->m_pPlayer->m_Level.m_Exp += g_Config.m_ClBlockExp /2;
-			GameServer()->CreateSound(m_Pos, SOUND_PICKUP_HEALTH, Teams()->TeamMask(Team(), -1, m_pPlayer->GetCID()));
-			pECore->m_pPlayer->m_AccData.m_Blockpoints ++;
+			new CFeya(&GameServer()->m_World, m_Pos, -1, -1, false);
 		}
 	}
 	else
@@ -3098,8 +3098,7 @@ void CCharacter::HandleBlocking(bool die)
 							Server()->GetClientAddr(m_Core.m_Id, aAddrStrSelf, sizeof(aAddrStrSelf));
 							Server()->GetClientAddr(pECore->m_Core.m_Id, aAddrStrEnemy, sizeof(aAddrStrEnemy));
 							pECore->m_pPlayer->m_Level.m_Exp += g_Config.m_ClBlockExp /2;
-						GameServer()->CreateSound(m_Pos, SOUND_PICKUP_HEALTH, Teams()->TeamMask(Team(), -1, m_pPlayer->GetCID()));
-							pECore->m_pPlayer->m_AccData.m_Blockpoints ++;
+							new CFeya(&GameServer()->m_World, m_Pos, -1, -1, false);
 						}
 					}
 				}
