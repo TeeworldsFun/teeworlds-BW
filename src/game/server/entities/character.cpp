@@ -1903,10 +1903,15 @@ void CCharacter::HandleTiles(int Index)
 				new CPassiveIndicator(&GameServer()->m_World, m_Pos, m_pPlayer->GetCID());
 				return;
 			}
-			else if ((m_TileIndex == TILE_PASSIVE_OUT || m_TileFIndex == TILE_PASSIVE_OUT) && m_PassiveMode && !m_TilePauser)
+			else if ((m_TileIndex == TILE_PASSIVE_OUT) && m_PassiveMode && !m_TilePauser)
 			{
 				m_LastPassiveOut = Server()->Tick();
 				m_ThreeSecondRule = true;
+				m_TilePauser = true;
+			}
+			else if (( m_TileFIndex == TILE_PASSIVE_OUT) && m_PassiveMode && !m_TilePauser)
+			{
+				m_PassiveMode = false;
 				m_TilePauser = true;
 			}
 		}
