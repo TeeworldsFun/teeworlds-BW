@@ -522,16 +522,12 @@ int CCollision::IsSolid(int x, int y)
 bool CCollision::IsThrough(int x, int y, int xoff, int yoff, vec2 pos0, vec2 pos1)
 {
 	int pos = GetPureMapIndex(x, y);
-	if (m_pFront && (m_pFront[pos].m_Index == TILE_THROUGH_ALL || m_pFront[pos].m_Index == TILE_THROUGH_CUT))
+	if(m_pFront && (m_pFront[pos].m_Index == TILE_THROUGH_ALL || m_pFront[pos].m_Index == TILE_THROUGH_CUT))
 		return true;
-	if (m_pFront && m_pFront[pos].m_Index == TILE_THROUGH_DIR && (
-		(m_pFront[pos].m_Flags == ROTATION_0   && pos0.y > pos1.y) ||
-		(m_pFront[pos].m_Flags == ROTATION_90  && pos0.x < pos1.x) ||
-		(m_pFront[pos].m_Flags == ROTATION_180 && pos0.y < pos1.y) ||
-		(m_pFront[pos].m_Flags == ROTATION_270 && pos0.x > pos1.x)))
+	if(m_pFront && m_pFront[pos].m_Index == TILE_THROUGH_DIR && ((m_pFront[pos].m_Flags == ROTATION_0 && pos0.y > pos1.y) || (m_pFront[pos].m_Flags == ROTATION_90 && pos0.x < pos1.x) || (m_pFront[pos].m_Flags == ROTATION_180 && pos0.y < pos1.y) || (m_pFront[pos].m_Flags == ROTATION_270 && pos0.x > pos1.x)))
 		return true;
 	int offpos = GetPureMapIndex(x + xoff, y + yoff);
-	if (m_pTiles[offpos].m_Index == TILE_THROUGH || (m_pFront && m_pFront[offpos].m_Index == TILE_THROUGH))
+	if(m_pTiles[offpos].m_Index == TILE_THROUGH || (m_pFront && m_pFront[offpos].m_Index == TILE_THROUGH))
 		return true;
 	return false;
 }
@@ -539,19 +535,14 @@ bool CCollision::IsThrough(int x, int y, int xoff, int yoff, vec2 pos0, vec2 pos
 bool CCollision::IsHookBlocker(int x, int y, vec2 pos0, vec2 pos1)
 {
 	int pos = GetPureMapIndex(x, y);
-	if (m_pTiles[pos].m_Index == TILE_THROUGH_ALL || (m_pFront && m_pFront[pos].m_Index == TILE_THROUGH_ALL))
+	if(m_pTiles[pos].m_Index == TILE_THROUGH_ALL || (m_pFront && m_pFront[pos].m_Index == TILE_THROUGH_ALL))
 		return true;
-	if (m_pTiles[pos].m_Index == TILE_THROUGH_DIR && (
-		(m_pTiles[pos].m_Flags == ROTATION_0   && pos0.y < pos1.y) ||
-		(m_pTiles[pos].m_Flags == ROTATION_90  && pos0.x > pos1.x) ||
-		(m_pTiles[pos].m_Flags == ROTATION_180 && pos0.y > pos1.y) ||
-		(m_pTiles[pos].m_Flags == ROTATION_270 && pos0.x < pos1.x)))
+	if(m_pTiles[pos].m_Index == TILE_THROUGH_DIR && ((m_pTiles[pos].m_Flags == ROTATION_0 && pos0.y < pos1.y) ||
+								(m_pTiles[pos].m_Flags == ROTATION_90 && pos0.x > pos1.x) ||
+								(m_pTiles[pos].m_Flags == ROTATION_180 && pos0.y > pos1.y) ||
+								(m_pTiles[pos].m_Flags == ROTATION_270 && pos0.x < pos1.x)))
 		return true;
-	if (m_pFront && m_pFront[pos].m_Index == TILE_THROUGH_DIR && (
-		(m_pFront[pos].m_Flags == ROTATION_0   && pos0.y < pos1.y) ||
-		(m_pFront[pos].m_Flags == ROTATION_90  && pos0.x > pos1.x) ||
-		(m_pFront[pos].m_Flags == ROTATION_180 && pos0.y > pos1.y) ||
-		(m_pFront[pos].m_Flags == ROTATION_270 && pos0.x < pos1.x)))
+	if(m_pFront && m_pFront[pos].m_Index == TILE_THROUGH_DIR && ((m_pFront[pos].m_Flags == ROTATION_0 && pos0.y < pos1.y) || (m_pFront[pos].m_Flags == ROTATION_90 && pos0.x > pos1.x) || (m_pFront[pos].m_Flags == ROTATION_180 && pos0.y > pos1.y) || (m_pFront[pos].m_Flags == ROTATION_270 && pos0.x < pos1.x)))
 		return true;
 	return false;
 }

@@ -135,7 +135,7 @@ enum
 	TILE_CP,
 	TILE_CP_F,
 	TILE_THROUGH_ALL = 103,
-	TILE_THROUGH_DIR = 104,
+	TILE_THROUGH_DIR = 67,
 	TILE_TUNE1,
 	TILE_OLDLASER = 71,
 	TILE_NPC,
@@ -163,6 +163,8 @@ enum
 	TILE_FRONT_PASSIVE_IN = 34,
 	TILE_PASSIVE_OUT = 68,
 	TILE_PASSIVE_INSTANT_OUT = 68,
+	TILE_AFK_PEPE_IN = 69,
+	TILE_AFK_PEPE_OUT = 70,
 	TILE_HEAVYHAMMER,
 	TILE_EPICCIRCLES,
 	TILE_XXL,
@@ -500,5 +502,6 @@ public:
 bool IsValidGameTile(int Index);
 bool IsValidFrontTile(int Index);
 bool IsValidEntity(int Index);
+bool IsRotatableTile(int Index);
 
 #endif

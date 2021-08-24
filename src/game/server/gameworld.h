@@ -71,6 +71,21 @@ public:
 		Returns:
 			Number of entities found and added to the ents array.
 	*/
+
+	struct
+	{
+		bool m_IsDDRace;
+		bool m_IsVanilla;
+		bool m_IsFNG;
+		bool m_InfiniteAmmo;
+		bool m_PredictTiles;
+		int m_PredictFreeze;
+		bool m_PredictWeapons;
+		bool m_PredictDDRace;
+		bool m_IsSolo;
+		bool m_UseTuneZones;
+	} m_WorldConfig;
+
 	int FindEntities(vec2 Pos, float Radius, CEntity **ppEnts, int Max, int Type);
 
 	/*
