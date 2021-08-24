@@ -9,7 +9,6 @@
 #include <game/server/entities/special/armor.h>
 #include <game/mapitems.h>
 #include <game/server/accounting/account.h>
-#include <game/server/entities/special/feya.hpp>
 
 #include "character.h"
 #include "laser.h"
@@ -1917,10 +1916,6 @@ void CCharacter::HandleTiles(int Index)
 		}
 		HandleHook(true);
 	}
-	if ((m_TileFIndex == TILE_PASSIVE_IN) && !m_PassiveMode)
-		{
-			m_PassiveMode = true;
-		}
 
 	if ((m_TileIndex == TILE_UNLOCK_PASSIVE || m_TileFIndex == TILE_UNLOCK_PASSIVE) && !WasInUnlockPassive) 
 	{
@@ -1939,6 +1934,20 @@ void CCharacter::HandleTiles(int Index)
 		}
 		else
 			return;
+	}
+	if (m_TileFIndex == TILE_PASSIVE_INSTANT_OUT)
+	{
+		m_PassiveMode = false;
+	}
+	if (m_TileFIndex == TILE_AFK_PEPE_IN)
+	{
+		HandleCollision(false);
+		HandleHook(true);
+	}
+	if (m_TileFIndex == TILE_AFK_PEPE_OUT)
+	{
+		HandleCollision(true);
+		HandleHook(false);
 	}
 
 	// admin
@@ -3080,7 +3089,6 @@ void CCharacter::HandleBlocking(bool die)
 			Server()->GetClientAddr(m_Core.m_Id, aAddrStrSelf, sizeof(aAddrStrSelf));
 			Server()->GetClientAddr(pECore->m_Core.m_Id, aAddrStrEnemy, sizeof(aAddrStrEnemy));
 			pECore->m_pPlayer->m_Level.m_Exp += g_Config.m_ClBlockExp /2;
-			new CFeya(&GameServer()->m_World, m_Pos, -1, -1, false);
 		}
 	}
 	else
@@ -3103,7 +3111,6 @@ void CCharacter::HandleBlocking(bool die)
 							Server()->GetClientAddr(m_Core.m_Id, aAddrStrSelf, sizeof(aAddrStrSelf));
 							Server()->GetClientAddr(pECore->m_Core.m_Id, aAddrStrEnemy, sizeof(aAddrStrEnemy));
 							pECore->m_pPlayer->m_Level.m_Exp += g_Config.m_ClBlockExp /2;
-							new CFeya(&GameServer()->m_World, m_Pos, -1, -1, false);
 						}
 					}
 				}
