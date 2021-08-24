@@ -29,6 +29,9 @@ other/msinttypes*
 other/mysql/include/boost
 other/mysql/include/msinttypes
 
+*.vs
+*.map
+*.ipch
 Debug/
 *.bat
 buildlog.txt
