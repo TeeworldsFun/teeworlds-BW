@@ -6,7 +6,7 @@
 #include <game/server/entities/character.hpp>
 #include <game/server/player.h>
 #include <game/server/gamecontext.h>
-#include "DDRace.h"
+#include "DDRace.hpp"
 #include "gamemode.h"
 
 CGameControllerDDRace::CGameControllerDDRace(class CGameContext *pGameServer) :
