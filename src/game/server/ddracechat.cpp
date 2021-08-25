@@ -238,7 +238,7 @@ void CGameContext::ConRules(IConsole::IResult *pResult, void *pUserData)
 	if (g_Config.m_SvDDRaceRules)
 	{
 		pSelf->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "rules",
-			"Be nice.");
+			"");
 		Printed = true;
 	}
 #define _RL(n) g_Config.m_SvRulesLine ## n
