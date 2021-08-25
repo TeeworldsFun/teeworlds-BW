@@ -3,7 +3,7 @@
 #include <game/server/gamecontext.h>
 #include "game/server/gamecontroller.h"
 
-#include "rotatinghearts.h"
+#include "rotatinghearts.hpp"
 #include <game/server/teams.h>
 
 CRotatingHearts::CRotatingHearts(CGameWorld *pGameWorld, int Owner)

@@ -3,7 +3,7 @@
 #include <engine/server.h>
 #include <game/generated/protocol.h>
 #include <game/server/gamecontext.h>
-#include "light.h"
+#include "light.hpp"
 #include <game/mapitems.h>
 
 CLight::CLight(CGameWorld *pGameWorld, vec2 Pos, float Rotation, int Length,

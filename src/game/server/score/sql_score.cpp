@@ -11,8 +11,8 @@
 
 #include "sql_score.h"
 
-#include "../entities/character.h"
-#include "../gamemodes/DDRace.h"
+#include "../entities/character.hpp"
+#include "../gamemodes/DDRace.hpp"
 #include "../save.h"
 
 CGameContext* CSqlData::ms_pGameServer = 0;

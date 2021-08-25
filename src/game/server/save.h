@@ -1,7 +1,7 @@
 #ifndef SAVE_H
 #define SAVE_H
 
-#include "./entities/character.h"
+#include "./entities/character.hpp"
 #include <game/server/gamecontroller.h>
 
 class CSaveTee

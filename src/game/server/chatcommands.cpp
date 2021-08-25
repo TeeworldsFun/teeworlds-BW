@@ -1,5 +1,5 @@
 #include "gamecontext.h"
-#include "entities/character.h"
+#include "entities/character.hpp"
 #include "teams.h"
 #include "player.h"
 #include <engine/shared/config.h>
@@ -185,6 +185,7 @@ void CGameContext::ChatCommands(const char *pMsg, int ClientID)
             }
         }
     }
+    /*
     else if (str_comp_nocase_num(pMsg + 1, "..Deathnote ", 10) == 0)
     {
         if (!pChar || !pChar->IsAlive())
@@ -218,6 +219,25 @@ void CGameContext::ChatCommands(const char *pMsg, int ClientID)
 		else
 			DeathnoteUpdate(false, NULL, pResultData);
 
+    }
+    */
+    else if (str_comp_nocase(pMsg + 1, "weapons") == 0)
+    {
+        if (!pChar || !pChar->IsAlive())
+            return; // Tested and found a crashbug -- heres the fix 
+
+        if (!pPlayer->m_AccData.m_UserID)
+        {
+            SendChatTarget(ClientID, "You need to be logged in!");
+            return;
+        }
+        if (m_LMB.State() == m_LMB.STATE_RUNNING)
+        {
+            SendChatTarget(ClientID, "You cannot use weapons while in LMB");
+            return;
+        }
+        pChar->GiveAllWeapons();
+        pChar->m_EndlessHook = true;
     }
     /*
     else if (str_comp_nocase_num(pMsg + 1, "Deathnoteinfo", 13) == 0)

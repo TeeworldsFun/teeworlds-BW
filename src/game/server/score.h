@@ -1,7 +1,7 @@
 #ifndef GAME_SERVER_INTERFACE_SCORE_H
 #define GAME_SERVER_INTERFACE_SCORE_H
 
-#include "entities/character.h"
+#include "entities/character.hpp"
 #include "gamecontext.h"
 
 #define NUM_CHECKPOINTS 25

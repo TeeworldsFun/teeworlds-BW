@@ -4,8 +4,8 @@
 #include <game/generated/protocol.h>
 #include <game/server/gamecontext.h>
 #include <game/server/teams.h>
-#include <game/server/gamemodes/DDRace.h>
-#include "plasma.h"
+#include <game/server/gamemodes/DDRace.hpp>
+#include "plasma.hpp"
 
 const float ACCEL = 1.1f;
 

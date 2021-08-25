@@ -1,7 +1,7 @@
 #include <engine/shared/config.h>
 #include <game/generated/protocol.h>
 #include <game/server/gamecontext.h>
-#include "loltext.h"
+#include "loltext.hpp"
 
 CLolPlasma *CLoltext::s_aapPlasma[MAX_LOLTEXTS][MAX_PLASMA_PER_LOLTEXT];
 int CLoltext::s_aExpire[MAX_LOLTEXTS];

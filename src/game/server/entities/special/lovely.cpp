@@ -5,7 +5,7 @@
 #include <game/generated/protocol.h>
 #include <game/server/gamecontext.h>
 #include <game/server/teams.h>
-#include "lovely.h"
+#include "lovely.hpp"
 
 CLovely::CLovely(CGameWorld *pGameWorld, vec2 Pos, int Owner)
 : CEntity(pGameWorld, CGameWorld::ENTTYPE_PICKUP)

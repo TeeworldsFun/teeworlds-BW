@@ -2,7 +2,7 @@
 /* If you are missing that file, acquire a complete release at teeworlds.com.                */
 /*
 #include <game/server/gamecontext.h>
-#include "flag.h"
+#include "flag.hpp"
 
 CFlag::CFlag(CGameWorld *pGameWorld, int Team)
 : CEntity(pGameWorld, CGameWorld::ENTTYPE_FLAG)

@@ -3,28 +3,28 @@
 #include <new>
 #include <engine/shared/config.h>
 #include <game/server/gamecontext.h>
-#include <game/server/entities/special/vacuum.h>
-#include <game/server/entities/special/rocket.h>
-#include <game/server/entities/special/passiveindicator.h>
-#include <game/server/entities/special/armor.h>
+#include <game/server/entities/special/vacuum.hpp>
+#include <game/server/entities/special/rocket.hpp>
+#include <game/server/entities/special/passiveindicator.hpp>
+#include <game/server/entities/special/armor.hpp>
 #include <game/mapitems.h>
 #include <game/server/accounting/account.h>
 
-#include "character.h"
-#include "laser.h"
-#include "projectile.h"
+#include "character.hpp"
+#include "laser.hpp"
+#include "projectile.hpp"
 
 #include <stdio.h>
 #include <cstdlib>
 #include <string.h>
 #include <engine/server/server.h>
 #include <engine/storage.h>
-#include <game/server/gamemodes/DDRace.h>
+#include <game/server/gamemodes/DDRace.hpp>
 #include <game/server/score.h>
-#include "light.h"
+#include "light.hpp"
 
-#include "special/lightninglaser.h"
-#include "special/lightsaber.h"
+#include "special/lightninglaser.hpp"
+#include "special/lightsaber.hpp"
 
 #include <string.h>
 #include <fstream>

@@ -3,7 +3,7 @@
 #include <game/generated/protocol.h>
 #include <game/server/gamecontext.h>
 #include <game/gamecore.h>
-#include "lightsaber.h"
+#include "lightsaber.hpp"
 
 #include <engine/shared/config.h>
 #include <game/server/teams.h>

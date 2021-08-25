@@ -6,7 +6,7 @@
 #include <game/generated/protocol.h>
 #include <game/server/gamecontext.h>
 #include <game/server/teams.h>
-#include "passiveindicator.h"
+#include "passiveindicator.hpp"
 
 CPassiveIndicator::CPassiveIndicator(CGameWorld *pGameWorld, vec2 Pos, int Owner)
 : CEntity(pGameWorld, CGameWorld::ENTTYPE_PICKUP)

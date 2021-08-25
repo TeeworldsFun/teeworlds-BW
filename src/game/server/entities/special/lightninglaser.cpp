@@ -6,7 +6,7 @@
 #include <game/server/gameworld.h>
 #include <game/server/teams.h>
 
-#include "lightninglaser.h"
+#include "lightninglaser.hpp"
 
 CLightningLaser::CLightningLaser(CGameWorld *pGameWorld, vec2 Pos, vec2 Direction, int Owner)
 : CEntity(pGameWorld, CGameWorld::ENTTYPE_LASER)

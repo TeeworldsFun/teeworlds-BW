@@ -12,7 +12,7 @@
 #include <game/server/teams.h>
 #include "accounting/account_database.h"
 #include "accounting/account_file.h"
-#include "gamemodes/DDRace.h"
+#include "gamemodes/DDRace.hpp"
 #include <stdio.h>
 #include <time.h>
 

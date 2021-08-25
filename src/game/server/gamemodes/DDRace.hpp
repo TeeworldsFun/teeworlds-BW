@@ -3,7 +3,7 @@
 #define DDRACE_H
 #include <game/server/gamecontroller.h>
 #include <game/server/teams.h>
-#include <game/server/entities/door.h>
+#include <game/server/entities/door.hpp>
 
 #include <vector>
 #include <map>

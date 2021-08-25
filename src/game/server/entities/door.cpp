@@ -4,7 +4,7 @@
 #include <engine/shared/config.h>
 #include <game/server/gamemodes/DDRace.h>
 
-#include "door.h"
+#include "door.hpp"
 
 CDoor::CDoor(CGameWorld *pGameWorld, vec2 Pos, float Rotation, int Length,
 		int Number) :

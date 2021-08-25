@@ -5,8 +5,8 @@
 #include <game/generated/protocol.h>
 #include <game/server/gamecontext.h>
 #include <game/server/teams.h>
-#include <game/server/gamemodes/DDRace.h>
-#include "dragger.h"
+#include <game/server/gamemodes/DDRace.hpp>
+#include "dragger.hpp"
 
 CDragger::CDragger(CGameWorld *pGameWorld, vec2 Pos, float Strength, bool NW,
 		int CatchedTeam, int Layer, int Number) :

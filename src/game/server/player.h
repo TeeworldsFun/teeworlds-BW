@@ -5,13 +5,13 @@
 #include <string>
 
 // this include should perhaps be removed
-#include "entities/character.h"
+#include "entities/character.hpp"
 #include "gamecontext.h"
 
-#include "game/server/entities/special/ball.h"
-#include "game/server/entities/special/epiccircle.h"
-#include "game/server/entities/special/rotatinghearts.h"
-#include "game/server/entities/character.h"
+#include "game/server/entities/special/ball.hpp"
+#include "game/server/entities/special/epiccircle.hpp"
+#include "game/server/entities/special/rotatinghearts.hpp"
+#include "game/server/entities/character.hpp"
 
 class CAccount;
 class CBotProtections;

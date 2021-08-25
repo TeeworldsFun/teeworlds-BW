@@ -14,9 +14,9 @@
 #include "gamecontext.h"
 #include <game/version.h>
 #include <game/server/accounting/account_database.h>
-#include <game/server/entities/loltext.h>
-#include <game/server/entities/special/lovely.h>
-#include <game/server/entities/special/armor.h>
+#include <game/server/entities/loltext.hpp>
+#include <game/server/entities/special/lovely.hpp>
+#include <game/server/entities/special/armor.hpp>
 #include <game/collision.h>
 #include <game/gamecore.h>
 /*#include "gamemodes/dm.h"
@@ -30,7 +30,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <engine/server/server.h>
-#include "gamemodes/DDRace.h"
+#include "gamemodes/DDRace.hpp"
 #include "botprotections.h"
 #include "score.h"
 #include "score/file_score.h"

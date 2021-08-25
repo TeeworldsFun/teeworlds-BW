@@ -5,7 +5,7 @@
 #include <game/generated/protocol.h>
 #include <game/server/gamecontext.h>
 #include <game/server/teams.h>
-#include "epiccircle.h"
+#include "epiccircle.hpp"
 
 CEpicCircle::CEpicCircle(CGameWorld *pGameWorld, vec2 Pos, int Owner)
 : CEntity(pGameWorld, CGameWorld::ENTTYPE_PROJECTILE)

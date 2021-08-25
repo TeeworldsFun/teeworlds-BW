@@ -35,7 +35,7 @@ C/C++
 /media/ddrace/src/engine/shared/masterserver.cpp	1391797880	0	/media/ddrace/src/engine/shared/masterserver.cpp
 /media/ddrace/src/engine/shared/ringbuffer.h	1388496485	0	/media/ddrace/src/engine/shared/ringbuffer.h
 /media/ddrace/src/engine/client/backend_sdl.cpp	1392556202	0	/media/ddrace/src/engine/client/backend_sdl.cpp
-/media/ddrace/src/game/server/entities/dragger.h	1391797880	0	/media/ddrace/src/game/server/entities/dragger.h
+/media/ddrace/src/game/server/entities/dragger.hpp	1391797880	0	/media/ddrace/src/game/server/entities/dragger.hpp
 /media/ddrace/src/game/client/components/broadcast.h	1391797880	0	/media/ddrace/src/game/client/components/broadcast.h
 /media/ddrace/src/engine/shared/protocol.h	1392842909	0	/media/ddrace/src/engine/shared/protocol.h
 /media/ddrace/src/engine/shared/network_conn.cpp	1391797880	0	/media/ddrace/src/engine/shared/network_conn.cpp
@@ -49,7 +49,7 @@ C/C++
 /media/ddrace/src/game/layers.h	1391797880	0	/media/ddrace/src/game/layers.h
 /media/ddrace/src/engine/client/text.cpp	1391797880	0	/media/ddrace/src/engine/client/text.cpp
 /media/ddrace/src/engine/client/client.h	1392218386	0	/media/ddrace/src/engine/client/client.h
-/media/ddrace/src/game/server/entities/character.h	1392843858	0	/media/ddrace/src/game/server/entities/character.h
+/media/ddrace/src/game/server/entities/character.hpp	1392843858	0	/media/ddrace/src/game/server/entities/character.hpp
 /media/ddrace/src/game/gamecore.cpp	1391797880	0	/media/ddrace/src/game/gamecore.cpp
 /media/ddrace/src/engine/docs/client_time.txt	1388496485	1	Time on the client
 /media/ddrace/src/game/client/components/scoreboard.h	1391797880	0	/media/ddrace/src/game/client/components/scoreboard.h
@@ -105,7 +105,7 @@ C/C++
 /media/ddrace/src/game/editor/auto_map.cpp	1391797880	0	/media/ddrace/src/game/editor/auto_map.cpp
 /media/ddrace/src/game/server/gamemodes/ctf.cpp	1391797880	0	/media/ddrace/src/game/server/gamemodes/ctf.cpp
 /media/ddrace/src/game/client/components/maplayers.cpp	1392557856	0	/media/ddrace/src/game/client/components/maplayers.cpp
-/media/ddrace/src/game/server/entities/plasma.h	1391797880	0	/media/ddrace/src/game/server/entities/plasma.h
+/media/ddrace/src/game/server/entities/plasma.hpp	1391797880	0	/media/ddrace/src/game/server/entities/plasma.hpp
 /media/ddrace/src/game/server/ddracechat.h	1392840843	0	/media/ddrace/src/game/server/ddracechat.h
 /media/ddrace/src/engine/shared/config.h	1391797880	0	/media/ddrace/src/engine/shared/config.h
 /media/ddrace/src/game/client/components/motd.h	1388496485	0	/media/ddrace/src/game/client/components/motd.h
@@ -133,11 +133,11 @@ C/C++
 /media/ddrace/src/engine/server/server.h	1391797880	0	/media/ddrace/src/engine/server/server.h
 /media/ddrace/src/engine/config.h	1388496485	0	/media/ddrace/src/engine/config.h
 /media/ddrace/src/game/gamecore.h	1392842445	0	/media/ddrace/src/game/gamecore.h
-/media/ddrace/src/game/server/entities/gun.h	1391797880	0	/media/ddrace/src/game/server/entities/gun.h
+/media/ddrace/src/game/server/entities/gun.hpp	1391797880	0	/media/ddrace/src/game/server/entities/gun.hpp
 /media/ddrace/src/engine/shared/packer.h	1388496485	0	/media/ddrace/src/engine/shared/packer.h
 /media/ddrace/src/game/server/player.h	1393003614	0	/media/ddrace/src/game/server/player.h
 /media/ddrace/src/game/client/components/skins.cpp	1392760325	0	/media/ddrace/src/game/client/components/skins.cpp
-/media/ddrace/src/game/server/gamemodes/DDRace.h	1391797880	0	/media/ddrace/src/game/server/gamemodes/DDRace.h
+/media/ddrace/src/game/server/gamemodes/DDRace.hpp	1391797880	0	/media/ddrace/src/game/server/gamemodes/DDRace.hpp
 /media/ddrace/src/game/server/score.h	1392834704	0	/media/ddrace/src/game/server/score.h
 /media/ddrace/src/game/client/components/chat.h	1392218386	0	/media/ddrace/src/game/client/components/chat.h
 /media/ddrace/src/game/generated/nethash.cpp	1392842990	0	/media/ddrace/src/game/generated/nethash.cpp
@@ -150,7 +150,7 @@ C/C++
 /media/ddrace/src/game/editor/layer_game.cpp	1388496485	0	/media/ddrace/src/game/editor/layer_game.cpp
 /media/ddrace/src/engine/shared/network_console.cpp	1388496485	0	/media/ddrace/src/engine/shared/network_console.cpp
 /media/ddrace/src/engine/shared/demo.cpp	1392385479	0	/media/ddrace/src/engine/shared/demo.cpp
-/media/ddrace/src/game/server/entities/projectile.h	1391797880	0	/media/ddrace/src/game/server/entities/projectile.h
+/media/ddrace/src/game/server/entities/projectile.hpp	1391797880	0	/media/ddrace/src/game/server/entities/projectile.hpp
 /media/ddrace/src/game/mapitems.h	1392232379	0	/media/ddrace/src/game/mapitems.h
 /media/ddrace/src/engine/shared/netban.h	1388714242	0	/media/ddrace/src/engine/shared/netban.h
 /media/ddrace/src/game/client/components/emoticon.h	1388496485	0	/media/ddrace/src/game/client/components/emoticon.h
@@ -170,10 +170,10 @@ C/C++
 /media/ddrace/src/game/client/components/mapimages.h	1391797880	0	/media/ddrace/src/game/client/components/mapimages.h
 /media/ddrace/src/game/client/render.cpp	1391797880	0	/media/ddrace/src/game/client/render.cpp
 /media/ddrace/src/game/localization.h	1391797880	0	/media/ddrace/src/game/localization.h
-/media/ddrace/src/game/server/entities/pickup.h	1391797880	0	/media/ddrace/src/game/server/entities/pickup.h
+/media/ddrace/src/game/server/entities/pickup.hpp	1391797880	0	/media/ddrace/src/game/server/entities/pickup.hpp
 /media/ddrace/src/game/client/components/spectator.h	1392212700	0	/media/ddrace/src/game/client/components/spectator.h
 /media/ddrace/src/game/server/gamemodes/gamemode.h	1391797880	0	/media/ddrace/src/game/server/gamemodes/gamemode.h
-/media/ddrace/src/game/server/entities/light.h	1391797880	0	/media/ddrace/src/game/server/entities/light.h
+/media/ddrace/src/game/server/entities/light.hpp	1391797880	0	/media/ddrace/src/game/server/entities/light.hpp
 /media/ddrace/src/game/server/entity.cpp	1391797880	0	/media/ddrace/src/game/server/entity.cpp
 /media/ddrace/src/engine/map.h	1391797880	0	/media/ddrace/src/engine/map.h
 /media/ddrace/src/game/generated/server_data.h	1391818905	0	/media/ddrace/src/game/generated/server_data.h
@@ -219,9 +219,9 @@ C/C++
 /media/ddrace/src/game/generated/client_data.h	1391798794	0	/media/ddrace/src/game/generated/client_data.h
 /media/ddrace/src/engine/shared/network_server.cpp	1391797880	0	/media/ddrace/src/engine/shared/network_server.cpp
 /media/ddrace/src/engine/shared/huffman.cpp	1388496485	0	/media/ddrace/src/engine/shared/huffman.cpp
-/media/ddrace/src/game/server/entities/laser.h	1391797880	0	/media/ddrace/src/game/server/entities/laser.h
+/media/ddrace/src/game/server/entities/laser.hpp	1391797880	0	/media/ddrace/src/game/server/entities/laser.hpp
 /media/ddrace/src/game/client/components/menus_browser.cpp	1392829239	0	/media/ddrace/src/game/client/components/menus_browser.cpp
-/media/ddrace/src/game/server/entities/flag.h	1391797880	0	/media/ddrace/src/game/server/entities/flag.h
+/media/ddrace/src/game/server/entities/flag.hpp	1391797880	0	/media/ddrace/src/game/server/entities/flag.hpp
 /media/ddrace/src/game/client/components/flow.h	1388496485	0	/media/ddrace/src/game/client/components/flow.h
 /media/ddrace/src/game/client/components/broadcast.cpp	1391797880	0	/media/ddrace/src/game/client/components/broadcast.cpp
 /media/ddrace/src/game/client/components/motd.cpp	1391797880	0	/media/ddrace/src/game/client/components/motd.cpp
@@ -242,7 +242,7 @@ C/C++
 /media/ddrace/src/game/server/gamecontroller.cpp	1391797880	0	/media/ddrace/src/game/server/gamecontroller.cpp
 /media/ddrace/src/game/server/gamecontext.h	1392840861	0	/media/ddrace/src/game/server/gamecontext.h
 /media/ddrace/src/game/client/components/damageind.h	1391797880	0	/media/ddrace/src/game/client/components/damageind.h
-/media/ddrace/src/game/server/entities/door.h	1391797880	0	/media/ddrace/src/game/server/entities/door.h
+/media/ddrace/src/game/server/entities/door.hpp	1391797880	0	/media/ddrace/src/game/server/entities/door.hpp
 /media/ddrace/src/game/tuning.h	1388714034	0	/media/ddrace/src/game/tuning.h
 /media/ddrace/src/game/server/player.cpp	1393003614	0	/media/ddrace/src/game/server/player.cpp
 /media/ddrace/src/game/server/gamemodes/dm.h	1391797880	0	/media/ddrace/src/game/server/gamemodes/dm.h

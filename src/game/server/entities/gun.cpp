@@ -5,8 +5,8 @@
 #include <game/server/gamecontext.h>
 #include <game/server/teams.h>
 
-#include "gun.h"
-#include "plasma.h"
+#include "gun.hpp"
+#include "plasma.hpp"
 
 //////////////////////////////////////////////////
 // CGun

@@ -6,16 +6,16 @@
 
 #include <game/generated/protocol.h>
 
-#include "entities/pickup.h"
+#include "entities/pickup.hpp"
 #include "gamecontroller.h"
 #include "gamecontext.h"
 
-#include "entities/light.h"
-#include "entities/dragger.h"
-#include "entities/gun.h"
-#include "entities/projectile.h"
-#include "entities/plasma.h"
-#include "entities/door.h"
+#include "entities/light.hpp"
+#include "entities/dragger.hpp"
+#include "entities/gun.hpp"
+#include "entities/projectile.hpp"
+#include "entities/plasma.hpp"
+#include "entities/door.hpp"
 #include <game/layers.h>
 
 
