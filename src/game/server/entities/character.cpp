@@ -1939,16 +1939,6 @@ void CCharacter::HandleTiles(int Index)
 	{
 		m_PassiveMode = false;
 	}
-	if (m_TileFIndex == TILE_AFK_PEPE_IN)
-	{
-		HandleCollision(false);
-		HandleHook(true);
-	}
-	if (m_TileFIndex == TILE_AFK_PEPE_OUT)
-	{
-		HandleCollision(true);
-		HandleHook(false);
-	}
 
 	// admin
 	if (m_TileIndex == TILE_ADMIN || m_TileFIndex == TILE_ADMIN)
@@ -2195,7 +2185,7 @@ void CCharacter::HandleTiles(int Index)
 		GameServer()->Collision()->m_pSwitchers[GameServer()->Collision()->GetSwitchNumber(MapIndex)].m_EndTick[Team()] = Server()->Tick() + 1 + GameServer()->Collision()->GetSwitchDelay(MapIndex)*Server()->TickSpeed();
 		GameServer()->Collision()->m_pSwitchers[GameServer()->Collision()->GetSwitchNumber(MapIndex)].m_Type[Team()] = TILE_SWITCHTIMEDCLOSE;
 	}
-	else if (GameServer()->Collision()->IsSwitch(MapIndex) == TILE_SWITCHCLOSE && Team() != TEAM_SUPER)
+	else if(GameServer()->Collision()->IsSwitch(MapIndex) == TILE_SWITCHCLOSE && Team() != TEAM_SUPER && GameServer()->Collision()->GetSwitchNumber(MapIndex) > 0)
 	{
 		GameServer()->Collision()->m_pSwitchers[GameServer()->Collision()->GetSwitchNumber(MapIndex)].m_Status[Team()] = false;
 		GameServer()->Collision()->m_pSwitchers[GameServer()->Collision()->GetSwitchNumber(MapIndex)].m_EndTick[Team()] = 0;

@@ -55,3 +55,13 @@ bool IsRotatableTile(int Index)
 		Index - ENTITY_OFFSET == ENTITY_CRAZY_SHOTGUN_EX ||
 		Index - ENTITY_OFFSET == ENTITY_CRAZY_SHOTGUN);
 }
+bool IsValidSwitchTile(int Index)
+{
+	return (
+		Index == TILE_JUMP ||
+		Index == TILE_FREEZE ||
+		Index == TILE_DFREEZE ||
+		Index == TILE_DUNFREEZE ||
+		(Index >= TILE_SWITCHTIMEDOPEN && Index <= TILE_SWITCHCLOSE) ||
+		(IsValidEntity(Index) && Index >= ENTITY_OFFSET + ENTITY_ARMOR_1));
+}
