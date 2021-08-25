@@ -6,7 +6,7 @@ datasrc/*.pyc
 objs
 src/game/generated
 
-/vs*
+/.vs*
 /DDNet*
 /confusables*
 /crapnet*
