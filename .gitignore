@@ -33,7 +33,6 @@ other/mysql/include/msinttypes
 
 
 *.vs
-*.map
 *.ipch
 Debug/
 *.bat
