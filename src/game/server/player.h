@@ -75,10 +75,7 @@ public:
 	{
 		int m_LeveL;
 		int m_Exp;
-		int m_Perstige;
 
-		bool m_Reseted; // REMOVE SOON
-		bool m_Informed;
 	} m_Level;
 
 	//special
