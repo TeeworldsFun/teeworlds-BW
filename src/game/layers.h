@@ -4,7 +4,7 @@
 #define GAME_LAYERS_H
 
 #include <engine/map.h>
-#include <game/mapitems.h>
+#include <game/mapitems.hpp>
 
 class CLayers
 {

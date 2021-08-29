@@ -15,7 +15,7 @@
 #include <game/generated/protocol.h>
 
 #include "teamscore.h"
-#include "mapitems.h"
+#include "mapitems.hpp"
 
 
 class CTuneParam

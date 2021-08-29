@@ -14,7 +14,7 @@
 #include <base/tl/string.h>
 
 #include <game/client/ui.h>
-#include <game/mapitems.h>
+#include <game/mapitems.hpp>
 #include <game/client/render.h>
 
 #include <engine/shared/config.h>
@@ -223,7 +223,7 @@ public:
 				return true;
 			case LAYERTYPE_TELE:
 			{
-				if (Index ==) // you could add an 2D array into mapitems.h which defines which Indexes belong to which layer(s)
+				if (Index ==) // you could add an 2D array into mapitems.hpp which defines which Indexes belong to which layer(s)
 			}
 			case LAYERTYPE_SPEEDUP:
 			{

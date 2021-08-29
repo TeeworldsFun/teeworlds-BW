@@ -151,7 +151,7 @@ C/C++
 /media/ddrace/src/engine/shared/network_console.cpp	1388496485	0	/media/ddrace/src/engine/shared/network_console.cpp
 /media/ddrace/src/engine/shared/demo.cpp	1392385479	0	/media/ddrace/src/engine/shared/demo.cpp
 /media/ddrace/src/game/server/entities/projectile.hpp	1391797880	0	/media/ddrace/src/game/server/entities/projectile.hpp
-/media/ddrace/src/game/mapitems.h	1392232379	0	/media/ddrace/src/game/mapitems.h
+/media/ddrace/src/game/mapitems.hpp	1392232379	0	/media/ddrace/src/game/mapitems.hpp
 /media/ddrace/src/engine/shared/netban.h	1388714242	0	/media/ddrace/src/engine/shared/netban.h
 /media/ddrace/src/game/client/components/emoticon.h	1388496485	0	/media/ddrace/src/game/client/components/emoticon.h
 /media/ddrace/src/game/client/components/hud.cpp	1391809699	0	/media/ddrace/src/game/client/components/hud.cpp

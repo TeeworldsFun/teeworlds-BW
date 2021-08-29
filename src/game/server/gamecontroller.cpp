@@ -2,7 +2,7 @@
 /* If you are missing that file, acquire a complete release at teeworlds.com.                */
 #include <base/vmath.h>
 #include <engine/shared/config.h>
-#include <game/mapitems.h>
+#include <game/mapitems.hpp>
 
 #include <game/generated/protocol.h>
 

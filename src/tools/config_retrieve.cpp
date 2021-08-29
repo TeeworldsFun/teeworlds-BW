@@ -1,7 +1,7 @@
 #include <base/system.h>
 #include <engine/shared/datafile.h>
 #include <engine/storage.h>
-#include <game/mapitems.h>
+#include <game/mapitems.hpp>
 
 void Process(IStorage *pStorage, const char *pMapName, const char *pConfigName)
 {

@@ -7,7 +7,7 @@
 #include <game/server/entities/special/rocket.hpp>
 #include <game/server/entities/special/passiveindicator.hpp>
 #include <game/server/entities/special/armor.hpp>
-#include <game/mapitems.h>
+#include <game/mapitems.hpp>
 #include <game/server/accounting/account.h>
 
 #include "character.hpp"
@@ -1677,6 +1677,8 @@ void CCharacter::HandleTiles(int Index)
 		WasInLevelTile = false;
 	else if((m_TileIndex != TILE_UNLOCK_PASSIVE) && WasInUnlockPassive)
 		WasInUnlockPassive = false;
+	else if((m_TileIndex != TILE_JUMP_ADD) && WasInAddJump)
+		WasInAddJump = false;
 	if (Index < 0)
 	{
 		m_LastRefillJumps = false;
@@ -1779,9 +1781,13 @@ void CCharacter::HandleTiles(int Index)
 
 	// freeze
 	if (((m_TileIndex == TILE_FREEZE) || (m_TileFIndex == TILE_FREEZE)) && !m_Super && !m_DeepFreeze)
+	{
 		Freeze();
+	}
 	else if (((m_TileIndex == TILE_UNFREEZE) || (m_TileFIndex == TILE_UNFREEZE)) && !m_DeepFreeze)
+	{
 		UnFreeze();
+	}
 	// deep freeze
 	if (((m_TileIndex == TILE_DFREEZE) || (m_TileFIndex == TILE_DFREEZE)) && !m_Super && !m_DeepFreeze)
 		m_DeepFreeze = true;
@@ -2119,6 +2125,16 @@ void CCharacter::HandleTiles(int Index)
 		}
 	}
 
+
+	//add jump
+	if (((m_TileIndex == TILE_JUMP_ADD) || (m_TileFIndex == TILE_JUMP_ADD))  && !WasInAddJump)
+	{
+		m_Core.m_Jumps++;
+		char aBuf[64];
+		str_format(aBuf, sizeof(aBuf), "You got +1 jump and can jump %d times now", m_Core.m_Jumps);
+		GameServer()->SendChatTarget(GetPlayer()->GetCID(), aBuf);
+		WasInAddJump = true;
+	}
 
 	// refill jumps
 	if ((m_TileIndex == TILE_REFILL_JUMPS || m_TileFIndex == TILE_REFILL_JUMPS) && !m_LastRefillJumps)

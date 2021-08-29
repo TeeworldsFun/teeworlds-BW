@@ -4,7 +4,7 @@
 #define GAME_CLIENT_RENDER_H
 
 #include <base/vmath.h>
-#include <game/mapitems.h>
+#include <game/mapitems.hpp>
 #include "ui.h"
 
 

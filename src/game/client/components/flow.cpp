@@ -1,7 +1,7 @@
 /* (c) Magnus Auvinen. See licence.txt in the root of the distribution for more information. */
 /* If you are missing that file, acquire a complete release at teeworlds.com.                */
 #include <engine/graphics.h>
-#include <game/mapitems.h>
+#include <game/mapitems.hpp>
 #include <game/layers.h>
 #include "flow.h"
 

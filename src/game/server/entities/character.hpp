@@ -278,6 +278,7 @@ public:
 	bool WasInCircles;
 	bool WasInLevelTile;
 	bool m_WasLogged;
+	bool WasInAddJump;
 
 	enum
 	{

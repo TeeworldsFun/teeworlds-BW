@@ -1,4 +1,4 @@
-#include <game/mapitems.h>
+#include <game/mapitems.hpp>
 
 bool IsValidGameTile(int Index)
 {

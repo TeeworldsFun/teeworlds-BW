@@ -4,7 +4,7 @@
 #include <game/generated/protocol.h>
 #include <game/server/gamecontext.h>
 #include "light.hpp"
-#include <game/mapitems.h>
+#include <game/mapitems.hpp>
 
 CLight::CLight(CGameWorld *pGameWorld, vec2 Pos, float Rotation, int Length,
 		int Layer, int Number) :

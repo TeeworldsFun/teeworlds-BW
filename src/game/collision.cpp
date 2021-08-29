@@ -8,7 +8,7 @@
 #include <engine/map.h>
 #include <engine/kernel.h>
 
-#include <game/mapitems.h>
+#include <game/mapitems.hpp>
 #include <game/layers.h>
 #include <game/collision.h>
 

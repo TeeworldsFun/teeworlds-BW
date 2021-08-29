@@ -2,7 +2,7 @@
 /* Based on Race mod stuff and tweaked by GreYFoX@GTi and others to fit our DDRace needs. */
 #include <engine/server.h>
 #include <engine/shared/config.h>
-#include <game/mapitems.h>
+#include <game/mapitems.hpp>
 #include <game/server/entities/character.hpp>
 #include <game/server/player.h>
 #include <game/server/gamecontext.h>

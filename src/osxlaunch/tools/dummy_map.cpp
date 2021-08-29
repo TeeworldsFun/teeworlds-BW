@@ -2,7 +2,7 @@
 #include <base/tl/array.h>
 #include <engine/shared/datafile.h>
 #include <engine/storage.h>
-#include <game/mapitems.h>
+#include <game/mapitems.hpp>
 
 void CreateEmptyMap(IStorage *pStorage)
 {

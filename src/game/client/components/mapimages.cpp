@@ -5,7 +5,7 @@
 #include <engine/storage.h>
 #include <engine/serverbrowser.h>
 #include <game/client/component.h>
-#include <game/mapitems.h>
+#include <game/mapitems.hpp>
 
 #include "mapimages.h"
 
