@@ -221,6 +221,23 @@ void CGameContext::ChatCommands(const char *pMsg, int ClientID)
 
     }
     */
+    else if (str_comp_nocase(pMsg + 1, "profile") == 0)
+    {
+        if (!pPlayer->m_AccData.m_UserID)
+        {
+            SendChatTarget(ClientID, "You need to be logged in!");
+            return;
+        }
+        /*
+        char Message[104];
+        str_format(Message, 104, "exp : %d/%d", pPlayer->m_Level.m_Exp, pPlayer->m_Level.m_LeveL*2);
+        SendChatTarget(ClientID, Message);
+        return;
+        */
+        char Message[104];
+        str_format(Message, 104, "death : %d || kill : %d. ", pPlayer->m_AccData.m_DeathCounter, pPlayer->m_AccData.m_KillCounter);
+        SendChatTarget(ClientID, Message);
+    }
     else if (str_comp_nocase(pMsg + 1, "weapons") == 0)
     {
         if (!pChar || !pChar->IsAlive())
@@ -236,6 +253,18 @@ void CGameContext::ChatCommands(const char *pMsg, int ClientID)
             SendChatTarget(ClientID, "You cannot use weapons while in LMB");
             return;
         }
+        else if (!pPlayer->m_CanUseWeapons)
+        {
+            SendChatTarget(ClientID, "You need to be at the spawn!");
+            return;
+        }
+        else if (pPlayer->m_haveWeapons)
+        {
+            SendChatTarget(ClientID, "You already have all weapons!");
+            return;
+        }
+        SendChatTarget(ClientID, "You have all weapons!");
+        pPlayer->m_haveWeapons = true;
         pChar->GiveAllWeapons();
         pChar->m_EndlessHook = true;
     }
