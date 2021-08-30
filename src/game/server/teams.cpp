@@ -461,6 +461,7 @@ void CGameTeams::OnFinish(CPlayer* pPlayer)
 		"%s finished in: %d minute(s) %5.2f second(s)",
 		Server()->ClientName(pPlayer->GetCID()), (int)time / 60,
 		time - ((int)time / 60 * 60));
+		pPlayer->m_Level.m_Exp += 2;
 
 	if (g_Config.m_SvHideScore || !g_Config.m_SvSaveWorseScores)
 		GameServer()->SendChatTarget(pPlayer->GetCID(), aBuf);
