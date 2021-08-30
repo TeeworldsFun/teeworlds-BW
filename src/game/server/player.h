@@ -307,9 +307,10 @@ public:
 		char m_aRconPassword[32];
 		char m_aIp[NETADDR_MAXSTRSIZE];
 		int m_Slot;
-		int m_Weaponkits;
 		int m_UserID;//furthoes used as logged in indicator
 		int m_Vip;
+		int m_KillCounter;
+		int m_DeathCounter;
 
 	} m_AccData;
 
@@ -365,6 +366,10 @@ public:
 	bool m_NinjaJetpack;
 	bool m_Afk;
 	int m_KillMe;
+
+	
+	bool m_CanUseWeapons = true;
+	bool m_haveWeapons = false;
 
 	int m_ChatScore;
 

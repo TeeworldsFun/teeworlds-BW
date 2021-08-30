@@ -205,6 +205,7 @@ void CPlayer::Tick()
 
 	if (m_KillMe != 0)
 	{
+		m_CanUseWeapons = true;
 		KillCharacter(m_KillMe);
 		m_KillMe = 0;
 		return;
@@ -497,6 +498,7 @@ void CPlayer::OnDisconnect(const char *pReason)
 	}
 
 	KillCharacter();
+	m_CanUseWeapons = true;
 
 	if (Server()->ClientIngame(m_ClientID))
 	{
@@ -604,6 +606,7 @@ void CPlayer::KillCharacter(int Weapon)
 	if (m_pCharacter)
 	{
 		m_pCharacter->Die(m_ClientID, Weapon);
+		m_CanUseWeapons = true;
 
 		delete m_pCharacter;
 		m_pCharacter = 0;

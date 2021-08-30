@@ -742,18 +742,7 @@ void CGameContext::HandleFlagHunt()
 
 	if (pPlayerWinner->m_AccData.m_UserID)
 	{
-		SendChatTarget(pPlayerWinner->GetCID(), "+2 pages!");
-		SendChatTarget(pPlayerWinner->GetCID(), "(+3) WeaponKits (use /weapons)!");
-
-		pPlayerWinner->m_QuestData.m_Pages += 2;
-		pPlayerWinner->m_AccData.m_Weaponkits += 3;
-		pPlayerWinner->Temporary.m_PassiveMode = true;
-		pPlayerWinner->Temporary.m_PassiveModeTime = Server()->Tick();
-		pPlayerWinner->Temporary.m_PassiveTimeLength = 10800;
-
-		CAccountDatabase *pAccDb = dynamic_cast<CAccountDatabase *>(pPlayerWinner->m_pAccount);
-		if (pAccDb)
-			pAccDb->ApplyUpdatedData();
+		// exp de base
 	}
 	else
 	{
@@ -1763,6 +1752,7 @@ void CGameContext::OnMessage(int MsgID, CUnpacker *pUnpacker, int ClientID)
 			pPlayer->m_LastKill = Server()->Tick();
 			pPlayer->KillCharacter(WEAPON_SELF);
 			pPlayer->Respawn();
+			pPlayer->m_haveWeapons = false;
 		}
 	}
 	if (MsgID == NETMSGTYPE_CL_STARTINFO)
@@ -2095,14 +2085,14 @@ int CGameContext::UploadFileCallback(const char *name, int is_dir, int dir_type,
 	str_format(aFullPath, sizeof(aFullPath), "%s/%s", pPath, name);
 
 	char aUsername[32], aPassword[32], aRconPassword[32], aIp[NETADDR_MAXSTRSIZE];
-	int UserID, Vip, Pages, Level, Exp, Weaponkits, Slot;
+	int UserID, Vip, Pages, Level, Exp, KillCounter, DeathCounter,  Slot;
 
 	FILE *pAccfile = fopen(aFullPath, "r");
 
 	// Always change the numbers when adding please. Makes it easy 
-	fscanf(pAccfile, "%s\n%s\n%s\n%d\n%d\n%d\n%d\n%d\n%s\n%d\n%d",
+	fscanf(pAccfile, "%s\n%s\n%s\n%d\n%d\n%d\n%d\n%d\n%d\n%d\n%s\n%d",
 		aUsername, aPassword, aRconPassword, &UserID, &Vip, &Pages,
-		&Level, &Exp, aIp, &Weaponkits, &Slot);
+		&Level, &Exp, &KillCounter, &DeathCounter, aIp, &Slot);
 	fclose(pAccfile);
 
 	for(int i = 0; i < str_length(aUsername); i++)
@@ -2121,7 +2111,7 @@ int CGameContext::UploadFileCallback(const char *name, int is_dir, int dir_type,
 			aPassword[i] = ':';
 	}
 
-	CAccountDatabase::InsertAccount(aUsername, aPassword, Vip, Pages, Level, Exp, aIp, Weaponkits, Slot);
+	CAccountDatabase::InsertAccount(aUsername, aPassword, Vip, Pages, Level, Exp, KillCounter, DeathCounter, aIp, Slot);
 	return 0;
 }
 
