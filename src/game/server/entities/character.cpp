@@ -1091,6 +1091,10 @@ void CCharacter::Die(int Killer, int Weapon)
 				//dbg_msg("ASDF", "Releasing ID %d" ,m_apAnimIDs[i]);
 			}
 		}
+		if (m_pPlayer->m_AccData.m_UserID)
+		{
+			m_pPlayer->m_AccData.m_DeathCounter++;
+		}
 	}
 
 	HandleBlocking(true);
@@ -1673,6 +1677,10 @@ void CCharacter::HandleTiles(int Index)
 		WasInSteam = false;
 	else if(((m_TileIndex != TILE_RAINBOW) && (m_TileFIndex != TILE_RAINBOW)) && WasInRainbow)
 		WasInRainbow = false;
+	else if(((m_TileIndex != TILE_RAINBOW_FEET) && (m_TileFIndex != TILE_RAINBOW_FEET)) && WasInRainbowFeet)
+		WasInRainbowFeet = false;
+	else if((m_TileFIndex != TILE_CANUSEWEAPONS) && WasInCanUseWeapons)
+		WasInCanUseWeapons = false;
 	else if(((m_TileIndex != TILE_IS_LOGGED) && (m_TileFIndex != TILE_IS_LOGGED)) && WasInLevelTile)
 		WasInLevelTile = false;
 	else if((m_TileIndex != TILE_UNLOCK_PASSIVE) && WasInUnlockPassive)
@@ -1743,6 +1751,7 @@ void CCharacter::HandleTiles(int Index)
 	// start
 	if (((m_TileIndex == TILE_BEGIN) || (m_TileFIndex == TILE_BEGIN) || FTile1 == TILE_BEGIN || FTile2 == TILE_BEGIN || FTile3 == TILE_BEGIN || FTile4 == TILE_BEGIN || Tile1 == TILE_BEGIN || Tile2 == TILE_BEGIN || Tile3 == TILE_BEGIN || Tile4 == TILE_BEGIN) && (m_DDRaceState == DDRACE_NONE || m_DDRaceState == DDRACE_FINISHED || (m_DDRaceState == DDRACE_STARTED && !Team() && g_Config.m_SvTeam != 3)))
 	{
+		m_pPlayer->m_CanUseWeapons = false;
 		bool CanBegin = true;
 		if (g_Config.m_SvResetPickups)
 		{
@@ -1775,15 +1784,17 @@ void CCharacter::HandleTiles(int Index)
 
 	}
 
+
 	// finish
 	if (((m_TileIndex == TILE_END) || (m_TileFIndex == TILE_END) || FTile1 == TILE_END || FTile2 == TILE_END || FTile3 == TILE_END || FTile4 == TILE_END || Tile1 == TILE_END || Tile2 == TILE_END || Tile3 == TILE_END || Tile4 == TILE_END) && m_DDRaceState == DDRACE_STARTED)
+		
 		Controller->m_Teams.OnCharacterFinish(m_pPlayer->GetCID());
 
 	// freeze
-	if (((m_TileIndex == TILE_FREEZE) || (m_TileFIndex == TILE_FREEZE)) && !m_Super && !m_DeepFreeze)
-	{
+	if(((m_TileIndex == TILE_FREEZE) || (m_TileFIndex == TILE_FREEZE)) && !m_Super && !m_DeepFreeze)
 		Freeze();
-	}
+	else if(((m_TileIndex == TILE_UNFREEZE) || (m_TileFIndex == TILE_UNFREEZE)) && !m_DeepFreeze)
+		UnFreeze();
 	else if (((m_TileIndex == TILE_UNFREEZE) || (m_TileFIndex == TILE_UNFREEZE)) && !m_DeepFreeze)
 	{
 		UnFreeze();
@@ -2058,12 +2069,14 @@ void CCharacter::HandleTiles(int Index)
 	}
 
 	// Vip
-	if ((m_TileIndex == TILE_VIP || m_TileFIndex == TILE_VIP) && 
-		(!m_pPlayer->m_AccData.m_Vip && !Server()->IsAdmin(m_pPlayer->GetCID())))
+	if (m_TileFIndex == TILE_VIP)
 	{
-		Die(m_pPlayer->GetCID(), WEAPON_WORLD);
-		GameServer()->SendChatTarget(m_pPlayer->GetCID(), "Only VIP can access!");
-		return;
+		if (!m_pPlayer->m_AccData.m_Vip && !Server()->IsAdmin(m_pPlayer->GetCID()))
+		{
+			Die(m_pPlayer->GetCID(), WEAPON_WORLD);
+			GameServer()->SendChatTarget(m_pPlayer->GetCID(), "Only VIP can access!");
+			return;
+		}
 	}
 
 	if ((m_TileIndex == TILE_UP) && m_Core.m_Vel.y > 0)
@@ -2442,13 +2455,23 @@ void CCharacter::HandleTiles(int Index)
 		}
 		return;
 	}
-
+	if ((m_TileFIndex == TILE_CANUSEWEAPONS) && !WasInCanUseWeapons)
+	{
+		m_pPlayer->m_CanUseWeapons = true;
+		WasInCanUseWeapons = true;
+	}
 	// rainbow tile : regular players
 	if (((m_TileIndex == TILE_RAINBOW || m_TileFIndex == TILE_RAINBOW)) && !WasInRainbow)
 	{
 		m_pPlayer->m_Rainbow ^= 1;
 		GameServer()->SendChatTarget(GetPlayer()->GetCID(), m_pPlayer->m_Rainbow ? "Rainbow activated" : "Rainbow deactivated");
 		WasInRainbow = true;
+	}
+	if (((m_TileIndex == TILE_RAINBOW_FEET || m_TileFIndex == TILE_RAINBOW_FEET)) && !WasInRainbowFeet)
+	{
+		m_pPlayer->m_RainbowFeet ^= 1;
+		GameServer()->SendChatTarget(GetPlayer()->GetCID(), m_pPlayer->m_Rainbow ? "Rainbow Feet activated" : "Rainbow Feet deactivated");
+		WasInRainbowFeet = true;
 	}
 
 	static int64 s_TempChangeTime = time_get();
@@ -3095,6 +3118,7 @@ void CCharacter::HandleBlocking(bool die)
 			Server()->GetClientAddr(m_Core.m_Id, aAddrStrSelf, sizeof(aAddrStrSelf));
 			Server()->GetClientAddr(pECore->m_Core.m_Id, aAddrStrEnemy, sizeof(aAddrStrEnemy));
 			pECore->m_pPlayer->m_Level.m_Exp += g_Config.m_ClBlockExp /2;
+			pECore->m_pPlayer->m_AccData.m_KillCounter += 1;
 		}
 	}
 	else
@@ -3117,6 +3141,7 @@ void CCharacter::HandleBlocking(bool die)
 							Server()->GetClientAddr(m_Core.m_Id, aAddrStrSelf, sizeof(aAddrStrSelf));
 							Server()->GetClientAddr(pECore->m_Core.m_Id, aAddrStrEnemy, sizeof(aAddrStrEnemy));
 							pECore->m_pPlayer->m_Level.m_Exp += g_Config.m_ClBlockExp /2;
+							pECore->m_pPlayer->m_AccData.m_KillCounter += 1;
 						}
 					}
 				}

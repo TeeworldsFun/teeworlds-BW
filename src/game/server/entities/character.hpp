@@ -269,6 +269,7 @@ public:
 	int RainbowHookedID;
 	// Prevention spam for tiles
 	bool WasInRainbow;
+	bool WasInRainbowFeet;
 	bool WasInUnlockPassive;
 	bool WasInPassiveRace;
 	bool WasInHH;
@@ -279,6 +280,7 @@ public:
 	bool WasInLevelTile;
 	bool m_WasLogged;
 	bool WasInAddJump;
+	bool WasInCanUseWeapons;
 
 	enum
 	{
