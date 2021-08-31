@@ -228,15 +228,15 @@ void CGameContext::ChatCommands(const char *pMsg, int ClientID)
             SendChatTarget(ClientID, "You need to be logged in!");
             return;
         }
-        /*
-        char Message[104];
-        str_format(Message, 104, "exp : %d/%d", pPlayer->m_Level.m_Exp, pPlayer->m_Level.m_LeveL*2);
-        SendChatTarget(ClientID, Message);
-        return;
-        */
-        char Message[104];
-        str_format(Message, 104, "death : %d || kill : %d. ", pPlayer->m_AccData.m_DeathCounter, pPlayer->m_AccData.m_KillCounter);
-        SendChatTarget(ClientID, Message);
+        char Message1[104];
+        char Message2[104];
+        char Message3[104];
+        str_format(Message1, 104, "Your Stats : ");
+        str_format(Message2, 104, "death : %d || kill : %d. ", pPlayer->m_AccData.m_DeathCounter, pPlayer->m_AccData.m_KillCounter);
+        str_format(Message3, 104, "exp : %d/%d", pPlayer->m_Level.m_Exp, pPlayer->m_Level.m_LeveL*2);
+        SendChatTarget(ClientID, Message1);
+        SendChatTarget(ClientID, Message2);
+        SendChatTarget(ClientID, Message3);
     }
     else if (str_comp_nocase(pMsg + 1, "weapons") == 0)
     {
