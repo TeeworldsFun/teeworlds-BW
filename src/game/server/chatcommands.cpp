@@ -221,6 +221,8 @@ void CGameContext::ChatCommands(const char *pMsg, int ClientID)
 
     }
     */
+
+    //TODO : still ugly and do a K/D system
     else if (str_comp_nocase(pMsg + 1, "profile") == 0)
     {
         if (!pPlayer->m_AccData.m_UserID)
@@ -232,8 +234,8 @@ void CGameContext::ChatCommands(const char *pMsg, int ClientID)
         char Message2[104];
         char Message3[104];
         str_format(Message1, 104, "Your Stats : ");
-        str_format(Message2, 104, "death : %d || kill : %d. ", pPlayer->m_AccData.m_DeathCounter, pPlayer->m_AccData.m_KillCounter);
-        str_format(Message3, 104, "exp : %d/%d", pPlayer->m_Level.m_Exp, pPlayer->m_Level.m_LeveL*2);
+        str_format(Message2, 104, "Kills: %d || Deaths: %d. ", pPlayer->m_AccData.m_KillCounter, pPlayer->m_AccData.m_DeathCounter);
+        str_format(Message3, 104, "exp: %d/%d", pPlayer->m_Level.m_Exp, pPlayer->m_Level.m_LeveL*2);
         SendChatTarget(ClientID, Message1);
         SendChatTarget(ClientID, Message2);
         SendChatTarget(ClientID, Message3);
