@@ -1941,12 +1941,13 @@ void CCharacter::HandleTiles(int Index)
 			WasInUnlockPassive = true;
 			return;
 		}
-		else if (!m_pPlayer->m_Passive && m_pPlayer->m_AccData.m_UserID) // if player logged in -> have automatically passive at the start
+		else if (!m_pPlayer->m_Passive) // if dont have passive then : 
 		{
 			m_pPlayer->Temporary.m_PassiveMode = true;
 			m_pPlayer->Temporary.m_PassiveTimeLength = 18000; // 5 hours instead of 3 hours for afk :d
 			m_pPlayer->m_Passive ^= 1;
 			WasInUnlockPassive = true;
+			GameServer()->SendChatTarget(GetPlayer()->GetCID(), "You have Passive.");
 			return;
 		}
 		else
