@@ -364,6 +364,13 @@ void CGameContext::ChatCommands(const char *pMsg, int ClientID)
         pPlayer->m_Armor ^= true;
         SendChatTarget(ClientID, pPlayer->m_Armor ? "Armor effect activated" : "Armor effect desactivated");
     }
+    else if (str_comp_nocase_num(pMsg + 1, "lovely", 7) == 0 && (pPlayer->m_AccData.m_Vip || IsAdmin)) 
+    {
+        /*if (!pChar || !pChar->IsAlive())
+            return;*/
+        pPlayer->m_Lovely ^= true;
+        SendChatTarget(ClientID, pPlayer->m_Lovely ? "Armor effect activated" : "Armor effect desactivated");
+    }
     else if (str_comp_nocase(pMsg + 1, "ball") == 0 && (pPlayer->m_AccData.m_Vip || IsAdmin))
     {
         pPlayer->m_IsBallSpawned ^= true;

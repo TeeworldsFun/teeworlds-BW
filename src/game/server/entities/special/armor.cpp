@@ -1,5 +1,5 @@
 /*
- *	by Nouaa
+ *	by reitw & edited by Nouaa
 */
 
 #include <game/generated/protocol.h>
