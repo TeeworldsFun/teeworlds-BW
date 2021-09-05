@@ -2597,7 +2597,7 @@ void CCharacter::HandleTiles(int Index)
 		GameServer()->SendChatTarget(GetPlayer()->GetCID(), m_pPlayer->m_Rainbow ? "Rainbow Feet activated" : "Rainbow Feet deactivated");
 		WasInRainbowFeet = true;
 	}
-
+	
 	static int64 s_TempChangeTime = time_get();
 	if (s_TempChangeTime < time_get())
 	{
@@ -3420,10 +3420,8 @@ void CCharacter::Clean()
 	}
 	if (IsAlive() && m_pPlayer->m_Stars)
 	{
-
+		GameServer()->CreateDamageInd(m_Pos, Server()->Tick()*g_Config.m_ClStarsAcc%180, 1, Teams()->TeamMask(Team(), -1, m_pPlayer->GetCID())); 
 	}
-
-	GameServer()->CreateDamageInd(m_Pos, Server()->Tick()*g_Config.m_ClStarsAcc%180, 1, Teams()->TeamMask(Team(), -1, m_pPlayer->GetCID())); 
 }
 
 void CCharacter::HandleGameModes()
