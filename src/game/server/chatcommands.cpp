@@ -270,35 +270,6 @@ void CGameContext::ChatCommands(const char *pMsg, int ClientID)
         pChar->GiveAllWeapons();
         pChar->m_EndlessHook = true;
     }
-    /*
-    else if (str_comp_nocase_num(pMsg + 1, "Deathnoteinfo", 13) == 0)
-    {
-        if (!m_apPlayers[ClientID]) // again character check useless, you can even check it by simply put player check
-            return;
-
-        SendChatTarget(ClientID, "You have received a Deathnote, but in order to kill players you must gather pages.");
-        SendChatTarget(ClientID, "With a Deathnote you can write /deathnote Playername (Ex: /deathnote namelesstee) to kill any specific player!");
-        SendChatTarget(ClientID, "You can type /pages to check your current amount of pages.");
-        SendChatTarget(ClientID, "To obtain pages you must buy it in the store or won an event LMB!");
-        SendChatTarget(ClientID, "For further information please go watch the anime - DeathNote :)");
-    }
-    // PAGES CHECK
-    else if (str_comp_nocase_num(pMsg + 1, "pages", 5) == 0)
-    {
-        if (!m_apPlayers[ClientID])
-            return;
-
-        if (!pPlayer->m_DeathNote)
-        {
-            SendChatTarget(ClientID, "0 pages, You dont even have a Deathnote!");
-            return;
-        } 
-
-        int Pages = pPlayer->m_QuestData.m_Pages;
-        char Message[104];
-        str_format(Message, 104, "You have %d pages in your Deathnote!", Pages);
-        SendChatTarget(ClientID, Message);
-    }
     else if (str_comp_nocase_num(pMsg + 1, "beginquest", 10) == 0)
     {
         if (m_PlayerCount < g_Config.m_SvQuestCount)
@@ -346,17 +317,16 @@ void CGameContext::ChatCommands(const char *pMsg, int ClientID)
     else if (str_comp_nocase_num(pMsg + 1, "vipinfo", 7) == 0 || str_comp_nocase_num(pMsg + 1, "vip info", 8) == 0)
     {
         SendChatTarget(ClientID, "===== VIP FEATURES =====");
-        SendChatTarget(ClientID, "- Able to use /rainbow (Epiletic & normal)");
+        SendChatTarget(ClientID, "- Able to use /rainbow (normal)");
         SendChatTarget(ClientID, "- Able to use /circle");
         SendChatTarget(ClientID, "- Able to use /armor");
         SendChatTarget(ClientID, "- Able to use /lovely");
         SendChatTarget(ClientID, "- Able to use /heartguns");
         SendChatTarget(ClientID, "- Able to use /ball");
         SendChatTarget(ClientID, "- Able to use /rainbowhook");
-        SendChatTarget(ClientID, "- Able to use /getclientid");
+        SendChatTarget(ClientID, "- 2$ for 1 month and 5$ for 5 months!");
         SendChatTarget(ClientID, "====================");
     }
-    */
     else if (str_comp_nocase_num(pMsg + 1, "armor", 7) == 0 && (pPlayer->m_AccData.m_Vip || IsAdmin)) 
     {
         /*if (!pChar || !pChar->IsAlive())
@@ -364,7 +334,7 @@ void CGameContext::ChatCommands(const char *pMsg, int ClientID)
         pPlayer->m_Armor ^= true;
         SendChatTarget(ClientID, pPlayer->m_Armor ? "Armor effect activated" : "Armor effect desactivated");
     }
-    else if (str_comp_nocase_num(pMsg + 1, "lovely", 7) == 0 && (pPlayer->m_AccData.m_Vip || IsAdmin)) 
+    else if (str_comp_nocase_num(pMsg + 1, "lovely", 6) == 0 && (pPlayer->m_AccData.m_Vip || IsAdmin)) 
     {
         /*if (!pChar || !pChar->IsAlive())
             return;*/
