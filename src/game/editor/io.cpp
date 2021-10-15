@@ -971,13 +971,7 @@ int CEditorMap::Load(class IStorage *pStorage, const char *pFileName, int Storag
 									TILE_FREEZE,
 									TILE_DFREEZE,
 									TILE_DUNFREEZE,
-									TILE_HIT_ENABLE,
-									TILE_HIT_DISABLE,
-									TILE_JUMP,
-									TILE_ADD_TIME,
-									TILE_SUBTRACT_TIME,
-									TILE_ALLOW_TELE_GUN,
-									TILE_ALLOW_BLUE_TELE_GUN};
+									TILE_JUMP};
 								CSwitchTile *pLayerSwitchTiles = ((CLayerSwitch *)pTiles)->m_pSwitchTile;
 								mem_copy(((CLayerSwitch *)pTiles)->m_pSwitchTile, pSwitchData, (size_t)pTiles->m_Width * pTiles->m_Height * sizeof(CSwitchTile));
 

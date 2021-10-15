@@ -2359,6 +2359,7 @@ void CCharacter::HandleTiles(int Index)
 		GameServer()->SendChatTarget(GetPlayer()->GetCID(), "You can shoot others with rifle");
 		m_Hit &= ~DISABLE_HIT_RIFLE;
 	}
+	
 	else if (GameServer()->Collision()->IsSwitch(MapIndex) == TILE_JUMP)
 	{
 		int newJumps = GameServer()->Collision()->GetSwitchDelay(MapIndex);
