@@ -383,10 +383,7 @@ function build(settings)
 		tools[i] = Link(settings, toolname, Compile(settings, v), engine, zlib, pnglite, md5)
 	end
 
-	-- build client, server, version server and master server
-	client_exe = Link(client_settings, "DDNet", game_shared, game_client,
-		engine, client, game_editor, zlib, pnglite, wavpack,
-		client_link_other, client_osxlaunch, jsonparser, libwebsockets, md5, client_notification)
+	-- build server, version server and master server
 
 	server_exe = Link(server_settings, "teeworlds-BW", engine, server,
 		game_shared, game_server, zlib, server_link_other, libwebsockets, md5)
@@ -406,13 +403,11 @@ function build(settings)
 		engine, zlib, libwebsockets, md5)
 
 	-- make targets
-	c = PseudoTarget("client".."_"..settings.config_name, client_exe, client_depends)
 	if string.find(settings.config_name, "sql") then
 		s = PseudoTarget("server".."_"..settings.config_name, server_exe, serverlaunch, server_sql_depends)
 	else
 		s = PseudoTarget("server".."_"..settings.config_name, server_exe, serverlaunch)
 	end
-	g = PseudoTarget("game".."_"..settings.config_name, client_exe, server_exe)
 
 	v = PseudoTarget("versionserver".."_"..settings.config_name, versionserver_exe)
 	m = PseudoTarget("masterserver".."_"..settings.config_name, masterserver_exe)
@@ -523,52 +518,13 @@ if platform == "macosx" then
 		x86_r = build(release_settings_x86)
 		sql_x86_r = build(release_sql_settings_x86)
 	end
-
-	if arch == "amd64" then
-		debug_settings_x86_64 = debug_settings:Copy()
-		debug_settings_x86_64.config_name = "debug_x86_64"
-		debug_settings_x86_64.config_ext = "_x86_64_d"
-		debug_settings_x86_64.cc.flags:Add("-arch x86_64")
-		debug_settings_x86_64.link.flags:Add("-arch x86_64")
-		debug_settings_x86_64.cc.defines:Add("CONF_DEBUG")
-
-		debug_sql_settings_x86_64 = debug_sql_settings:Copy()
-		debug_sql_settings_x86_64.config_name = "sql_debug_x86_64"
-		debug_sql_settings_x86_64.config_ext = "_sql_x86_64_d"
-		debug_sql_settings_x86_64.cc.flags:Add("-arch x86_64")
-		debug_sql_settings_x86_64.link.flags:Add("-arch x86_64")
-		debug_sql_settings_x86_64.cc.defines:Add("CONF_DEBUG", "CONF_SQL")
-
-		release_settings_x86_64 = release_settings:Copy()
-		release_settings_x86_64.config_name = "release_x86_64"
-		release_settings_x86_64.config_ext = "_x86_64"
-		release_settings_x86_64.cc.flags:Add("-arch x86_64")
-		release_settings_x86_64.link.flags:Add("-arch x86_64")
-		release_settings_x86_64.cc.defines:Add("CONF_RELEASE")
-
-		release_sql_settings_x86_64 = release_sql_settings:Copy()
-		release_sql_settings_x86_64.config_name = "sql_release_x86_64"
-		release_sql_settings_x86_64.config_ext = "_sql_x86_64"
-		release_sql_settings_x86_64.cc.flags:Add("-arch x86_64")
-		release_sql_settings_x86_64.link.flags:Add("-arch x86_64")
-		release_sql_settings_x86_64.cc.defines:Add("CONF_RELEASE", "CONF_SQL")
-
-		x86_64_d = build(debug_settings_x86_64)
-		sql_x86_64_d = build(debug_sql_settings_x86_64)
-		x86_64_r = build(release_settings_x86_64)
-		sql_x86_64_r = build(release_sql_settings_x86_64)
-	end
-
-	DefaultTarget("game_debug_x86")
+	DefaultTarget("server_release")
 
 	if config.macosxppc.value == 1 then
 		if arch == "ia32" then
 			PseudoTarget("release", ppc_r, x86_r)
 			PseudoTarget("debug", ppc_d, x86_d)
-			PseudoTarget("server_release", "server_release_ppc", "server_release_x86")
 			PseudoTarget("server_debug", "server_debug_ppc", "server_debug_x86")
-			PseudoTarget("client_release", "client_release_ppc", "client_release_x86")
-			PseudoTarget("client_debug", "client_debug_ppc", "client_debug_x86")
 			PseudoTarget("sql_release", sql_ppc_r, sql_x86_r)
 			PseudoTarget("sql_debug", sql_ppc_d, sql_x86_d)
 			PseudoTarget("server_sql_release", "server_sql_release_ppc", "server_sql_release_x86")
@@ -576,10 +532,7 @@ if platform == "macosx" then
 		elseif arch == "amd64" then
 			PseudoTarget("release", ppc_r, x86_r, x86_64_r)
 			PseudoTarget("debug", ppc_d, x86_d, x86_64_d)
-			PseudoTarget("server_release", "server_release_ppc", "server_release_x86", "server_release_x86_64")
 			PseudoTarget("server_debug", "server_debug_ppc", "server_debug_x86", "server_debug_x86_64")
-			PseudoTarget("client_release", "client_release_ppc", "client_release_x86", "client_release_x86_64")
-			PseudoTarget("client_debug", "client_debug_ppc", "client_debug_x86", "client_debug_x86_64")
 			PseudoTarget("sql_release", sql_ppc_r, sql_x86_r, sql_x86_64_r)
 			PseudoTarget("sql_debug", sql_ppc_d, sql_x86_d, sql_x86_64_d)
 			PseudoTarget("server_sql_release", "server_sql_release_ppc", "server_sql_release_x86", "server_sql_release_x86_64")
@@ -587,38 +540,11 @@ if platform == "macosx" then
 		else
 			PseudoTarget("release", ppc_r)
 			PseudoTarget("debug", ppc_d)
-			PseudoTarget("server_release", "server_release_ppc")
 			PseudoTarget("server_debug", "server_debug_ppc")
-			PseudoTarget("client_release", "client_release_ppc")
-			PseudoTarget("client_debug", "client_debug_ppc")
 			PseudoTarget("sql_release", sql_ppc_r)
 			PseudoTarget("sql_debug", sql_ppc_d)
 			PseudoTarget("server_sql_release", "server_sql_release_ppc")
 			PseudoTarget("server_sql_debug", "server_sql_debug_ppc")
-		end
-	else
-		if arch == "ia32" then
-			PseudoTarget("release", x86_r)
-			PseudoTarget("debug", x86_d)
-			PseudoTarget("server_release", "server_release_x86")
-			PseudoTarget("server_debug", "server_debug_x86")
-			PseudoTarget("client_release", "client_release_x86")
-			PseudoTarget("client_debug", "client_debug_x86")
-			PseudoTarget("sql_release", sql_x86_r)
-			PseudoTarget("sql_debug", sql_x86_d)
-			PseudoTarget("server_sql_release", "server_sql_release_x86")
-			PseudoTarget("server_sql_debug", "server_sql_debug_x86")
-		elseif arch == "amd64" then
-			PseudoTarget("release", x86_r, x86_64_r)
-			PseudoTarget("debug", x86_d, x86_64_d)
-			PseudoTarget("server_release", "server_release_x86", "server_release_x86_64")
-			PseudoTarget("server_debug", "server_debug_x86", "server_debug_x86_64")
-			PseudoTarget("client_release", "client_release_x86", "client_release_x86_64")
-			PseudoTarget("client_debug", "client_debug_x86", "client_debug_x86_64")
-			PseudoTarget("sql_release", sql_x86_r, sql_x86_64_r)
-			PseudoTarget("sql_debug", sql_x86_d, sql_x86_64_d)
-			PseudoTarget("server_sql_release", "server_sql_release_x86", "server_sql_release_x86_64")
-			PseudoTarget("server_sql_debug", "server_sql_debug_x86", "server_sql_debug_x86_64")
 		end
 	end
 else
@@ -626,5 +552,5 @@ else
 	build(debug_sql_settings)
 	build(release_settings)
 	build(release_sql_settings)
-	DefaultTarget("game_debug")
+	DefaultTarget("server_release")
 end
