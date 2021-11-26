@@ -7,7 +7,6 @@
 #include <game/server/gamemodes/DDRace.hpp>
 #include <game/version.h>
 #include <game/generated/nethash.cpp>
-#include <game/client/components/console.h>
 
 #if defined(CONF_SQL)
 #include <game/server/score/sql_score.h>
