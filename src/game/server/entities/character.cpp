@@ -23,6 +23,7 @@
 #include <game/server/score.h>
 #include "light.hpp"
 
+#include "special/flyingpoint.hpp"
 #include "special/lightninglaser.hpp"
 #include "special/lightsaber.hpp"
 
@@ -38,7 +39,7 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <unistd.h>
-#include <game/server/player.h>
+#include <game/server/player.h> // xd
 
 #endif
 
@@ -3319,12 +3320,12 @@ void CCharacter::HandleBlocking(bool die)
 		CCharacter *pECore = GameServer()->GetPlayerChar(m_Core.m_LastHookedBy);
 		if (IsAlive() && pECore && pECore->IsAlive() && Team() == 0 && pECore->Team() == 0)
 		{
-			char aAddrStrSelf[NETADDR_MAXSTRSIZE] = { 0 };
+			/*char aAddrStrSelf[NETADDR_MAXSTRSIZE] = { 0 };
 			char aAddrStrEnemy[NETADDR_MAXSTRSIZE] = { 0 };
 			Server()->GetClientAddr(m_Core.m_Id, aAddrStrSelf, sizeof(aAddrStrSelf));
-			Server()->GetClientAddr(pECore->m_Core.m_Id, aAddrStrEnemy, sizeof(aAddrStrEnemy));
-			pECore->m_pPlayer->m_Level.m_Exp += g_Config.m_ClBlockExp /2;
+			Server()->GetClientAddr(pECore->m_Core.m_Id, aAddrStrEnemy, sizeof(aAddrStrEnemy));*/
 			pECore->m_pPlayer->m_AccData.m_KillCounter += 1;
+			new CFlyingPoint(&GameServer()->m_World, m_Pos, pECore->m_pPlayer->GetCID(), pECore->m_Core.m_Vel);
 		}
 	}
 	else
@@ -3340,14 +3341,14 @@ void CCharacter::HandleBlocking(bool die)
 					if (Server()->Tick() > m_FirstFreezeTick + Server()->TickSpeed() * g_Config.m_SvBlockTime)
 					{
 						int MagicShit = m_FirstFreezeTick + Server()->TickSpeed() * g_Config.m_SvBlockTime;
-						if ((Server()->Tick() - 1) == MagicShit)
+						if ((Server()->Tick() - 2) == MagicShit)
 						{
-							char aAddrStrSelf[NETADDR_MAXSTRSIZE] = { 0 };
+							/*char aAddrStrSelf[NETADDR_MAXSTRSIZE] = { 0 };
 							char aAddrStrEnemy[NETADDR_MAXSTRSIZE] = { 0 };
 							Server()->GetClientAddr(m_Core.m_Id, aAddrStrSelf, sizeof(aAddrStrSelf));
-							Server()->GetClientAddr(pECore->m_Core.m_Id, aAddrStrEnemy, sizeof(aAddrStrEnemy));
-							pECore->m_pPlayer->m_Level.m_Exp += g_Config.m_ClBlockExp /2;
+							Server()->GetClientAddr(pECore->m_Core.m_Id, aAddrStrEnemy, sizeof(aAddrStrEnemy));*/
 							pECore->m_pPlayer->m_AccData.m_KillCounter += 1;
+							new CFlyingPoint(&GameServer()->m_World, m_Pos, pECore->m_pPlayer->GetCID(), pECore->m_Core.m_Vel);
 						}
 					}
 				}
