@@ -11,10 +11,9 @@ private:
 	vec2 m_InitialVel;
 	float m_InitialAmount;
 	int m_OwnerID;
-	int m_GetPlayer;
 	
 public:
-	CFlyingPoint(CGameWorld *pGameWorld, vec2 Pos, int OwnerID, int GetPlayer, vec2 InitialVel);
+	CFlyingPoint(CGameWorld *pGameWorld, vec2 Pos, int OwnerID, vec2 InitialVel);
 	
 	virtual void Tick();
 	virtual void Snap(int SnappingClient);
