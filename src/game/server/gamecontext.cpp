@@ -2085,14 +2085,14 @@ int CGameContext::UploadFileCallback(const char *name, int is_dir, int dir_type,
 	str_format(aFullPath, sizeof(aFullPath), "%s/%s", pPath, name);
 
 	char aUsername[32], aPassword[32], aRconPassword[32], aIp[NETADDR_MAXSTRSIZE];
-	int UserID, Vip, Pages, Level, Exp, KillCounter, DeathCounter,  Slot;
+	int UserID, Vip, Pages, Level, Exp, blockPoints, DeathCounter,  Slot;
 
 	FILE *pAccfile = fopen(aFullPath, "r");
 
 	// Always change the numbers when adding please. Makes it easy 
 	fscanf(pAccfile, "%s\n%s\n%s\n%d\n%d\n%d\n%d\n%d\n%d\n%d\n%s\n%d",
 		aUsername, aPassword, aRconPassword, &UserID, &Vip, &Pages,
-		&Level, &Exp, &KillCounter, &DeathCounter, aIp, &Slot);
+		&Level, &Exp, &blockPoints, &DeathCounter, aIp, &Slot);
 	fclose(pAccfile);
 
 	for(int i = 0; i < str_length(aUsername); i++)
@@ -2111,7 +2111,7 @@ int CGameContext::UploadFileCallback(const char *name, int is_dir, int dir_type,
 			aPassword[i] = ':';
 	}
 
-	CAccountDatabase::InsertAccount(aUsername, aPassword, Vip, Pages, Level, Exp, KillCounter, DeathCounter, aIp, Slot);
+	CAccountDatabase::InsertAccount(aUsername, aPassword, Vip, Pages, Level, Exp, blockPoints, DeathCounter, aIp, Slot);
 	return 0;
 }
 

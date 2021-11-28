@@ -115,7 +115,7 @@ void CAccountFile::Login(const char *pUsername, const char *pPassword)
 		&m_pPlayer->m_QuestData.m_Pages, // 6
 		&m_pPlayer->m_Level.m_LeveL, // 7
 		&m_pPlayer->m_Level.m_Exp, // 8
-		&m_pPlayer->m_AccData.m_KillCounter, // 9
+		&m_pPlayer->m_AccData.m_blockpoints, // 9
 		&m_pPlayer->m_AccData.m_DeathCounter, // 10
 		m_pPlayer->m_AccData.m_aIp, // 11
 		&m_pPlayer->m_AccData.m_Slot // 13
@@ -201,7 +201,7 @@ void CAccountFile::Register(const char *pUsername, const char *pPassword)
 		m_pPlayer->m_QuestData.m_Pages,
 		m_pPlayer->m_Level.m_LeveL, 
 		m_pPlayer->m_Level.m_Exp,
-		m_pPlayer->m_AccData.m_KillCounter,
+		m_pPlayer->m_AccData.m_blockpoints,
 		m_pPlayer->m_AccData.m_DeathCounter,
 		m_pPlayer->m_AccData.m_aIp,
 		m_pPlayer->m_AccData.m_Slot 
@@ -293,7 +293,7 @@ void CAccountFile::Apply()
 		m_pPlayer->m_QuestData.m_Pages, // 6
 		m_pPlayer->m_Level.m_LeveL, // 7
 		m_pPlayer->m_Level.m_Exp, // 8
-		m_pPlayer->m_AccData.m_KillCounter,
+		m_pPlayer->m_AccData.m_blockpoints,
 		m_pPlayer->m_AccData.m_DeathCounter,
 		m_pPlayer->m_AccData.m_aIp, // 9
 		m_pPlayer->m_AccData.m_Slot // 11
@@ -313,7 +313,7 @@ void CAccountFile::Reset()
 	m_pPlayer->m_AccData.m_UserID = 0;
 	m_pPlayer->m_AccData.m_Vip = 0;
 	m_pPlayer->m_QuestData.m_Pages = 0;
-	m_pPlayer->m_AccData.m_KillCounter = 0;
+	m_pPlayer->m_AccData.m_blockpoints = 0;
 	m_pPlayer->m_AccData.m_DeathCounter = 0;
 }
 

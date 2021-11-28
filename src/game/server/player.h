@@ -309,7 +309,7 @@ public:
 		int m_Slot;
 		int m_UserID;//furthoes used as logged in indicator
 		int m_Vip;
-		int m_KillCounter;
+		int m_blockpoints;
 		int m_DeathCounter;
 
 	} m_AccData;

@@ -3307,6 +3307,7 @@ void CCharacter::HandleLevelSystem()
 
 void CCharacter::HandleBlocking(bool die)
 {
+
 	if (IsAlive())
 	{
 		if (m_FreezeTime == 0 && m_LastBlockedTick == -1)
@@ -3324,7 +3325,7 @@ void CCharacter::HandleBlocking(bool die)
 			char aAddrStrEnemy[NETADDR_MAXSTRSIZE] = { 0 };
 			Server()->GetClientAddr(m_Core.m_Id, aAddrStrSelf, sizeof(aAddrStrSelf));
 			Server()->GetClientAddr(pECore->m_Core.m_Id, aAddrStrEnemy, sizeof(aAddrStrEnemy));*/
-			pECore->m_pPlayer->m_AccData.m_KillCounter += 1;
+			pECore->m_pPlayer->m_AccData.m_blockpoints += 1;
 			new CFlyingPoint(&GameServer()->m_World, m_Pos, pECore->m_pPlayer->GetCID(), pECore->m_Core.m_Vel);
 		}
 	}
@@ -3347,8 +3348,9 @@ void CCharacter::HandleBlocking(bool die)
 							char aAddrStrEnemy[NETADDR_MAXSTRSIZE] = { 0 };
 							Server()->GetClientAddr(m_Core.m_Id, aAddrStrSelf, sizeof(aAddrStrSelf));
 							Server()->GetClientAddr(pECore->m_Core.m_Id, aAddrStrEnemy, sizeof(aAddrStrEnemy));*/
-							pECore->m_pPlayer->m_AccData.m_KillCounter += 1;
+							pECore->m_pPlayer->m_AccData.m_blockpoints += 1;
 							new CFlyingPoint(&GameServer()->m_World, m_Pos, pECore->m_pPlayer->GetCID(), pECore->m_Core.m_Vel);
+							m_pPlayer->m_AccData.m_blockpoints++;
 						}
 					}
 				}
