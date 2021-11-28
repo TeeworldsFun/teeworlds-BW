@@ -8,28 +8,19 @@ To clone this repository :
 
     git clone https://github.com/NouaaTW/teeworlds-BW
     
-Install bam on linux
+Install & Run bam on linux
 -------
 
-    sudo apt-get install bam
+    https://www.teeworlds.com/?page=docs&wiki=compiling_everything_linux
     
-    
-Install bam on macOS
+Install & Run bam on macOS
 -------
     
-    ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" 2> /dev/null
-    brew install bam
+    https://www.teeworlds.com/?page=docs&wiki=compiling_everything_mac
 
+Install & Run bam on windows
+-------
 
-Building on Linux and macOS
----------------------------
+    https://www.teeworlds.com/?page=docs&wiki=compiling_everything_windows
+   
 
-To compile the server yourself, execute the following commands in the source root:
-
-    bam server_release
-    
-    
-Building on Windows
----------------------------
-
-    dont work yet.
