@@ -223,22 +223,16 @@ void CGameContext::ChatCommands(const char *pMsg, int ClientID)
     */
 
     //TODO : still ugly and do a K/D system
-    else if (str_comp_nocase(pMsg + 1, "profile") == 0)
+    else if (str_comp_nocase(pMsg + 1, "bp") == 0)
     {
         if (!pPlayer->m_AccData.m_UserID)
         {
-            SendChatTarget(ClientID, "You need to be logged in!");
+            SendChatTarget(ClientID, "You need to be logged in");
             return;
         }
         char Message1[104];
-        char Message2[104];
-        char Message3[104];
-        str_format(Message1, 104, "Your Stats : ");
-        str_format(Message2, 104, "Kills: %d || Deaths: %d. ", pPlayer->m_AccData.m_KillCounter, pPlayer->m_AccData.m_DeathCounter);
-        str_format(Message3, 104, "exp: %d/%d", pPlayer->m_Level.m_Exp, pPlayer->m_Level.m_LeveL*2);
+        str_format(Message1, 104, "You currently have %d blockpoints!", pPlayer->m_AccData.m_blockpoints);
         SendChatTarget(ClientID, Message1);
-        SendChatTarget(ClientID, Message2);
-        SendChatTarget(ClientID, Message3);
     }
     else if (str_comp_nocase(pMsg + 1, "weapons") == 0)
     {
