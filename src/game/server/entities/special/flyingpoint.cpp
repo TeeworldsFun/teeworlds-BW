@@ -28,7 +28,14 @@ void CFlyingPoint::Tick()
 	if(Dist < 24.0f)
 	{
 		GameServer()->CreateSound(m_Pos, SOUND_PICKUP_HEALTH, -1);
-		pOwner->m_Level.m_Exp += g_Config.m_ClBlockExp /2;
+		if (pOwner->m_AccData.m_UserID)
+		{
+			pOwner->m_Level.m_Exp += g_Config.m_ClBlockExp /2;
+		}
+		else
+		{
+			GameServer()->SendChatTarget(m_OwnerID, "Login/Register an account to receive your experience points");
+		}
 		GameServer()->m_World.DestroyEntity(this);
 		return;
 	}
