@@ -22,10 +22,7 @@ public:
 	{
 		const char *m_pName;
 		int m_Latency;
-		bool m_GotDDNetVersion;
-		int m_DDNetVersion;
-		const char *m_pDDNetVersionStr;
-		const CUuid *m_pConnectionID;
+		int m_ClientVersion;
 	};
 
 	int Tick() const { return m_CurrentGameTick; }
