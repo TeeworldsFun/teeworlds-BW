@@ -1200,10 +1200,6 @@ void CCharacter::Die(int Killer, int Weapon)
 				//dbg_msg("ASDF", "Releasing ID %d" ,m_apAnimIDs[i]);
 			}
 		}
-		if (m_pPlayer->m_AccData.m_UserID)
-		{
-			m_pPlayer->m_AccData.m_DeathCounter++;
-		}
 	}
 
 	HandleBlocking(true);
@@ -3321,10 +3317,6 @@ void CCharacter::HandleBlocking(bool die)
 		CCharacter *pECore = GameServer()->GetPlayerChar(m_Core.m_LastHookedBy);
 		if (IsAlive() && pECore && pECore->IsAlive() && Team() == 0 && pECore->Team() == 0)
 		{
-			/*char aAddrStrSelf[NETADDR_MAXSTRSIZE] = { 0 };
-			char aAddrStrEnemy[NETADDR_MAXSTRSIZE] = { 0 };
-			Server()->GetClientAddr(m_Core.m_Id, aAddrStrSelf, sizeof(aAddrStrSelf));
-			Server()->GetClientAddr(pECore->m_Core.m_Id, aAddrStrEnemy, sizeof(aAddrStrEnemy));*/
 			pECore->m_pPlayer->m_AccData.m_blockpoints += 1;
 			new CFlyingPoint(&GameServer()->m_World, m_Pos, pECore->m_pPlayer->GetCID(), pECore->m_Core.m_Vel);
 		}
@@ -3338,17 +3330,11 @@ void CCharacter::HandleBlocking(bool die)
 				
 				if (pECore->m_Core.m_HookedPlayer != m_Core.m_Id)
 				{
-					
 					if (Server()->Tick() > m_FirstFreezeTick + Server()->TickSpeed() * g_Config.m_SvBlockTime)
 					{
 						int MagicShit = m_FirstFreezeTick + Server()->TickSpeed() * g_Config.m_SvBlockTime;
 						if ((Server()->Tick() - 2) == MagicShit)
 						{
-							/*char aAddrStrSelf[NETADDR_MAXSTRSIZE] = { 0 };
-							char aAddrStrEnemy[NETADDR_MAXSTRSIZE] = { 0 };
-							Server()->GetClientAddr(m_Core.m_Id, aAddrStrSelf, sizeof(aAddrStrSelf));
-							Server()->GetClientAddr(pECore->m_Core.m_Id, aAddrStrEnemy, sizeof(aAddrStrEnemy));*/
-							pECore->m_pPlayer->m_AccData.m_blockpoints += 1;
 							new CFlyingPoint(&GameServer()->m_World, m_Pos, pECore->m_pPlayer->GetCID(), pECore->m_Core.m_Vel);
 							m_pPlayer->m_AccData.m_blockpoints++;
 						}
