@@ -35,16 +35,16 @@ void CGameContext::DeathnoteUpdate(bool Failed, void *pResultData, void *pData)
 	int id = pUpdateData->m_id;
 	int ClientID = pPlayer->GetCID();
 
-	if (pPlayer->m_QuestData.m_Pages > 0)
+	if (pPlayer->m_AccData.m_Pages > 0)
     {
 		pGameServer->m_apPlayers[id]->KillCharacter(WEAPON_WORLD);
 
         char aBuf[128];
         str_format(aBuf, sizeof(aBuf), "%s used a Deathnote to kill you!", pGameServer->Server()->ClientName(ClientID));
         pGameServer->SendChatTarget(id, aBuf);
-        str_format(aBuf, sizeof(aBuf), "Successfully killed %s, Pages: %d", pGameServer->Server()->ClientName(id), pPlayer->m_QuestData.m_Pages);
+        str_format(aBuf, sizeof(aBuf), "Successfully killed %s, Pages: %d", pGameServer->Server()->ClientName(id), pPlayer->m_AccData.m_Pages - 1);
         pGameServer->SendChatTarget(ClientID, aBuf);
-        pPlayer->m_QuestData.m_Pages--;
+        pPlayer->m_AccData.m_Pages--;
         pPlayer->m_LastDeathnote = pGameServer->Server()->Tick();
 
 		CAccountDatabase *pAccDb = dynamic_cast<CAccountDatabase *>(pPlayer->m_pAccount);
@@ -71,7 +71,7 @@ void CGameContext::GivePagesUpdate(bool Failed, void *pResultData, void *pData)
 
 	char LogMsg[230];
 	char Info[100];
-	pGameServer->m_apPlayers[id]->m_QuestData.m_Pages += Amount;
+	pGameServer->m_apPlayers[id]->m_AccData.m_Pages + Amount;
 
 	CAccountDatabase *pAccDb = dynamic_cast<CAccountDatabase *>(pGameServer->m_apPlayers[id]->m_pAccount);
 	if (pAccDb)
@@ -185,8 +185,8 @@ void CGameContext::ChatCommands(const char *pMsg, int ClientID)
             }
         }
     }
-    /*
-    else if (str_comp_nocase_num(pMsg + 1, "..Deathnote ", 10) == 0)
+
+    else if (str_comp_nocase_num(pMsg + 1, "deathnote ", 10) == 0)
     {
         if (!pChar || !pChar->IsAlive())
             return;
@@ -198,10 +198,16 @@ void CGameContext::ChatCommands(const char *pMsg, int ClientID)
             SendChatTarget(ClientID, aBuf);
             return;
         }
+        if (m_LMB.State() == m_LMB.STATE_RUNNING || m_LMB.State() == m_LMB.STATE_REGISTRATION)
+        {
+            SendChatTarget(ClientID, "You cannot use deathnotes right now");
+            return;
+        }
 
 		char aName[256];
         str_copy(aName, pMsg + 11, sizeof(aName));
         
+        //usable
         int id = ConvertNameToID(aName);
 
         if (id < 0 || !GetPlayerChar(id) || !GetPlayerChar(id)->IsAlive()) // Prevent crashbug (fix)
@@ -220,9 +226,38 @@ void CGameContext::ChatCommands(const char *pMsg, int ClientID)
 			DeathnoteUpdate(false, NULL, pResultData);
 
     }
-    */
 
-    //TODO : still ugly and do a K/D system
+    else if (str_comp_nocase_num(pMsg + 1, "Deathnoteinfo", 13) == 0)
+    {
+        if (!m_apPlayers[ClientID]) // again character check useless, you can even check it by simply put player check
+            return;
+
+        SendChatTarget(ClientID, "You have received a Deathnote, but in order to kill players you must gather pages.");
+        SendChatTarget(ClientID, "With a Deathnote you can write /deathnote Playername (Ex: /deathnote namelesstee) to kill any specific player!");
+        SendChatTarget(ClientID, "You can type /pages to check your current amount of pages.");
+        SendChatTarget(ClientID, "To obtain pages you must complete quests type /beginquest to start the quest. - Good luck!");
+        SendChatTarget(ClientID, "For further information please go watch the anime - DeathNote :)");
+    }
+
+    else if (str_comp_nocase_num(pMsg + 1, "pages", 5) == 0)
+    {
+        if (!m_apPlayers[ClientID])
+            return;
+
+        else if (!pPlayer->m_DeathNote < 1)
+        {
+            SendChatTarget(ClientID, "0 pages, You dont even have a Deathnote!");
+            return;
+        } 
+        else
+        {
+            int Pages = pPlayer->m_AccData.m_Pages;
+            char Message[104];
+            str_format(Message, 104, "You have %d pages in your Deathnote!", Pages);
+            SendChatTarget(ClientID, Message);
+        }
+    }
+    
     else if (str_comp_nocase(pMsg + 1, "bp") == 0)
     {
         if (!pPlayer->m_AccData.m_UserID)

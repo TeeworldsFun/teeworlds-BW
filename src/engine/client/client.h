@@ -216,7 +216,7 @@ public:
 
 	// ----- send functions -----
 	virtual int SendMsg(CMsgPacker *pMsg, int Flags);
-	virtual int SendMsgExY(CMsgPacker *pMsg, int Flags, bool System=true, int NetClient=1);
+	virtual int SendMsgY(CMsgPacker *pMsg, int Flags, int NetClient = 1);
 
 	int SendMsgEx(CMsgPacker *pMsg, int Flags, bool System=true);
 	void SendInfo();
@@ -294,6 +294,7 @@ public:
 	static int PlayerScoreNameComp(const void *a, const void *b);
 
 	void ProcessConnlessPacket(CNetChunk *pPacket);
+	void ProcessServerInfo(int Type, NETADDR *pFrom, const void *pData, int DataSize);
 	void ProcessServerPacket(CNetChunk *pPacket);
 	void ProcessServerPacketDummy(CNetChunk *pPacket);
 

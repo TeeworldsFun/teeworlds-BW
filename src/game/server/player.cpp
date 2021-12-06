@@ -1019,7 +1019,7 @@ void CPlayer::QuestSetNextPart()
 	if (m_QuestData.m_QuestPart >= QUEST_FINISHED) // handle finished quest
 	{
 		GameServer()->SendChatTarget(OwnID, "Congratulations, you received +1 Pages for completing the quest!");
-		m_QuestData.m_Pages++;
+		m_AccData.m_Pages++;
 		CAccountDatabase *pAccDb = dynamic_cast<CAccountDatabase *>(m_pAccount);
 		if (pAccDb)
 			pAccDb->ApplyUpdatedData();

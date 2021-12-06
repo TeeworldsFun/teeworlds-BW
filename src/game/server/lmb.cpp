@@ -206,8 +206,16 @@ void CLMB::DatabaseUpdate(bool Failed, void *pResultData, void *pData)
 
 	if (Winner->m_AccData.m_UserID)
 	{
-		Winner->m_Level.m_LeveL += 5;
-		pGamecontext->SendChatTarget(ID, "+5 Level!");
+
+		pGamecontext->SendChatTarget(ID, "+2 pages!");
+		pGamecontext->SendChatTarget(ID, "(+3) WeaponKits (use /weapons)!");
+		pGamecontext->SendChatTarget(ID, "Temoporary access to passivemode for 2Hours! (Anti WB)");
+
+		Winner->m_AccData.m_Pages += 2;
+		//Winner->m_AccData.m_Weaponkits += 3; TODO : readd that shit
+		Winner->Temporary.m_PassiveMode = true;
+		Winner->Temporary.m_PassiveModeTime = pGamecontext->Server()->Tick();
+		Winner->Temporary.m_PassiveTimeLength = 10800;
 
 		CAccountDatabase *pAccDb = dynamic_cast<CAccountDatabase *>(Winner->m_pAccount);
 		if(pAccDb)

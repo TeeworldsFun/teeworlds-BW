@@ -234,7 +234,6 @@ public:
 	struct CQuestData
 	{
 		int m_QuestPart;
-		int m_Pages;
 
 		union { int m_VictimID, m_RaceStartTick; };
 
@@ -310,7 +309,7 @@ public:
 		int m_UserID;//furthoes used as logged in indicator
 		int m_Vip;
 		int m_blockpoints;
-		int m_DeathCounter;
+		int m_Pages;
 
 	} m_AccData;
 

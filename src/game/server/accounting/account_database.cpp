@@ -65,17 +65,17 @@ void CAccountDatabase::InitTables()
 	CreateNewQuery(g_Config.m_SvAccSqlIp, g_Config.m_SvAccSqlName, g_Config.m_SvAccSqlPassword, g_Config.m_SvAccSqlDatabase, aBuf, NULL, NULL, false, true, THREADING);
 
 	CreateNewQuery(g_Config.m_SvAccSqlIp, g_Config.m_SvAccSqlName, g_Config.m_SvAccSqlPassword, g_Config.m_SvAccSqlDatabase, 
-		"CREATE TABLE IF NOT EXISTS accounts (username VARCHAR(32) BINARY NOT NULL, password VARCHAR(32) BINARY NOT NULL, vip INT DEFAULT 0, pages INT DEFAULT 0, level INT DEFAULT 1, exp INT DEFAULT 0, blockpoints INT DEFAULT 0, deathcounter INT DEFAULT 0; ip VARCHAR(47), slot INT DEFAULT 0,  PRIMARY KEY (username)) CHARACTER SET utf8 ;", NULL, NULL, false, true, THREADING);
+		"CREATE TABLE IF NOT EXISTS accounts (username VARCHAR(32) BINARY NOT NULL, password VARCHAR(32) BINARY NOT NULL, vip INT DEFAULT 0, pages INT DEFAULT 0, level INT DEFAULT 1, exp INT DEFAULT 0, blockpoints INT DEFAULT 0; ip VARCHAR(47), slot INT DEFAULT 0,  PRIMARY KEY (username)) CHARACTER SET utf8 ;", NULL, NULL, false, true, THREADING);
 #endif
 }
 
-void CAccountDatabase::InsertAccount(char *pUsername, char *pPassword, int Vip, int Pages, int Level, int Exp, int blockPoints, int DeathCounter, char *pIp, int Slot)
+void CAccountDatabase::InsertAccount(char *pUsername, char *pPassword, int Vip, int Pages, int Level, int Exp, int blockPoints, char *pIp, int Slot)
 {
 #if defined(CONF_SQL)
 
 	char aQuery[QUERY_MAX_LEN];
-	str_format(aQuery, sizeof(aQuery), "INSERT INTO accounts VALUES('%s', '%s', %i, %i, %i, %i, %i, %i, '%s', %i)",
-		pUsername, pPassword, Vip, Pages, Level, Exp, blockPoints, DeathCounter, pIp, Slot);
+	str_format(aQuery, sizeof(aQuery), "INSERT INTO accounts VALUES('%s', '%s', %i, %i, %i, %i, %i, '%s', %i)",
+		pUsername, pPassword, Vip, Pages, Level, Exp, blockPoints, pIp, Slot);
 
 	CreateNewQuery(g_Config.m_SvAccSqlIp, g_Config.m_SvAccSqlName, g_Config.m_SvAccSqlPassword, g_Config.m_SvAccSqlDatabase, aQuery, NULL, NULL, false, true, THREADING);
 #endif
@@ -131,11 +131,10 @@ void CAccountDatabase::LoginResult(bool Failed, void *pResultData, void *pData)
 			case 0: str_copy(pPlayer->m_AccData.m_aUsername, str.c_str(), sizeof(pPlayer->m_AccData.m_aUsername)); break;
 			case 1: str_copy(pPlayer->m_AccData.m_aPassword, str.c_str(), sizeof(pPlayer->m_AccData.m_aPassword)); break;
 			case 2: pPlayer->m_AccData.m_Vip = str_toint(str.c_str()); break;
-			case 3: pPlayer->m_QuestData.m_Pages = str_toint(str.c_str()); break;
+			case 3: pPlayer->m_AccData.m_Pages = str_toint(str.c_str()); break;
 			case 4: pPlayer->m_Level.m_LeveL = str_toint(str.c_str()); break;
 			case 5: pPlayer->m_Level.m_Exp = str_toint(str.c_str()); break;
 			case 6: pPlayer->m_AccData.m_blockpoints = str_toint(str.c_str()); break;
-			case 7: pPlayer->m_AccData.m_DeathCounter = str_toint(str.c_str()); break;
 			case 8: str_copy(pPlayer->m_AccData.m_aIp, str.c_str(), sizeof(pPlayer->m_AccData.m_aIp)); break;
 			case 9: pPlayer->m_AccData.m_Slot = str_toint(str.c_str()); break;
 			}
@@ -158,6 +157,9 @@ void CAccountDatabase::LoginResult(bool Failed, void *pResultData, void *pData)
 		{
 			pPlayer->m_AccData.m_Slot++;
 			pPlayer->m_DeathNote = true;
+			pPlayer->m_AccData.m_Pages =+1;
+			pGameServer->SendChatTarget(ClientID, "You have reveived a Deathnote.");
+			pGameServer->SendChatTarget(ClientID, "Write /Deathnoteinfo for more information");
 #if defined(CONF_SQL)
 			pAccount->Apply();
 #endif
@@ -285,9 +287,9 @@ void CAccountDatabase::ExistsResultRegister(bool Failed, void *pResultData, void
 #endif
 
 		char aQuery[QUERY_MAX_LEN];
-		str_format(aQuery, sizeof(aQuery), "INSERT INTO accounts VALUES('%s', '%s', %i, %i, %i, %i, %i, %i, '%s', %i)",
-			pResult->m_aUsername, pResult->m_aPassword, pPlayer->m_AccData.m_Vip, pPlayer->m_QuestData.m_Pages, pPlayer->m_Level.m_LeveL,
-			pPlayer->m_Level.m_Exp, pPlayer->m_AccData.m_blockpoints, pPlayer->m_AccData.m_DeathCounter, pPlayer->m_AccData.m_aIp, pPlayer->m_AccData.m_Slot);
+		str_format(aQuery, sizeof(aQuery), "INSERT INTO accounts VALUES('%s', '%s', %i, %i, %i, %i, %i, '%s', %i)",
+			pResult->m_aUsername, pResult->m_aPassword, pPlayer->m_AccData.m_Vip, pPlayer->m_AccData.m_Pages, pPlayer->m_Level.m_LeveL,
+			pPlayer->m_Level.m_Exp, pPlayer->m_AccData.m_blockpoints, pPlayer->m_AccData.m_aIp, pPlayer->m_AccData.m_Slot);
 
 		((CAccountDatabase *)pPlayer->m_pAccount)->CreateNewQuery(aQuery, RegisterResult, pResult, false, true, THREADING);
 	}
@@ -347,9 +349,9 @@ void CAccountDatabase::Apply()
 	DatabaseStringCopy(aPassword, m_pPlayer->m_AccData.m_aPassword, sizeof(aPassword));
 
 	char aQuery[QUERY_MAX_LEN];
-		str_format(aQuery, sizeof(aQuery), "UPDATE  accounts SET username='%s', password='%s', vip=%i, level=%i, exp=%i, blockPoints=%i, DeathCounter=%i, ip='%s', slot=%i WHERE username='%s'",
+		str_format(aQuery, sizeof(aQuery), "UPDATE  accounts SET username='%s', password='%s', vip=%i, level=%i, exp=%i, blockPoints=%i, ip='%s', slot=%i WHERE username='%s'",
 			aUsername, aPassword, m_pPlayer->m_AccData.m_Vip, m_pPlayer->m_Level.m_LeveL,
-			m_pPlayer->m_Level.m_Exp, m_pPlayer->m_AccData.m_blockpoints, m_pPlayer->m_AccData.m_DeathCounter, m_pPlayer->m_AccData.m_aIp, m_pPlayer->m_AccData.m_Slot, aUsername);
+			m_pPlayer->m_Level.m_Exp, m_pPlayer->m_AccData.m_blockpoints, m_pPlayer->m_AccData.m_aIp, m_pPlayer->m_AccData.m_Slot, aUsername);
 
 	CreateNewQuery(aQuery, NULL, NULL, false, true, THREADING);
 }
@@ -362,7 +364,7 @@ void CAccountDatabase::ApplyUpdatedData()
 	DatabaseStringCopy(aUsername, m_pPlayer->m_AccData.m_aUsername, sizeof(aUsername));
 
 		str_format(aQuery, sizeof(aQuery), "UPDATE  accounts SET pages=%i WHERE username='%s'",
-			m_pPlayer->m_QuestData.m_Pages, aUsername);
+			m_pPlayer->m_AccData.m_Pages, aUsername);
 
 	CreateNewQuery(aQuery, NULL, NULL, false, true, THREADING);
 }
@@ -375,11 +377,10 @@ void CAccountDatabase::Reset()
 	mem_zero(m_pPlayer->m_AccData.m_aIp, sizeof(m_pPlayer->m_AccData.m_aIp));
 	m_pPlayer->m_AccData.m_UserID = 0;
 	m_pPlayer->m_AccData.m_Vip = 0;
-	m_pPlayer->m_QuestData.m_Pages = 0;
+	m_pPlayer->m_AccData.m_Pages = 1;
 	m_pPlayer->m_Level.m_LeveL = 1;
 	m_pPlayer->m_Level.m_Exp = 0;
 	m_pPlayer->m_AccData.m_blockpoints = 0;
-	m_pPlayer->m_AccData.m_DeathCounter = 0;
 }
 
 void CAccountDatabase::Delete()
@@ -451,7 +452,7 @@ void CAccountDatabase::ReloadDataResult(bool Failed, void *pResultData, void *pD
 
 		pResults->last();
 
-		pAccount->m_pPlayer->m_QuestData.m_Pages = str_toint(pResults->getString(1).c_str());
+		pAccount->m_pPlayer->m_AccData.m_Pages = str_toint(pResults->getString(1).c_str());
 
 #endif
 

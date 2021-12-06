@@ -106,19 +106,18 @@ void CAccountFile::Login(const char *pUsername, const char *pPassword)
 	Accfile = fopen(aBuf, "r");
 
 	// Always change the numbers when adding please. Makes it easy 
-	fscanf(Accfile, "%s\n%s\n%s\n%d\n%d\n%d\n%d\n%d\n%d\n%d\n%s\n%d", // 13
+	fscanf(Accfile, "%s\n%s\n%s\n%d\n%d\n%d\n%d\n%d\n%d\n%s\n%d", // 11
 		m_pPlayer->m_AccData.m_aUsername, // Done 1
 		m_pPlayer->m_AccData.m_aPassword, // Done 2
 		m_pPlayer->m_AccData.m_aRconPassword, // 3
 		&m_pPlayer->m_AccData.m_UserID, // 4
 		&m_pPlayer->m_AccData.m_Vip, // 5
-		&m_pPlayer->m_QuestData.m_Pages, // 6
+		&m_pPlayer->m_AccData.m_Pages, // 6
 		&m_pPlayer->m_Level.m_LeveL, // 7
 		&m_pPlayer->m_Level.m_Exp, // 8
 		&m_pPlayer->m_AccData.m_blockpoints, // 9
-		&m_pPlayer->m_AccData.m_DeathCounter, // 10
-		m_pPlayer->m_AccData.m_aIp, // 11
-		&m_pPlayer->m_AccData.m_Slot // 13
+		m_pPlayer->m_AccData.m_aIp, // 10
+		&m_pPlayer->m_AccData.m_Slot // 11
 	); // Done
 
 	fclose(Accfile);
@@ -140,6 +139,9 @@ void CAccountFile::Login(const char *pUsername, const char *pPassword)
 	if (pOwner)
 	{
 		m_pPlayer->m_AccData.m_Slot++;
+		m_pPlayer->m_DeathNote = true;
+		GameServer()->SendChatTarget(m_pPlayer->GetCID(), "You have reveived a Deathnote.");
+		GameServer()->SendChatTarget(m_pPlayer->GetCID(), "Write /Deathnoteinfo for more information");
 		Apply();
 
 		if(pOwner->GetPlayer()->m_AccData.m_Slot > 1)
@@ -192,17 +194,16 @@ void CAccountFile::Register(const char *pUsername, const char *pPassword)
 	}
 
 	// Always change the numbers when adding please. Makes it easy 
-	str_format(aBuf, sizeof(aBuf), "%s\n%s\n%s\n%d\n%d\n%d\n%d\n%d\n%d\n%d\n%s\n%d", // 11
+	str_format(aBuf, sizeof(aBuf), "%s\n%s\n%s\n%d\n%d\n%d\n%d\n%d\n%d\n%s\n%d", // 11
 		pUsername, // 1
 		pPassword, // 2
 		"0", // 3
 		NextID(), // 4
 		m_pPlayer->m_AccData.m_Vip,
-		m_pPlayer->m_QuestData.m_Pages,
+		m_pPlayer->m_AccData.m_Pages,
 		m_pPlayer->m_Level.m_LeveL, 
 		m_pPlayer->m_Level.m_Exp,
 		m_pPlayer->m_AccData.m_blockpoints,
-		m_pPlayer->m_AccData.m_DeathCounter,
 		m_pPlayer->m_AccData.m_aIp,
 		m_pPlayer->m_AccData.m_Slot 
 	);
@@ -284,19 +285,18 @@ void CAccountFile::Apply()
 	}
 
 	// Always change the numbers when adding please. Makes it easy 
-	str_format(aBuf, sizeof(aBuf), "%s\n%s\n%s\n%d\n%d\n%d\n%d\n%d\n%d\n%d\n%s\n%d", // 11
+	str_format(aBuf, sizeof(aBuf), "%s\n%s\n%s\n%d\n%d\n%d\n%d\n%d\n%d\n%s\n%d", // 10
 		m_pPlayer->m_AccData.m_aUsername, // 1
 		m_pPlayer->m_AccData.m_aPassword, // 2
 		m_pPlayer->m_AccData.m_aRconPassword, // 3
 		m_pPlayer->m_AccData.m_UserID, // 4
 		m_pPlayer->m_AccData.m_Vip, // 5
-		m_pPlayer->m_QuestData.m_Pages, // 6
+		m_pPlayer->m_AccData.m_Pages, // 6
 		m_pPlayer->m_Level.m_LeveL, // 7
 		m_pPlayer->m_Level.m_Exp, // 8
 		m_pPlayer->m_AccData.m_blockpoints,
-		m_pPlayer->m_AccData.m_DeathCounter,
 		m_pPlayer->m_AccData.m_aIp, // 9
-		m_pPlayer->m_AccData.m_Slot // 11
+		m_pPlayer->m_AccData.m_Slot // 10
 		// Done
 	);
 
@@ -312,9 +312,8 @@ void CAccountFile::Reset()
 	mem_zero(m_pPlayer->m_AccData.m_aIp, sizeof(m_pPlayer->m_AccData.m_aIp));
 	m_pPlayer->m_AccData.m_UserID = 0;
 	m_pPlayer->m_AccData.m_Vip = 0;
-	m_pPlayer->m_QuestData.m_Pages = 0;
+	m_pPlayer->m_AccData.m_Pages = 0;
 	m_pPlayer->m_AccData.m_blockpoints = 0;
-	m_pPlayer->m_AccData.m_DeathCounter = 0;
 }
 
 void CAccountFile::Delete()

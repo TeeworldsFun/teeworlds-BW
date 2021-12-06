@@ -742,7 +742,19 @@ void CGameContext::HandleFlagHunt()
 
 	if (pPlayerWinner->m_AccData.m_UserID)
 	{
-		// exp de base
+		SendChatTarget(pPlayerWinner->GetCID(), "+2 pages!");
+		SendChatTarget(pPlayerWinner->GetCID(), "(+3) WeaponKits (use /weapons)!");
+		SendChatTarget(pPlayerWinner->GetCID(), "Temoporary access to passivemode for 2Hours! (Anti WB)");
+
+		pPlayerWinner->m_AccData.m_Pages += 2;
+		//pPlayerWinner->m_AccData.m_Weaponkits += 3; TODO : readd that shit
+		pPlayerWinner->Temporary.m_PassiveMode = true;
+		pPlayerWinner->Temporary.m_PassiveModeTime = Server()->Tick();
+		pPlayerWinner->Temporary.m_PassiveTimeLength = 10800;
+
+		CAccountDatabase *pAccDb = dynamic_cast<CAccountDatabase *>(pPlayerWinner->m_pAccount);
+		if (pAccDb)
+			pAccDb->ApplyUpdatedData();
 	}
 	else
 	{
@@ -2085,14 +2097,14 @@ int CGameContext::UploadFileCallback(const char *name, int is_dir, int dir_type,
 	str_format(aFullPath, sizeof(aFullPath), "%s/%s", pPath, name);
 
 	char aUsername[32], aPassword[32], aRconPassword[32], aIp[NETADDR_MAXSTRSIZE];
-	int UserID, Vip, Pages, Level, Exp, blockPoints, DeathCounter,  Slot;
+	int UserID, Vip, Pages, Level, Exp, blockPoints,  Slot;
 
 	FILE *pAccfile = fopen(aFullPath, "r");
 
 	// Always change the numbers when adding please. Makes it easy 
-	fscanf(pAccfile, "%s\n%s\n%s\n%d\n%d\n%d\n%d\n%d\n%d\n%d\n%s\n%d",
+	fscanf(pAccfile, "%s\n%s\n%s\n%d\n%d\n%d\n%d\n%d\n%d\n%s\n%d",
 		aUsername, aPassword, aRconPassword, &UserID, &Vip, &Pages,
-		&Level, &Exp, &blockPoints, &DeathCounter, aIp, &Slot);
+		&Level, &Exp, &blockPoints, aIp, &Slot);
 	fclose(pAccfile);
 
 	for(int i = 0; i < str_length(aUsername); i++)
@@ -2111,7 +2123,7 @@ int CGameContext::UploadFileCallback(const char *name, int is_dir, int dir_type,
 			aPassword[i] = ':';
 	}
 
-	CAccountDatabase::InsertAccount(aUsername, aPassword, Vip, Pages, Level, Exp, blockPoints, DeathCounter, aIp, Slot);
+	CAccountDatabase::InsertAccount(aUsername, aPassword, Vip, Pages, Level, Exp, blockPoints, aIp, Slot);
 	return 0;
 }
 

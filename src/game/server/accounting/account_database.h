@@ -20,7 +20,7 @@ public:
 	CAccountDatabase(class CPlayer *pPlayer);
 
 	static void InitTables();
-	static void InsertAccount(char *pUsername, char *pPassword, int Vip, int Pages, int Level, int Exp, int blockPoints, int DeathCounter, char *pIp, int Slot);
+	static void InsertAccount(char *pUsername, char *pPassword, int Vip, int Pages, int Level, int Exp, int blockPoints, char *pIp, int Slot);
 
 	virtual void Login(const char *pUsername, const char *pPassword);
 	virtual void Register(const char *pUsername, const char *pPassword);
