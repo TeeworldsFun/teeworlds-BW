@@ -3323,6 +3323,7 @@ void CCharacter::HandleBlocking(bool die)
 	}
 	else
 	{
+		/*
 		CCharacter *pECore = GameServer()->GetPlayerChar(m_Core.m_LastHookedBy);
 		if (IsAlive() && pECore && pECore->IsAlive() && Team() == 0 && pECore->Team() == 0)
 			if (m_FirstFreezeTick != 0)
@@ -3341,6 +3342,8 @@ void CCharacter::HandleBlocking(bool die)
 					}
 				}
 			}
+		}
+		*/
 	}
 }
 
