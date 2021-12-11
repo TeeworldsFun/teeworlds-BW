@@ -99,7 +99,6 @@ public:
 	void Rescue();
 
 	void HandleLovely();
-	void HandleArmor();
 	void HandleRainbowHook(bool Reset);
 	void HandleCollision(bool Reset);
 	void HandleHit(bool Reset);
@@ -291,7 +290,7 @@ public:
 		DISABLE_HIT_RIFLE = 8
 	};
 
-	// Quest to accuire pages for DeathNote booklet :)
+// Quest to accuire pages for DeathNote booklet :)
 
 	int m_Hit;
 	int m_TuneZone;

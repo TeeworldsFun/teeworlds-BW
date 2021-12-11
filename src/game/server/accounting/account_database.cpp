@@ -156,10 +156,6 @@ void CAccountDatabase::LoginResult(bool Failed, void *pResultData, void *pData)
 		if (pOwner)
 		{
 			pPlayer->m_AccData.m_Slot++;
-			pPlayer->m_DeathNote = true;
-			pPlayer->m_AccData.m_Pages =+1;
-			pGameServer->SendChatTarget(ClientID, "You have reveived a Deathnote.");
-			pGameServer->SendChatTarget(ClientID, "Write /Deathnoteinfo for more information");
 #if defined(CONF_SQL)
 			pAccount->Apply();
 #endif

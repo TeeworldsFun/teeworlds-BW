@@ -186,78 +186,6 @@ void CGameContext::ChatCommands(const char *pMsg, int ClientID)
         }
     }
 
-    else if (str_comp_nocase_num(pMsg + 1, "deathnote ", 10) == 0)
-    {
-        if (!pChar || !pChar->IsAlive())
-            return;
-
-        if (pPlayer->m_LastDeathnote + g_Config.m_SvDeathNoteCoolDown * Server()->TickSpeed() > Server()->Tick())
-        {
-            char aBuf[256];
-            str_format(aBuf, sizeof(aBuf), "You have to wait %d seconds until you can write down more players in your deathnote", (pPlayer->m_LastDeathnote + g_Config.m_SvDeathNoteCoolDown * Server()->TickSpeed() - Server()->Tick()) / Server()->TickSpeed());
-            SendChatTarget(ClientID, aBuf);
-            return;
-        }
-        if (m_LMB.State() == m_LMB.STATE_RUNNING || m_LMB.State() == m_LMB.STATE_REGISTRATION)
-        {
-            SendChatTarget(ClientID, "You cannot use deathnotes right now");
-            return;
-        }
-
-		char aName[256];
-        str_copy(aName, pMsg + 11, sizeof(aName));
-        
-        //usable
-        int id = ConvertNameToID(aName);
-
-        if (id < 0 || !GetPlayerChar(id) || !GetPlayerChar(id)->IsAlive()) // Prevent crashbug (fix)
-            return;
-
-		CAccountDatabase *pAccDb = dynamic_cast<CAccountDatabase *>(pPlayer->m_pAccount);
-
-		CDeathnoteUpdateData *pResultData = new CDeathnoteUpdateData;
-		pResultData->m_pGameServer = this;
-		pResultData->m_pPlayer = pPlayer;
-		pResultData->m_id = id;
-
-		if(pAccDb != NULL)
-			pAccDb->ReloadUpdatedData(DeathnoteUpdate, pResultData);
-		else
-			DeathnoteUpdate(false, NULL, pResultData);
-
-    }
-
-    else if (str_comp_nocase_num(pMsg + 1, "Deathnoteinfo", 13) == 0)
-    {
-        if (!m_apPlayers[ClientID]) // again character check useless, you can even check it by simply put player check
-            return;
-
-        SendChatTarget(ClientID, "You have received a Deathnote, but in order to kill players you must gather pages.");
-        SendChatTarget(ClientID, "With a Deathnote you can write /deathnote Playername (Ex: /deathnote namelesstee) to kill any specific player!");
-        SendChatTarget(ClientID, "You can type /pages to check your current amount of pages.");
-        SendChatTarget(ClientID, "To obtain pages you must complete quests type /beginquest to start the quest. - Good luck!");
-        SendChatTarget(ClientID, "For further information please go watch the anime - DeathNote :)");
-    }
-
-    else if (str_comp_nocase_num(pMsg + 1, "pages", 5) == 0)
-    {
-        if (!m_apPlayers[ClientID])
-            return;
-
-        else if (!pPlayer->m_DeathNote < 1)
-        {
-            SendChatTarget(ClientID, "0 pages, You dont even have a Deathnote!");
-            return;
-        } 
-        else
-        {
-            int Pages = pPlayer->m_AccData.m_Pages;
-            char Message[104];
-            str_format(Message, 104, "You have %d pages in your Deathnote!", Pages);
-            SendChatTarget(ClientID, Message);
-        }
-    }
-    
     else if (str_comp_nocase(pMsg + 1, "bp") == 0)
     {
         if (!pPlayer->m_AccData.m_UserID)
@@ -356,13 +284,6 @@ void CGameContext::ChatCommands(const char *pMsg, int ClientID)
         SendChatTarget(ClientID, "- 2$ for 1 month and 5$ for 5 months!");
         SendChatTarget(ClientID, "====================");
     }
-    else if (str_comp_nocase_num(pMsg + 1, "armor", 7) == 0 && (pPlayer->m_AccData.m_Vip || IsAdmin)) 
-    {
-        /*if (!pChar || !pChar->IsAlive())
-            return;*/
-        pPlayer->m_Armor ^= true;
-        SendChatTarget(ClientID, pPlayer->m_Armor ? "Armor effect activated" : "Armor effect desactivated");
-    }
     else if (str_comp_nocase_num(pMsg + 1, "lovely", 6) == 0 && (pPlayer->m_AccData.m_Vip || IsAdmin)) 
     {
         /*if (!pChar || !pChar->IsAlive())
@@ -384,6 +305,11 @@ void CGameContext::ChatCommands(const char *pMsg, int ClientID)
     {   
         pPlayer->m_HeartGuns ^= true;
         SendChatTarget(ClientID, pPlayer->m_HeartGuns ? "Heart guns activated" : "Heart guns desactivated");
+    }
+    else if (str_comp_nocase(pMsg + 1, "armorgun") == 0 && (pPlayer->m_AccData.m_Vip || IsAdmin)) 
+    {   
+        pPlayer->m_ArmorGuns ^= true;
+        SendChatTarget(ClientID, pPlayer->m_ArmorGuns ? "Armor guns activated" : "Armor guns desactivated");
     }
     else if (str_comp_nocase_num(pMsg + 1, "getclientid ", 12) == 0 && (pPlayer->m_AccData.m_Vip || IsAdmin))
     {

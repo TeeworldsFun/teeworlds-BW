@@ -1007,7 +1007,6 @@ void CCharacter::Tick()
 	m_BloodyDelay++;
 	m_SteamyDelay++;
 	HandleLovely();
-	HandleArmor();
 	HandlePullHammer();
 	if(m_pPlayer->m_HookJetpack)
 	{
@@ -3458,19 +3457,6 @@ void CCharacter::HandleLovely()
 
 			SetEmote(4, Server()->Tick() + 2 * Server()->TickSpeed());
 			m_LovelyLifeSpan = Server()->TickSpeed() - (rand()%(45 - 35 + 1) + 35);
-		}
-	}
-}
-void CCharacter::HandleArmor()
-{
-	if (m_pPlayer->m_Armor && IsAlive())
-	{
-		if (m_ArmorLifeSpan <= 0)
-		{
-			GameServer()->CreateArmorEvent(vec2(m_Pos.x + (rand() % 50 - 10), m_Pos.y - 35), m_pPlayer->GetCID());
-
-			SetEmote(15, Server()->Tick() + 2 * Server()->TickSpeed());
-			m_ArmorLifeSpan = Server()->TickSpeed() - (rand() % (45 - 35 + 1) + 35);
 		}
 	}
 }

@@ -139,9 +139,6 @@ void CAccountFile::Login(const char *pUsername, const char *pPassword)
 	if (pOwner)
 	{
 		m_pPlayer->m_AccData.m_Slot++;
-		m_pPlayer->m_DeathNote = true;
-		GameServer()->SendChatTarget(m_pPlayer->GetCID(), "You have reveived a Deathnote.");
-		GameServer()->SendChatTarget(m_pPlayer->GetCID(), "Write /Deathnoteinfo for more information");
 		Apply();
 
 		if(pOwner->GetPlayer()->m_AccData.m_Slot > 1)

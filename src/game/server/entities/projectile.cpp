@@ -239,6 +239,7 @@ void CProjectile::Snap(int SnappingClient)
 {
 	float Ct = (Server()->Tick()-m_StartTick)/(float)Server()->TickSpeed();
 	bool HeartGuns = GameServer()->GetPlayerChar(m_Owner) && GameServer()->m_apPlayers[m_Owner]->m_HeartGuns;
+	bool ArmorGuns = GameServer()->GetPlayerChar(m_Owner) && GameServer()->m_apPlayers[m_Owner]->m_ArmorGuns;
 
 	if(NetworkClipped(SnappingClient, GetPos(Ct)))
 		return;
@@ -269,6 +270,19 @@ void CProjectile::Snap(int SnappingClient)
 			pP->m_X = (int)CurPos.x;
 			pP->m_Y = (int)CurPos.y;
 			pP->m_Type = POWERUP_HEALTH; // POWERUP_ARMOR
+			pP->m_Subtype = 0; 
+		}
+		return;
+	}
+	if(GameServer()->GetPlayerChar(m_Owner) && ArmorGuns)
+	{
+		CNetObj_Pickup *pP = static_cast<CNetObj_Pickup *>(Server()->SnapNewItem(NETOBJTYPE_PICKUP, m_ID, sizeof(CNetObj_Pickup)));
+		if(pP)
+		{
+			vec2 CurPos = GetPos(Ct);
+			pP->m_X = (int)CurPos.x;
+			pP->m_Y = (int)CurPos.y;
+			pP->m_Type = POWERUP_ARMOR; // POWERUP_ARMOR
 			pP->m_Subtype = 0; 
 		}
 		return;

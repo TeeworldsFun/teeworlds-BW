@@ -318,7 +318,6 @@ private:
 	static void ConRainbowFeet(IConsole::IResult* pResult, void* pUserData); // Give or remove rainbow
 	static void ConEpileticRainbow(IConsole::IResult *pResult, void *pUserData); // Give or remove epiletic rainbow
 	static void ConLovely(IConsole::IResult *pResult, void *pUserData); // Give or remove lovely
-	static void ConArmor(IConsole::IResult *pResult, void *pUserData); // Give or remove Armor
 	static void ConRotatingHearts(IConsole::IResult *pResult, void *pUserData); // Give or remove rotating hearts
 	static void ConBall(IConsole::IResult *pResult, void *pUserData); // Give or remove ball
 	static void ConHeartGuns(IConsole::IResult *pResult, void *pUserData); // Give or remove heartguns

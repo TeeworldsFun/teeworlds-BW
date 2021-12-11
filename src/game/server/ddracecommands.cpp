@@ -311,21 +311,6 @@ void CGameContext::ConLovely(IConsole::IResult *pResult, void *pUserData) // giv
 		pSelf->SendChatTarget(Victim, aBuf);
 	}
 }
-void CGameContext::ConArmor(IConsole::IResult* pResult, void* pUserData) // give or remove Armor
-{
-	CGameContext* pSelf = (CGameContext*)pUserData;
-	if (!CheckClientID(pResult->m_ClientID))
-		return;
-	int Victim = pResult->GetVictim();
-
-	if (pSelf->m_apPlayers[Victim])
-	{
-		pSelf->m_apPlayers[Victim]->m_Armor ^= 1;
-		char aBuf[512];
-		str_format(aBuf, sizeof(aBuf), pSelf->m_apPlayers[Victim]->m_Lovely ? "%s gave you armor effect!" : "%s removed your armor effect!", pSelf->Server()->ClientName(pResult->m_ClientID));
-		pSelf->SendChatTarget(Victim, aBuf);
-	}
-}
 
 void CGameContext::ConRotatingHearts(IConsole::IResult *pResult, void *pUserData) // give or remove rotating hearts
 {

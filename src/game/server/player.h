@@ -280,7 +280,7 @@ public:
 
 	//mod
 	bool m_Lovely;
-	bool m_Armor;
+	bool m_ArmorGuns;
 	bool m_HeartGuns;
 	CBall *m_pBall;
 	bool m_IsBallSpawned;
